@@ -144,8 +144,27 @@ mark.cit.is-active{box-shadow:0 0 0 2px var(--ink)}
   font-size:11px;letter-spacing:.08em;text-transform:uppercase;padding:9px 16px;border-radius:2px;z-index:80;max-width:80vw;text-align:center}
 .privacy{font-family:var(--mono);font-size:9.5px;letter-spacing:.06em;color:var(--ink-faint);border-top:1px dotted var(--rule);padding-top:8px;margin-top:14px;line-height:1.6}
 
+/* divisor arrastrable */
+.resizer{width:7px;flex:none;cursor:col-resize;background:var(--rule);position:relative;transition:background .12s}
+.resizer::after{content:'';position:absolute;top:50%;left:2px;width:3px;height:38px;transform:translateY(-50%);
+  border-left:1px solid var(--ink-faint);border-right:1px solid var(--ink-faint);opacity:.45}
+.resizer:hover,.resizer.is-dragging{background:var(--mimeo-line)}
+
+/* modal de búsqueda masiva */
+.find-head{display:flex;justify-content:space-between;font-family:var(--mono);font-size:11px;letter-spacing:.09em;
+  text-transform:uppercase;color:var(--ink-soft);margin:14px 0 6px}
+.find-bar{height:4px;background:var(--rule);border-radius:2px;overflow:hidden}
+.find-bar>div{height:100%;background:var(--mimeo);transition:width .2s}
+.find-list{max-height:230px;overflow-y:auto;border:1px solid var(--rule);border-radius:2px;margin-top:12px;background:var(--panel)}
+.find-row{display:flex;justify-content:space-between;gap:10px;padding:5px 9px;border-bottom:1px solid var(--rule);font-size:13px}
+.find-row:last-child{border-bottom:0}
+.fr-name{font-family:var(--mono);font-size:12px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.fr-state{font-family:var(--mono);font-size:10px;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-faint);flex:none}
+.fr-state.is-now{color:var(--mimeo)} .fr-state.is-hit{color:var(--verde)} .fr-state.is-miss{color:var(--rust)}
+
 @media (max-width:900px){
-  .panel{position:fixed;inset:auto 0 0 0;height:64vh;width:100%;border-left:0;border-top:1px solid var(--ink);z-index:30;box-shadow:0 -6px 20px rgba(0,0,0,.12)}
+  .resizer{display:none}
+  .panel{position:fixed;inset:auto 0 0 0;height:64vh;width:100% !important;border-left:0;border-top:1px solid var(--ink);z-index:30;box-shadow:0 -6px 20px rgba(0,0,0,.12)}
   .panel.is-hidden{display:none}
   .scroller{padding:24px 18px 70vh}
   .doc{font-size:16.5px}
@@ -184,6 +203,8 @@ mark.cit.is-active{box-shadow:0 0 0 2px var(--ink)}
       </div>
     </div>
 
+    <div class="resizer" id="resizer" title="Arrastrá para cambiar el ancho · doble click para restablecer"></div>
+
     <aside class="panel" id="panel">
       <div class="tabs" role="tablist">
         <button class="tab" id="tabCitas" role="tab" aria-selected="true">Citas</button>
@@ -192,10 +213,8 @@ mark.cit.is-active{box-shadow:0 0 0 2px var(--ink)}
       <div class="panel-sub">
         <input class="search" id="qCitas" type="search" placeholder="Buscar entre las citas…" autocomplete="off">
         <input class="search hidden" id="qBiblio" type="search" placeholder="Buscar entre las referencias…" autocomplete="off">
-        <div id="biblioActions" class="hidden" style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+        <div id="biblioActions" class="hidden">
           <button class="btn btn--key btn--mini" id="btnFindAll">Buscar referencias faltantes</button>
-          <button class="btn btn--ghost btn--mini hidden" id="btnStopAll">Detener</button>
-          <span class="progress" id="findProgress"></span>
         </div>
       </div>
       <div class="panel-body" id="panelBody"></div>
@@ -872,8 +891,9 @@ function renderBiblio(body, foot){
         <div class="ficha-top"><div class="ficha-key">${esc(w.authors)}, ${esc(w.year)}</div><div class="ficha-n">${w.hits.length}×</div></div>
         <div class="ficha-src src-none">falta la referencia completa</div>
         <div class="ficha-acts">
-          <button class="btn btn--mini" data-find="${w.key}">Buscar</button>
+          <button class="btn btn--mini" data-jump="${w.hits[0].id}">Ver en el texto</button>
           <button class="btn btn--mini btn--ghost" data-editref="${w.key}">Editar</button>
+          <button class="btn btn--mini btn--drop" data-killwork="${w.key}">Quitar</button>
         </div>
         <div data-cands="${w.key}">${candHTML(w)}</div></div>`;
     });
@@ -887,8 +907,9 @@ function renderBiblio(body, foot){
         <div class="ficha-ref">${refOf(w)}</div>
         ${w.ambiguous ? `<div class="ficha-warn">Hay ${w.alts.length} entradas en el .bib con ese autor y año. Verificá cuál corresponde.</div>`:''}
         <div class="ficha-acts">
+          <button class="btn btn--mini" data-jump="${w.hits[0].id}">Ver en el texto</button>
           <button class="btn btn--mini btn--ghost" data-editref="${w.key}">Editar</button>
-          <button class="btn btn--mini" data-find="${w.key}">Buscar otra</button>
+          <button class="btn btn--mini btn--drop" data-killwork="${w.key}">Quitar</button>
         </div>
         <div data-cands="${w.key}">${candHTML(w)}</div></div>`;
     });
@@ -899,7 +920,11 @@ function renderBiblio(body, foot){
       html += `<div class="ficha is-ley">
         <div class="ficha-top"><div class="ficha-key">${esc(n.label)}</div><div class="ficha-n">${n.hits.length}×</div></div>
         <div class="ficha-ref">${n.manual || esc(normTemplate(n.label))}</div>
-        <div class="ficha-acts"><button class="btn btn--mini btn--ghost" data-editnorm="${n.key}">Editar</button></div>
+        <div class="ficha-acts">
+          <button class="btn btn--mini" data-jump="${n.hits[0].id}">Ver en el texto</button>
+          <button class="btn btn--mini btn--ghost" data-editnorm="${n.key}">Editar</button>
+          <button class="btn btn--mini btn--drop" data-killnorm="${n.key}">Quitar</button>
+        </div>
       </div>`;
     });
   }
@@ -953,7 +978,6 @@ function bindPanel(){
   b.querySelectorAll('[data-editfrag]').forEach(x => x.onclick = () => openFragEditor(x.dataset.editfrag));
   b.querySelectorAll('[data-editref]').forEach(x => x.onclick = () => openRefEditor(x.dataset.editref));
   b.querySelectorAll('[data-editnorm]').forEach(x => x.onclick = () => openNormEditor(x.dataset.editnorm));
-  b.querySelectorAll('[data-find]').forEach(x => x.onclick = () => findOne(x.dataset.find, x));
   b.querySelectorAll('[data-take]').forEach(x => x.onclick = () => {
     const [k,n] = x.dataset.take.split('::');
     const w = S.works.find(y => y.key===k); if (!w) return;
@@ -969,11 +993,11 @@ function syncTabs(){
 /* ==========================================================================
    7. EDITORES
    ========================================================================== */
-function modal(html){
+function modal(html, dismissible = true){
   const v = document.createElement('div');
   v.className = 'veil'; v.innerHTML = `<div class="modal">${html}</div>`;
   document.body.appendChild(v);
-  v.addEventListener('click', e => { if (e.target===v) v.remove(); });
+  if (dismissible) v.addEventListener('click', e => { if (e.target===v) v.remove(); });
   return v;
 }
 
@@ -1144,32 +1168,57 @@ async function lookup(w){
   return out.slice(0, 10);
 }
 
-async function findOne(key, btn){
-  const w = S.works.find(x => x.key===key); if (!w) return;
-  if (!Object.values(CFG.sources).some(Boolean)){ toast('No hay fuentes activadas en Configuración'); return; }
-  btn.disabled = true; btn.textContent = 'Buscando…';
-  try { S.cands.set(key, await lookup(w)); }
-  catch(e){ S.cands.set(key, []); }
-  renderPanel();
-}
-
 async function findAll(){
   const pend = S.works.filter(w => !refOf(w));
   if (!pend.length){ toast('No hay referencias faltantes'); return; }
   if (!Object.values(CFG.sources).some(Boolean)){ toast('No hay fuentes activadas en Configuración'); return; }
   S.stopFind = false;
-  $('btnFindAll').classList.add('hidden'); $('btnStopAll').classList.remove('hidden');
-  let n = 0;
+
+  const active = Object.keys(CFG.sources).filter(k => CFG.sources[k]).map(k => SOURCES[k].label).join(' · ');
+  const rows = pend.map(w =>
+    `<div class="find-row"><span class="fr-name">${esc(w.authors)}, ${esc(w.year)}</span>` +
+    `<span class="fr-state" id="fs_${esc(w.key)}">en espera</span></div>`).join('');
+
+  const v = modal(`<h3>Buscando referencias</h3>
+    <p class="mini-note">${pend.length} obras sin referencia. Consultando ${esc(active)}. Solo viajan el apellido y el año.</p>
+    <div class="find-head"><span id="fCount">0 / ${pend.length}</span><span id="fNow">en curso</span></div>
+    <div class="find-bar"><div id="fBar" style="width:0%"></div></div>
+    <div class="find-list" id="fList">${rows}</div>
+    <div class="row"><button class="btn btn--drop" id="fStop">Detener</button></div>`, false);
+
+  $('fStop').onclick = () => {
+    S.stopFind = true;
+    $('fStop').textContent = 'Deteniendo…'; $('fStop').disabled = true;
+  };
+
+  let n = 0, hits = 0;
   for (const w of pend){
     if (S.stopFind) break;
-    $('findProgress').textContent = `${++n}/${pend.length} · ${w.surname}`;
-    try { S.cands.set(w.key, await lookup(w)); } catch(e){ S.cands.set(w.key, []); }
+    const st = document.getElementById('fs_' + w.key);
+    if (st){
+      st.textContent = 'buscando…'; st.className = 'fr-state is-now';
+      st.parentElement.scrollIntoView({block:'nearest'});
+    }
+    let items = [];
+    try { items = await lookup(w); } catch(e){ items = []; }
+    S.cands.set(w.key, items);
+    if (items.length) hits++;
+    if (st){
+      st.textContent = items.length ? `${items.length} candidatas` : 'sin resultados';
+      st.className = 'fr-state ' + (items.length ? 'is-hit' : 'is-miss');
+    }
+    n++;
+    $('fCount').textContent = `${n} / ${pend.length}`;
+    $('fBar').style.width = Math.round(n / pend.length * 100) + '%';
     await sleep(280);
   }
-  $('findProgress').textContent = S.stopFind ? 'detenido' : 'listo — elegí la correcta en cada ficha';
-  $('btnFindAll').classList.remove('hidden'); $('btnStopAll').classList.add('hidden');
+
+  $('fNow').textContent = S.stopFind ? 'detenida' : 'completa';
+  v.querySelector('.row').innerHTML =
+    `<span class="mini-note" style="margin-right:auto">${hits} de ${n} con candidatas para elegir.</span>
+     <button class="btn btn--key" id="fClose">Ver resultados</button>`;
+  document.getElementById('fClose').onclick = () => { v.remove(); renderPanel(); };
   renderPanel();
-  setTimeout(() => { $('findProgress').textContent = ''; }, 6000);
 }
 
 /* ==========================================================================
@@ -1370,7 +1419,34 @@ $('tabBiblio').onclick = () => { S.tab='biblio'; syncTabs(); renderPanel(); };
 $('qCitas').addEventListener('input', () => renderCitas($('panelBody'), $('panelFoot')) || bindPanel());
 $('qBiblio').addEventListener('input', () => renderBiblio($('panelBody'), $('panelFoot')) || bindPanel());
 $('btnFindAll').onclick = findAll;
-$('btnStopAll').onclick = () => { S.stopFind = true; };
+
+/* ancho de la columna lateral, arrastrable */
+(function initResizer(){
+  const r = $('resizer'), p = $('panel');
+  let dragging = false;
+  const clamp = px => Math.max(320, Math.min(720, window.innerWidth * 0.6, px));
+  const apply = px => { p.style.width = clamp(px) + 'px'; drawRuler(); };
+  const at = e => (e.touches ? e.touches[0].clientX : e.clientX);
+  const move = e => { if (dragging) apply(window.innerWidth - at(e)); };
+  const stop = () => {
+    if (!dragging) return;
+    dragging = false; r.classList.remove('is-dragging');
+    document.body.style.userSelect = ''; document.body.style.cursor = '';
+  };
+  const start = e => {
+    if (window.innerWidth <= 900) return;
+    dragging = true; r.classList.add('is-dragging');
+    document.body.style.userSelect = 'none'; document.body.style.cursor = 'col-resize';
+    if (e.cancelable) e.preventDefault();
+  };
+  r.addEventListener('mousedown', start);
+  r.addEventListener('touchstart', start, {passive:false});
+  document.addEventListener('mousemove', move);
+  document.addEventListener('touchmove', move, {passive:true});
+  document.addEventListener('mouseup', stop);
+  document.addEventListener('touchend', stop);
+  r.addEventListener('dblclick', () => apply(400));
+})();
 $('togglePanel').onclick = () => {
   const p = $('panel'); p.classList.toggle('is-hidden');
   $('togglePanel').textContent = p.classList.contains('is-hidden') ? 'Ver citas' : 'Ver texto';
