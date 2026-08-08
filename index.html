@@ -162,7 +162,91 @@ mark.cit.is-active{box-shadow:0 0 0 2px var(--ink)}
 .fr-state{font-family:var(--mono);font-size:10px;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-faint);flex:none}
 .fr-state.is-now{color:var(--mimeo)} .fr-state.is-hit{color:var(--verde)} .fr-state.is-miss{color:var(--rust)}
 
+/* chips de filtro */
+.chips{display:flex;gap:5px;flex-wrap:wrap}
+.chip{border:1px solid var(--rule);background:var(--panel);color:var(--ink-soft);font-family:var(--mono);
+  font-size:9.5px;letter-spacing:.07em;text-transform:uppercase;padding:4px 8px;border-radius:10px}
+.chip:hover{border-color:var(--ink-faint)}
+.chip[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:var(--sheet)}
+.chip b{font-weight:600;margin-left:4px;opacity:.65}
+
+/* tira de pendientes */
+.pend-strip{display:flex;align-items:center;gap:10px;flex-wrap:wrap;background:var(--rust-wash);
+  border:1px solid var(--rust-soft);border-radius:2px;padding:10px 12px;margin-bottom:14px}
+.pend-strip .n{font-family:var(--mono);font-size:19px;font-weight:600;color:var(--rust);line-height:1}
+.pend-strip .t{flex:1;font-size:12.5px;color:var(--rust);line-height:1.35;min-width:130px}
+
+/* bibliografía como documento */
+.bib-doc{font-family:var(--serif);font-size:14.5px;line-height:1.62}
+.bib-item{position:relative;padding:4px 0 4px 1.7em;text-indent:-1.7em;border-radius:2px;margin-bottom:.5em}
+.bib-item:hover{background:var(--sheet)}
+.bib-ref{outline:0;border-radius:2px}
+.bib-ref em{font-style:italic}
+.bib-ref[contenteditable="true"]:focus{background:var(--sheet);box-shadow:0 0 0 2px var(--mimeo);padding:2px 4px}
+.bib-meta{display:flex;align-items:center;gap:6px;flex-wrap:wrap;text-indent:0;margin-top:3px;opacity:0;transition:opacity .12s}
+.bib-item:hover .bib-meta,.bib-item:focus-within .bib-meta{opacity:1}
+.badge{font-family:var(--mono);font-size:8.5px;letter-spacing:.09em;text-transform:uppercase;border:1px solid var(--rule);
+  border-radius:8px;padding:1px 6px;color:var(--ink-faint)}
+.badge.b-bib{color:var(--verde);border-color:var(--verde-soft)}
+.badge.b-auto{color:var(--mimeo);border-color:var(--mimeo-line)}
+.badge.b-mano{color:var(--ink-soft)}
+.tiny{border:0;background:transparent;font-family:var(--mono);font-size:9.5px;letter-spacing:.07em;
+  text-transform:uppercase;color:var(--ink-faint);padding:2px 5px;border-radius:2px}
+.tiny:hover{background:var(--rule);color:var(--ink)}
+.tiny.t-drop:hover{background:var(--rust-wash);color:var(--rust)}
+details.norms{border-top:1px solid var(--rule);margin-top:22px;padding-top:12px}
+details.norms>summary{font-family:var(--mono);font-size:10px;letter-spacing:.13em;text-transform:uppercase;
+  color:var(--ink-faint);cursor:pointer;list-style:none}
+details.norms>summary::-webkit-details-marker{display:none}
+details.norms>summary::before{content:'▸ ';color:var(--ley)}
+details.norms[open]>summary::before{content:'▾ '}
+
+/* indicador de guardado */
+.saved{font-family:var(--mono);font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-faint);opacity:0;transition:opacity .3s}
+.saved.on{opacity:1}
+
+/* ---- modo resolución ---- */
+#resolve{position:fixed;inset:0;z-index:70;background:var(--paper);display:flex;flex-direction:column}
+.rs-top{background:var(--sheet);border-bottom:1px solid var(--rule);padding:12px 24px 0}
+.rs-head{display:flex;align-items:center;gap:16px;flex-wrap:wrap;padding-bottom:11px}
+.rs-title{font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--mimeo);margin-right:auto}
+.rs-pos{font-family:var(--mono);font-size:12px;color:var(--ink-soft)}
+.rs-bar{height:3px;background:var(--rule)}
+.rs-bar>div{height:100%;background:var(--mimeo);transition:width .25s}
+.rs-body{flex:1;overflow-y:auto;padding:26px 24px 40px}
+.rs-wrap{max-width:940px;margin:0 auto}
+.rs-cite{font-family:var(--mono);font-size:26px;font-weight:600;line-height:1.2;margin:0 0 4px;word-break:break-word}
+.rs-sub{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:18px}
+.rs-ctx{font-family:var(--serif);font-size:15.5px;line-height:1.62;background:var(--sheet);border-left:3px solid var(--mimeo-line);
+  padding:10px 15px;margin-bottom:10px;color:#2C2C33}
+.rs-ctx mark{background:var(--mimeo-wash);border-bottom:1.5px solid var(--mimeo-line);padding:.05em .1em}
+.rs-label{font-family:var(--mono);font-size:10px;letter-spacing:.13em;text-transform:uppercase;color:var(--ink-faint);margin:26px 0 10px}
+.rs-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:12px}
+.rs-card{background:var(--sheet);border:1px solid var(--rule);border-radius:2px;padding:12px 13px;display:flex;flex-direction:column}
+.rs-card:hover{border-color:var(--mimeo-line)}
+.rs-num{position:absolute;margin:-6px 0 0 -6px;font-family:var(--mono);font-size:9.5px;background:var(--ink);color:var(--sheet);
+  border-radius:9px;padding:2px 7px}
+.rs-f{display:grid;grid-template-columns:80px 1fr;gap:10px;font-size:13.2px;line-height:1.45;margin-bottom:5px}
+.rs-f>b{font-family:var(--mono);font-size:9px;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-faint);font-weight:400;padding-top:3px}
+.rs-f>span{word-break:break-word}
+.rs-prev{font-family:var(--serif);font-size:12.5px;color:var(--ink-faint);line-height:1.45;border-top:1px dotted var(--rule);
+  margin-top:8px;padding-top:8px}
+.rs-prev em{font-style:italic}
+.rs-pick{margin-top:10px;align-self:flex-start}
+.rs-actions{position:sticky;bottom:0;background:var(--sheet);border-top:1px solid var(--rule);padding:12px 24px;
+  display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.rs-keys{font-family:var(--mono);font-size:9.5px;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-faint);margin-left:auto}
+.rs-manual{width:100%;min-height:76px;font-family:var(--serif);font-size:14.5px;padding:10px;border:1px solid var(--mimeo);
+  border-radius:2px;background:var(--sheet);color:var(--ink);resize:vertical;margin-top:8px}
+.rs-empty{font-size:14px;color:var(--ink-soft);background:var(--sheet);border:1px dashed var(--rule);padding:20px;border-radius:2px}
+.rs-done{text-align:center;padding:60px 20px}
+.rs-done h2{font-family:var(--mono);font-size:15px;letter-spacing:.12em;text-transform:uppercase;color:var(--verde)}
+
 @media (max-width:900px){
+  .rs-body{padding:18px 14px 30px}
+  .rs-cite{font-size:20px}
+  .rs-grid{grid-template-columns:1fr}
+  .rs-keys{display:none}
   .resizer{display:none}
   .panel{position:fixed;inset:auto 0 0 0;height:64vh;width:100% !important;border-left:0;border-top:1px solid var(--ink);z-index:30;box-shadow:0 -6px 20px rgba(0,0,0,.12)}
   .panel.is-hidden{display:none}
@@ -178,6 +262,7 @@ mark.cit.is-active{box-shadow:0 0 0 2px var(--ink)}
   <header class="topbar">
     <div class="brand"><span class="name">Fichero</span><span class="tag">citas → bibliografía</span></div>
     <div class="counters" id="counters"></div>
+    <span class="saved" id="saved">guardado</span>
     <button class="btn btn--ghost" id="btnCfg">Configuración</button>
     <button class="btn btn--ghost" id="btnBib">Cargar .bib</button>
     <button class="btn btn--ghost" id="btnNew">Otro documento</button>
@@ -214,7 +299,7 @@ mark.cit.is-active{box-shadow:0 0 0 2px var(--ink)}
         <input class="search" id="qCitas" type="search" placeholder="Buscar entre las citas…" autocomplete="off">
         <input class="search hidden" id="qBiblio" type="search" placeholder="Buscar entre las referencias…" autocomplete="off">
         <div id="biblioActions" class="hidden">
-          <button class="btn btn--key btn--mini" id="btnFindAll">Buscar referencias faltantes</button>
+          <div class="chips" id="bibChips"></div>
         </div>
       </div>
       <div class="panel-body" id="panelBody"></div>
@@ -224,6 +309,19 @@ mark.cit.is-active{box-shadow:0 0 0 2px var(--ink)}
 </div>
 
 <button class="btn btn--key toggle-panel hidden" id="togglePanel">Ver citas</button>
+
+<div id="resolve" class="hidden">
+  <div class="rs-top">
+    <div class="rs-head">
+      <span class="rs-title">Resolver referencias</span>
+      <span class="rs-pos" id="rsPos"></span>
+      <button class="btn btn--ghost btn--mini" id="rsClose">Salir</button>
+    </div>
+    <div class="rs-bar"><div id="rsBar" style="width:0%"></div></div>
+  </div>
+  <div class="rs-body" id="rsBody"></div>
+  <div class="rs-actions" id="rsActions"></div>
+</div>
 <div class="pop hidden" id="pop"></div>
 <input type="file" id="fileDoc" accept=".docx" class="hidden">
 <input type="file" id="fileBib" accept=".bib,.bibtex,.txt" class="hidden">
@@ -256,7 +354,10 @@ const S = {
   bib: [], bibIndex: new Map(),
   refOverride: new Map(),   // key de obra  → referencia final (HTML)
   normOverride: new Map(),  // key de norma → referencia final (HTML)
+  origin: new Map(),        // key de obra  → 'auto' | 'mano'
   cands: new Map(),         // key de obra  → candidatos encontrados
+  bibFilter: 'todas',
+  rs: { open:false, queue:[], i:0, busy:false, manual:false },
   tab: 'citas', seq: 0, stopFind: false
 };
 
@@ -286,6 +387,69 @@ async function copyRich(html, plain){
     })]);
     toast('Copiado con cursivas');
   } catch(e){ copyText(plain, 'Copiado (sin formato)'); }
+}
+
+/* ==========================================================================
+   0. PERSISTENCIA
+   Guarda en localStorage del navegador. Si el entorno lo bloquea (por ejemplo
+   una vista previa embebida), cae automáticamente a memoria y la app sigue
+   funcionando: solo se pierde al recargar.
+   ========================================================================== */
+const KEY = 'fichero.v1';
+const DB = (() => {
+  let ok = false;
+  try { localStorage.setItem('__f','1'); localStorage.removeItem('__f'); ok = true; } catch(e){ ok = false; }
+  const mem = {};
+  return {
+    ok,
+    get: k => { try { return ok ? localStorage.getItem(k) : (mem[k] ?? null); } catch(e){ return null; } },
+    set: (k,v) => { if (ok) localStorage.setItem(k,v); else mem[k] = v; },
+    del: k => { try { ok ? localStorage.removeItem(k) : delete mem[k]; } catch(e){} }
+  };
+})();
+
+let saveTimer = null;
+function saveSoon(){ clearTimeout(saveTimer); saveTimer = setTimeout(saveNow, 700); }
+function snapshot(){
+  return { v:1, cfg:CFG, paras:S.paras, hits:S.hits, seq:S.seq, bib:S.bib, tab:S.tab,
+    refOverride:[...S.refOverride], normOverride:[...S.normOverride],
+    origin:[...S.origin], cands:[...S.cands],
+    width: (document.getElementById('panel')||{style:{}}).style.width || '' };
+}
+function saveNow(){
+  const full = snapshot();
+  const attempts = [full, {...full, cands:[]}, {...full, cands:[], bib:[]}];
+  for (let i = 0; i < attempts.length; i++){
+    try {
+      DB.set(KEY, JSON.stringify(attempts[i]));
+      flashSaved(i === 0 ? 'guardado' : (i === 1 ? 'guardado (sin candidatas)' : 'guardado (solo citas)'));
+      return;
+    } catch(e){ /* cuota excedida: probamos con menos */ }
+  }
+  flashSaved('sin espacio para guardar');
+}
+function flashSaved(txt){
+  const el = document.getElementById('saved'); if (!el) return;
+  el.textContent = DB.ok ? txt : 'sin guardado en este entorno';
+  el.classList.add('on');
+  clearTimeout(el._t); el._t = setTimeout(() => el.classList.remove('on'), 1800);
+}
+function restore(){
+  const raw = DB.get(KEY); if (!raw) return false;
+  try {
+    const d = JSON.parse(raw);
+    Object.assign(CFG, d.cfg || {});
+    if (d.cfg && d.cfg.sources) Object.assign(CFG.sources, d.cfg.sources);
+    S.paras = d.paras || []; S.hits = d.hits || []; S.seq = d.seq || 0;
+    S.bib = d.bib || []; S.bibIndex = buildBibIndex(S.bib);
+    S.refOverride = new Map(d.refOverride || []);
+    S.normOverride = new Map(d.normOverride || []);
+    S.origin = new Map(d.origin || []);
+    S.cands = new Map(d.cands || []);
+    S.tab = d.tab === 'biblio' ? 'biblio' : 'citas';
+    if (d.width) document.getElementById('panel').style.width = d.width;
+    return S.paras.length > 0;
+  } catch(e){ console.error(e); return false; }
 }
 
 /* ==========================================================================
@@ -805,6 +969,7 @@ function renderPanel(){
   else renderBiblio(body, foot);
   bindPanel();
   renderDoc();
+  saveSoon();
 }
 
 function renderCitas(body, foot){
@@ -870,90 +1035,121 @@ function renderCitas(body, foot){
   $('copyList').onclick = () => copyText(plain, `${S.works.length} obras copiadas`);
 }
 
+const originOf = w => w.manual ? (S.origin.get(w.key) === 'auto' ? 'auto' : 'mano') : (w.bib ? 'bib' : null);
+const BADGE = { bib:['b-bib','de tu .bib'], auto:['b-auto','encontrada'], mano:['b-mano','a mano'] };
+
 function renderBiblio(body, foot){
   const q = slug($('qBiblio').value);
   const done = [], open = [];
   S.works.forEach(w => (refOf(w) ? done : open).push(w));
   done.sort((a,b) => stripTags(refOf(a)).localeCompare(stripTags(refOf(b)),'es'));
 
-  const fDone = done.filter(w => !q || slug(w.authors+w.year+stripTags(refOf(w))).includes(q));
-  const fOpen = open.filter(w => !q || slug(w.authors+w.year).includes(q));
-  const fNorm = S.norms.filter(n => !q || slug(n.label + (n.manual?stripTags(n.manual):'')).includes(q));
+  /* --- chips de filtro --- */
+  const counts = { todas:S.works.length, bib:0, auto:0, mano:0, pend:open.length };
+  done.forEach(w => counts[originOf(w)]++);
+  const CH = [['todas','Todas'],['bib','De tu .bib'],['auto','Encontradas'],['mano','A mano'],['pend','Sin resolver']];
+  $('bibChips').innerHTML = CH.filter(([k]) => k==='todas' || counts[k])
+    .map(([k,l]) => `<button class="chip" data-chip="${k}" aria-pressed="${S.bibFilter===k}">${l}<b>${counts[k]}</b></button>`).join('');
+  $('bibChips').querySelectorAll('[data-chip]').forEach(c => c.onclick = () => {
+    S.bibFilter = c.dataset.chip; renderBiblio(body, foot); bindPanel();
+  });
+
+  const match = w => !q || slug(w.authors + w.year + (refOf(w) ? stripTags(refOf(w)) : '')).includes(q);
+  const showDone = S.bibFilter === 'pend' ? []
+    : done.filter(w => (S.bibFilter === 'todas' || originOf(w) === S.bibFilter) && match(w));
+  const showOpen = (S.bibFilter === 'todas' || S.bibFilter === 'pend') ? open.filter(match) : [];
 
   let html = '';
   if (!S.works.length && !S.norms.length){
-    html = `<p class="blank">Todavía no hay citas cargadas.</p>`;
+    body.innerHTML = `<p class="blank">Todavía no hay citas cargadas.</p>`; foot.innerHTML = ''; return;
   }
-  if (fOpen.length){
-    html += `<div class="section-head"><span>Sin referencia</span><span>${fOpen.length}</span></div>`;
-    fOpen.forEach(w => {
+
+  /* --- tira de pendientes --- */
+  if (open.length && S.bibFilter !== 'pend'){
+    html += `<div class="pend-strip">
+      <span class="n">${open.length}</span>
+      <span class="t">obras sin referencia completa. El modo resolución las va mostrando de a una con sus candidatas.</span>
+      <button class="btn btn--mini btn--key" id="goResolve">Resolver ahora</button></div>`;
+  }
+
+  /* --- pendientes en detalle --- */
+  if (showOpen.length && S.bibFilter === 'pend'){
+    html += `<div class="section-head"><span>Sin resolver</span><span>${showOpen.length}</span></div>`;
+    showOpen.forEach(w => {
+      const c = S.cands.get(w.key);
       html += `<div class="ficha is-open">
         <div class="ficha-top"><div class="ficha-key">${esc(w.authors)}, ${esc(w.year)}</div><div class="ficha-n">${w.hits.length}×</div></div>
-        <div class="ficha-src src-none">falta la referencia completa</div>
+        <div class="ficha-src src-none">${c ? (c.length ? `${c.length} candidatas esperando` : 'sin resultados en las fuentes') : 'sin buscar todavía'}</div>
         <div class="ficha-acts">
+          <button class="btn btn--mini btn--key" data-resolve="${w.key}">Resolver</button>
           <button class="btn btn--mini" data-jump="${w.hits[0].id}">Ver en el texto</button>
-          <button class="btn btn--mini btn--ghost" data-editref="${w.key}">Editar</button>
           <button class="btn btn--mini btn--drop" data-killwork="${w.key}">Quitar</button>
-        </div>
-        <div data-cands="${w.key}">${candHTML(w)}</div></div>`;
+        </div></div>`;
     });
   }
-  if (fDone.length){
-    html += `<div class="section-head${fOpen.length?' gap':''}"><span>Referencias</span><span>${fDone.length}</span></div>`;
-    fDone.forEach(w => {
-      html += `<div class="ficha is-done">
-        <div class="ficha-top"><div class="ficha-key">${esc(w.authors)}, ${esc(w.year)}</div><div class="ficha-n">${w.hits.length}×</div></div>
-        <div class="ficha-src src-bib">${w.manual ? 'editada a mano' : 'de tu .bib'}</div>
-        <div class="ficha-ref">${refOf(w)}</div>
-        ${w.ambiguous ? `<div class="ficha-warn">Hay ${w.alts.length} entradas en el .bib con ese autor y año. Verificá cuál corresponde.</div>`:''}
-        <div class="ficha-acts">
-          <button class="btn btn--mini" data-jump="${w.hits[0].id}">Ver en el texto</button>
-          <button class="btn btn--mini btn--ghost" data-editref="${w.key}">Editar</button>
-          <button class="btn btn--mini btn--drop" data-killwork="${w.key}">Quitar</button>
-        </div>
-        <div data-cands="${w.key}">${candHTML(w)}</div></div>`;
-    });
+
+  /* --- la bibliografía, como se va a ver --- */
+  if (showDone.length){
+    html += `<div class="section-head"><span>${S.bibFilter==='todas'?'Referencias':'Referencias filtradas'}</span><span>${showDone.length}</span></div>`;
+    html += `<div class="bib-doc">` + showDone.map(w => {
+      const o = originOf(w), b = BADGE[o] || ['',''];
+      return `<div class="bib-item" data-item="${w.key}">
+        <div class="bib-ref" contenteditable="true" spellcheck="false" data-ref="${w.key}">${refOf(w)}</div>
+        <div class="bib-meta">
+          <span class="badge ${b[0]}">${b[1]}</span>
+          <span class="badge">${w.hits.length}×</span>
+          <button class="tiny" data-jump="${w.hits[0].id}">Ver en el texto</button>
+          ${w.manual && w.bib ? `<button class="tiny" data-revert="${w.key}">Volver al .bib</button>` : ''}
+          ${o !== 'bib' ? `<button class="tiny" data-resolve="${w.key}">Buscar otra</button>` : ''}
+          <button class="tiny t-drop" data-killwork="${w.key}">Quitar</button>
+        </div></div>`;
+    }).join('') + `</div>`;
+    html += `<p class="mini-note" style="margin-top:12px">Hacé click sobre cualquier referencia para corregirla acá mismo. Se guarda al salir del campo.</p>`;
+  } else if (!showOpen.length){
+    html += `<p class="blank">Nada que coincida con este filtro.</p>`;
   }
-  if (fNorm.length){
-    html += `<div class="section-head gap"><span>Fuentes normativas</span><span>${fNorm.length}</span></div>`;
-    fNorm.forEach(n => {
-      html += `<div class="ficha is-ley">
-        <div class="ficha-top"><div class="ficha-key">${esc(n.label)}</div><div class="ficha-n">${n.hits.length}×</div></div>
-        <div class="ficha-ref">${n.manual || esc(normTemplate(n.label))}</div>
-        <div class="ficha-acts">
-          <button class="btn btn--mini" data-jump="${n.hits[0].id}">Ver en el texto</button>
-          <button class="btn btn--mini btn--ghost" data-editnorm="${n.key}">Editar</button>
-          <button class="btn btn--mini btn--drop" data-killnorm="${n.key}">Quitar</button>
-        </div>
-      </div>`;
-    });
+
+  /* --- normativa, plegada --- */
+  if (S.norms.length){
+    html += `<details class="norms"><summary>Fuentes normativas (${S.norms.length})</summary>
+      <div class="bib-doc" style="margin-top:12px">` +
+      S.norms.map(n => `<div class="bib-item">
+        <div class="bib-ref" contenteditable="true" spellcheck="false" data-norm="${n.key}">${n.manual || esc(normTemplate(n.label))}</div>
+        <div class="bib-meta"><span class="badge">${n.hits.length}×</span>
+          <button class="tiny" data-jump="${n.hits[0].id}">Ver en el texto</button>
+          <button class="tiny t-drop" data-killnorm="${n.key}">Quitar</button></div></div>`).join('') +
+      `</div><div style="margin-top:10px"><button class="btn btn--mini btn--ghost" id="copyNorms">Copiar normativa</button></div></details>`;
   }
-  html += `<p class="privacy">Revisá la salida antes de pegarla. El formato se arma con los campos disponibles: si falta la editorial en tu .bib, acá también va a faltar.</p>`;
   body.innerHTML = html;
 
-  const refs = done.map(w => refOf(w));
-  const normRefs = S.norms.map(n => n.manual || esc(normTemplate(n.label)));
-  const all = refs.concat(normRefs.length ? [''].concat(normRefs) : []);
-  const plainAll = all.map(stripTags).join('\n\n');
-  const htmlAll = `<div>${all.map(r => `<p style="text-indent:-2em;padding-left:2em">${r}</p>`).join('')}</div>`;
-  foot.innerHTML = `<button class="btn btn--key" id="copyBib" ${refs.length?'':'disabled'}>Copiar bibliografía</button>
-                    <button class="btn btn--ghost" id="copyBibPlain" ${refs.length?'':'disabled'}>Copiar sin formato</button>`;
+  const refs = done.map(refOf);
+  const plainAll = refs.map(stripTags).join('\n\n');
+  const htmlAll = `<div>${refs.map(r => `<p style="text-indent:-2em;padding-left:2em">${r}</p>`).join('')}</div>`;
+  foot.innerHTML = `<button class="btn btn--key" id="copyBib" ${refs.length?'':'disabled'}>Copiar bibliografía (${refs.length})</button>
+                    <button class="btn btn--ghost" id="copyBibPlain" ${refs.length?'':'disabled'}>Sin formato</button>`;
   if (refs.length){
     $('copyBib').onclick = () => copyRich(htmlAll, plainAll);
-    $('copyBibPlain').onclick = () => copyText(plainAll, `${all.length} referencias copiadas`);
+    $('copyBibPlain').onclick = () => copyText(plainAll, `${refs.length} referencias copiadas`);
   }
+  if ($('copyNorms')) $('copyNorms').onclick = () =>
+    copyText(S.norms.map(n => stripTags(n.manual || normTemplate(n.label))).join('\n\n'), 'Normativa copiada');
+  if ($('goResolve')) $('goResolve').onclick = () => openResolve();
 }
 
-function candHTML(w){
-  const items = S.cands.get(w.key);
-  if (!items) return '';
-  if (!items.length) return `<div class="ficha-warn">Sin resultados en las fuentes activadas. Escribila a mano.</div>`;
-  return items.map((it,n) => `<div class="cand">
-      <p>${formatRef(it, w.year, CFG)}</p>
-      <div class="ficha-acts"><span class="from">${esc(it._src)}</span>
-      <button class="btn btn--mini btn--keep" data-take="${w.key}::${n}">Usar esta</button></div>
-    </div>`).join('') +
-    `<div class="ficha-note">Resultados reales de las bases, no generados. Si ninguno sirve, editala a mano.</div>`;
+/* limpieza de lo que se escribe en el campo editable: solo cursivas */
+function cleanRef(html){
+  const d = document.createElement('div'); d.innerHTML = html;
+  (function walk(n){
+    [...n.childNodes].forEach(c => {
+      if (c.nodeType !== 1) return;
+      const tag = c.tagName.toLowerCase();
+      if (tag === 'br'){ c.replaceWith(document.createTextNode(' ')); return; }
+      walk(c);
+      if (tag === 'i'){ const e = document.createElement('em'); e.append(...c.childNodes); c.replaceWith(e); }
+      else if (tag !== 'em'){ c.replaceWith(...c.childNodes); }
+    });
+  })(d);
+  return d.innerHTML.replace(/\s+/g,' ').trim();
 }
 
 function bindPanel(){
@@ -978,11 +1174,29 @@ function bindPanel(){
   b.querySelectorAll('[data-editfrag]').forEach(x => x.onclick = () => openFragEditor(x.dataset.editfrag));
   b.querySelectorAll('[data-editref]').forEach(x => x.onclick = () => openRefEditor(x.dataset.editref));
   b.querySelectorAll('[data-editnorm]').forEach(x => x.onclick = () => openNormEditor(x.dataset.editnorm));
-  b.querySelectorAll('[data-take]').forEach(x => x.onclick = () => {
-    const [k,n] = x.dataset.take.split('::');
-    const w = S.works.find(y => y.key===k); if (!w) return;
-    S.refOverride.set(k, formatRef(S.cands.get(k)[+n], w.year, CFG));
-    S.cands.delete(k); renderPanel();
+  b.querySelectorAll('[data-resolve]').forEach(x => x.onclick = () => openResolve(x.dataset.resolve));
+  b.querySelectorAll('[data-revert]').forEach(x => x.onclick = () => {
+    S.refOverride.delete(x.dataset.revert); S.origin.delete(x.dataset.revert); renderPanel();
+  });
+  /* edición en el lugar de la bibliografía */
+  b.querySelectorAll('[data-ref]').forEach(el => {
+    el.addEventListener('blur', () => {
+      const key = el.dataset.ref, w = S.works.find(y => y.key === key); if (!w) return;
+      const clean = cleanRef(el.innerHTML);
+      if (!clean){ el.innerHTML = refOf(w) || ''; return; }
+      if (clean === (refOf(w) || '')) return;
+      S.refOverride.set(key, clean); S.origin.set(key, 'mano');
+      renderPanel();
+    });
+  });
+  b.querySelectorAll('[data-norm]').forEach(el => {
+    el.addEventListener('blur', () => {
+      const key = el.dataset.norm, n = S.norms.find(y => y.key === key); if (!n) return;
+      const clean = cleanRef(el.innerHTML);
+      const cur = n.manual || esc(normTemplate(n.label));
+      if (!clean || clean === cur) return;
+      S.normOverride.set(key, clean); renderPanel();
+    });
   });
 }
 function syncTabs(){
@@ -1165,60 +1379,183 @@ async function lookup(w){
       seen.add(k); out.push(e);
     });
   });
-  return out.slice(0, 10);
+  /* las más plausibles primero: año exacto y apellido del primer autor */
+  const target = slug(sur);
+  out.forEach(e => {
+    let s = 0;
+    if (String(e.year) === year) s += 3;
+    if (e.authors.some(a => slug(a.last) === target)) s += 3;
+    if (slug((e.authors[0]||{}).last || '') === target) s += 1;
+    if (e.fields.title) s += 1;
+    if (e.fields.doi) s += 1;
+    e._score = s;
+  });
+  out.sort((a,b) => b._score - a._score);
+  return out.slice(0, 9);
 }
 
-async function findAll(){
-  const pend = S.works.filter(w => !refOf(w));
-  if (!pend.length){ toast('No hay referencias faltantes'); return; }
-  if (!Object.values(CFG.sources).some(Boolean)){ toast('No hay fuentes activadas en Configuración'); return; }
-  S.stopFind = false;
+/* ==========================================================================
+   8b. MODO RESOLUCIÓN
+   Una cita por vez, a pantalla completa, con el contexto del manuscrito
+   y las candidatas en campos alineados para poder compararlas.
+   ========================================================================== */
+const TIPO = { article:'Artículo', book:'Libro', incollection:'Capítulo', inbook:'Capítulo',
+  inproceedings:'Ponencia', phdthesis:'Tesis', techreport:'Informe', misc:'Otro' };
 
-  const active = Object.keys(CFG.sources).filter(k => CFG.sources[k]).map(k => SOURCES[k].label).join(' · ');
-  const rows = pend.map(w =>
-    `<div class="find-row"><span class="fr-name">${esc(w.authors)}, ${esc(w.year)}</span>` +
-    `<span class="fr-state" id="fs_${esc(w.key)}">en espera</span></div>`).join('');
+/* la oración donde aparece la cita, para decidir sin volver al texto */
+function contextOf(h){
+  const t = S.paras[h.para] ? S.paras[h.para].text : '';
+  if (!t) return '';
+  let a = h.start, b = h.end;
+  const back = t.slice(Math.max(0, a-320), a);
+  const mb = back.lastIndexOf('. ');
+  a = mb === -1 ? Math.max(0, a-320) : Math.max(0, a-320) + mb + 2;
+  const fwd = t.slice(b, b+320);
+  const mf = fwd.indexOf('. ');
+  b = mf === -1 ? Math.min(t.length, b+320) : b + mf + 1;
+  const pre = (a > 0 ? '… ' : '') + esc(t.slice(a, h.start));
+  const cit = esc(t.slice(h.start, h.end));
+  const post = esc(t.slice(h.end, b)) + (b < t.length ? ' …' : '');
+  return `${pre}<mark>${cit}</mark>${post}`;
+}
 
-  const v = modal(`<h3>Buscando referencias</h3>
-    <p class="mini-note">${pend.length} obras sin referencia. Consultando ${esc(active)}. Solo viajan el apellido y el año.</p>
-    <div class="find-head"><span id="fCount">0 / ${pend.length}</span><span id="fNow">en curso</span></div>
-    <div class="find-bar"><div id="fBar" style="width:0%"></div></div>
-    <div class="find-list" id="fList">${rows}</div>
-    <div class="row"><button class="btn btn--drop" id="fStop">Detener</button></div>`, false);
+function openResolve(onlyKey){
+  const pend = onlyKey ? [onlyKey] : S.works.filter(w => !refOf(w)).map(w => w.key);
+  if (!pend.length){ toast('No hay referencias pendientes'); return; }
+  S.rs = { open:true, queue:pend, i:0, busy:false, manual:false };
+  $('resolve').classList.remove('hidden');
+  document.addEventListener('keydown', rsKeys);
+  renderResolve();
+}
+function closeResolve(){
+  S.rs.open = false;
+  $('resolve').classList.add('hidden');
+  document.removeEventListener('keydown', rsKeys);
+  renderPanel();
+}
+function rsGo(d){
+  const n = S.rs.i + d;
+  if (n < 0) return;
+  if (n >= S.rs.queue.length){ S.rs.i = S.rs.queue.length; renderResolve(); return; }
+  S.rs.i = n; S.rs.manual = false; renderResolve();
+}
+function rsKeys(e){
+  if (!S.rs.open) return;
+  if (e.target.matches('textarea, input, [contenteditable]')) { if (e.key === 'Escape') e.target.blur(); return; }
+  if (e.key === 'Escape'){ closeResolve(); return; }
+  if (e.key === 'ArrowRight'){ rsGo(1); return; }
+  if (e.key === 'ArrowLeft'){ rsGo(-1); return; }
+  if (/^[1-9]$/.test(e.key)){
+    const w = rsWork(); if (!w) return;
+    const c = S.cands.get(w.key) || [];
+    const pick = c[+e.key - 1];
+    if (pick){ rsTake(w, pick); }
+  }
+}
+const rsWork = () => S.works.find(w => w.key === S.rs.queue[S.rs.i]) || null;
 
-  $('fStop').onclick = () => {
-    S.stopFind = true;
-    $('fStop').textContent = 'Deteniendo…'; $('fStop').disabled = true;
+function rsTake(w, entry){
+  S.refOverride.set(w.key, formatRef(entry, w.year, CFG));
+  S.origin.set(w.key, 'auto');
+  saveSoon();
+  rsGo(1);
+}
+
+async function renderResolve(){
+  const body = $('rsBody'), acts = $('rsActions');
+  const total = S.rs.queue.length;
+  $('rsBar').style.width = Math.round(Math.min(S.rs.i, total) / total * 100) + '%';
+
+  if (S.rs.i >= total){
+    const left = S.works.filter(w => !refOf(w)).length;
+    $('rsPos').textContent = `${total} de ${total}`;
+    body.innerHTML = `<div class="rs-wrap rs-done">
+      <h2>Terminaste la cola</h2>
+      <p class="mini-note">${left ? `Quedan ${left} obras sin referencia: podés volver a pasar por ellas cuando quieras.` : 'Todas las obras citadas tienen su referencia completa.'}</p></div>`;
+    acts.innerHTML = `<button class="btn btn--ghost" id="rsBack">Volver atrás</button>
+      ${left ? `<button class="btn" id="rsAgain">Repasar las ${left} que faltan</button>` : ''}
+      <button class="btn btn--key" id="rsDone">Ir a la bibliografía</button>`;
+    $('rsBack').onclick = () => rsGo(-1);
+    if ($('rsAgain')) $('rsAgain').onclick = () => openResolve();
+    $('rsDone').onclick = () => { S.tab = 'biblio'; syncTabs(); closeResolve(); };
+    return;
+  }
+
+  const w = rsWork();
+  if (!w){ rsGo(1); return; }   // la obra fue eliminada mientras tanto
+  $('rsPos').textContent = `${S.rs.i + 1} de ${total}`;
+
+  const ctxs = w.hits.slice(0, 3).map(contextOf).filter(Boolean);
+  const head = `<div class="rs-wrap">
+    <h1 class="rs-cite">${esc(w.authors)}, ${esc(w.year)}</h1>
+    <div class="rs-sub">${w.hits.length} mención${w.hits.length>1?'es':''} en el texto</div>
+    ${ctxs.map(c => `<div class="rs-ctx">${c}</div>`).join('')}
+    <div class="rs-label">Candidatas</div>
+    <div id="rsCands"></div></div>`;
+  body.innerHTML = head;
+  body.scrollTop = 0;
+
+  const paint = () => {
+    const c = S.cands.get(w.key);
+    const box = $('rsCands'); if (!box) return;
+    if (S.rs.busy){ box.innerHTML = `<div class="rs-empty">Buscando en ${Object.keys(CFG.sources).filter(k=>CFG.sources[k]).map(k=>SOURCES[k].label).join(', ')}…</div>`; return; }
+    if (!c){ box.innerHTML = `<div class="rs-empty">Sin buscar todavía.</div>`; return; }
+    if (!c.length){ box.innerHTML = `<div class="rs-empty">Ninguna de las fuentes activadas devolvió resultados para <b>${esc(w.surname)} ${esc(w.year)}</b>. Escribila a mano o buscala vos y pegá la referencia.</div>`; return; }
+    box.innerHTML = `<div class="rs-grid">` + c.map((it, n) => {
+      const au = it.authors.slice(0,3).map(a => a.last).join(', ') + (it.authors.length>3 ? ' et al.' : '');
+      const pubn = it.fields.journal || it.fields.booktitle || it.fields.publisher || '—';
+      return `<div class="rs-card">
+        <div class="rs-num">${n+1}</div>
+        <div class="rs-f"><b>Título</b><span>${esc(it.fields.title || '—')}</span></div>
+        <div class="rs-f"><b>Autores</b><span>${esc(au || '—')}</span></div>
+        <div class="rs-f"><b>Publicado</b><span>${esc(pubn)}</span></div>
+        <div class="rs-f"><b>Año</b><span>${esc(it.year || '—')}${it.year && String(it.year) !== String(w.year).replace(/[a-h]$/,'') ? ' ⚠' : ''}</span></div>
+        <div class="rs-f"><b>Tipo</b><span>${esc(TIPO[it.type] || it.type)} · ${esc(it._src)}</span></div>
+        <div class="rs-prev">${formatRef(it, w.year, CFG)}</div>
+        <button class="btn btn--mini btn--keep rs-pick" data-pick="${n}">Usar esta (${n+1})</button>
+      </div>`;
+    }).join('') + `</div>`;
+    box.querySelectorAll('[data-pick]').forEach(btn => btn.onclick = () => rsTake(w, c[+btn.dataset.pick]));
   };
 
-  let n = 0, hits = 0;
-  for (const w of pend){
-    if (S.stopFind) break;
-    const st = document.getElementById('fs_' + w.key);
-    if (st){
-      st.textContent = 'buscando…'; st.className = 'fr-state is-now';
-      st.parentElement.scrollIntoView({block:'nearest'});
-    }
+  acts.innerHTML = `<button class="btn btn--ghost" id="rsPrev" ${S.rs.i===0?'disabled':''}>Anterior</button>
+    <button class="btn" id="rsSkip">Saltear</button>
+    <button class="btn" id="rsSearch">${S.cands.has(w.key) ? 'Buscar de nuevo' : 'Buscar'}</button>
+    <button class="btn btn--ghost" id="rsManual">Escribir a mano</button>
+    <span class="rs-keys">1-9 elegir · ← → moverse · esc salir</span>`;
+  $('rsPrev').onclick = () => rsGo(-1);
+  $('rsSkip').onclick = () => rsGo(1);
+  $('rsSearch').onclick = () => { S.cands.delete(w.key); renderResolve(); };
+  $('rsManual').onclick = () => {
+    if ($('rsManualBox')) return;
+    const cur = refOf(w) ? stripTags(refOf(w)) : '';
+    const box = document.createElement('div');
+    box.className = 'rs-wrap';
+    box.innerHTML = `<div class="rs-label">Referencia escrita a mano</div>
+      <textarea class="rs-manual" id="rsManualBox" placeholder="Apellido, N. (Año). Título. Editorial.">${esc(cur)}</textarea>
+      <div style="margin-top:8px"><button class="btn btn--key btn--mini" id="rsManualSave">Guardar y seguir</button></div>`;
+    $('rsBody').appendChild(box);
+    $('rsManualBox').focus();
+    $('rsManualSave').onclick = () => {
+      const t = $('rsManualBox').value.trim();
+      if (!t){ toast('Escribí la referencia'); return; }
+      S.refOverride.set(w.key, esc(t).replace(/_([^_]+)_/g,'<em>$1</em>'));
+      S.origin.set(w.key, 'mano'); saveSoon(); rsGo(1);
+    };
+  };
+
+  paint();
+  /* si no hay candidatas todavía, se buscan solas al llegar */
+  if (!S.cands.has(w.key) && Object.values(CFG.sources).some(Boolean)){
+    S.rs.busy = true; paint();
+    const at = S.rs.i;
     let items = [];
     try { items = await lookup(w); } catch(e){ items = []; }
     S.cands.set(w.key, items);
-    if (items.length) hits++;
-    if (st){
-      st.textContent = items.length ? `${items.length} candidatas` : 'sin resultados';
-      st.className = 'fr-state ' + (items.length ? 'is-hit' : 'is-miss');
-    }
-    n++;
-    $('fCount').textContent = `${n} / ${pend.length}`;
-    $('fBar').style.width = Math.round(n / pend.length * 100) + '%';
-    await sleep(280);
+    S.rs.busy = false;
+    if (S.rs.open && S.rs.i === at) paint();
+    saveSoon();
   }
-
-  $('fNow').textContent = S.stopFind ? 'detenida' : 'completa';
-  v.querySelector('.row').innerHTML =
-    `<span class="mini-note" style="margin-right:auto">${hits} de ${n} con candidatas para elegir.</span>
-     <button class="btn btn--key" id="fClose">Ver resultados</button>`;
-  document.getElementById('fClose').onclick = () => { v.remove(); renderPanel(); };
-  renderPanel();
 }
 
 /* ==========================================================================
@@ -1253,8 +1590,24 @@ function openConfig(){
       <p class="mini-note">Todas son gratuitas y sin clave. Solo se envía el apellido y el año, nunca el texto de tu documento.</p>
     </div>
 
+    <div class="cfg-group"><h4>Datos guardados</h4>
+      <p class="mini-note">${DB.ok
+        ? 'El documento, tus correcciones y las referencias se guardan solos en este navegador. No salen de tu máquina ni se sincronizan.'
+        : 'Este entorno bloquea el almacenamiento del navegador, así que el trabajo se pierde al recargar. En un sitio publicado normalmente funciona.'}</p>
+      <div style="margin-top:8px"><button class="btn btn--drop btn--mini" id="cWipe">Borrar todo lo guardado</button></div>
+    </div>
+
     <div class="row"><button class="btn btn--ghost" id="cCancel">Cancelar</button>
     <button class="btn btn--key" id="cSave">Guardar</button></div>`);
+  $('cWipe').onclick = () => {
+    if (!confirm('Se borra el documento cargado, las correcciones y las referencias. ¿Seguir?')) return;
+    DB.del(KEY); v.remove();
+    S.paras=[]; S.hits=[]; S.works=[]; S.norms=[]; S.bib=[]; S.bibIndex=new Map();
+    S.cands.clear(); S.refOverride.clear(); S.normOverride.clear(); S.origin.clear();
+    $('doc').innerHTML=''; $('empty').classList.remove('hidden');
+    [...$('ruler').querySelectorAll('.tick')].forEach(t=>t.remove());
+    renderPanel(); toast('Datos borrados');
+  };
   $('cCancel').onclick = () => v.remove();
   $('cSave').onclick = () => {
     const prevLaws = CFG.laws;
@@ -1418,7 +1771,7 @@ $('tabCitas').onclick = () => { S.tab='citas'; syncTabs(); renderPanel(); };
 $('tabBiblio').onclick = () => { S.tab='biblio'; syncTabs(); renderPanel(); };
 $('qCitas').addEventListener('input', () => renderCitas($('panelBody'), $('panelFoot')) || bindPanel());
 $('qBiblio').addEventListener('input', () => renderBiblio($('panelBody'), $('panelFoot')) || bindPanel());
-$('btnFindAll').onclick = findAll;
+$('rsClose').onclick = closeResolve;
 
 /* ancho de la columna lateral, arrastrable */
 (function initResizer(){
@@ -1432,6 +1785,7 @@ $('btnFindAll').onclick = findAll;
     if (!dragging) return;
     dragging = false; r.classList.remove('is-dragging');
     document.body.style.userSelect = ''; document.body.style.cursor = '';
+    saveSoon();
   };
   const start = e => {
     if (window.innerWidth <= 900) return;
@@ -1461,7 +1815,19 @@ drop.addEventListener('drop', e => {
 window.addEventListener('resize', drawRuler);
 $('scroller').addEventListener('scroll', () => $('pop').classList.add('hidden'));
 
+/* ------------------------------------------------------------- arranque */
+const hadSession = restore();
+syncTabs();
 renderPanel();
+if (hadSession){
+  $('empty').classList.add('hidden');
+  const falta = S.works.filter(w => !refOf(w)).length;
+  setTimeout(() => toast(`Sesión recuperada · ${S.works.length} obras` + (falta ? ` · ${falta} sin referencia` : '')), 500);
+  if (window.innerWidth <= 900) $('togglePanel').classList.remove('hidden');
+} else if (!DB.ok){
+  setTimeout(() => flashSaved(''), 800);
+}
+window.addEventListener('beforeunload', () => { clearTimeout(saveTimer); try { saveNow(); } catch(e){} });
 </script>
 </body>
 </html>
