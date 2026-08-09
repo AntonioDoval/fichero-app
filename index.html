@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Fichero — extractor de citas</title>
+<title>Fichero</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
 <style>
 :root{
@@ -24,15 +24,17 @@ body{background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:
 button{font:inherit;cursor:pointer}
 :focus-visible{outline:2px solid var(--mimeo);outline-offset:2px}
 .hidden{display:none !important}
+svg{display:block}
 
 .shell{display:flex;flex-direction:column;height:100vh;height:100dvh}
-.topbar{display:flex;align-items:center;gap:16px;flex-wrap:wrap;padding:10px 18px;background:var(--sheet);border-bottom:1px solid var(--rule)}
+.topbar{display:flex;align-items:center;gap:14px;flex-wrap:wrap;padding:10px 18px;background:var(--sheet);border-bottom:1px solid var(--rule)}
 .brand{display:flex;align-items:baseline;gap:10px;margin-right:auto}
 .brand .name{font-family:var(--mono);font-size:15px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--mimeo)}
 .brand .tag{font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;color:var(--ink-faint);text-transform:uppercase}
 
-.btn{border:1px solid var(--ink);background:transparent;color:var(--ink);font-family:var(--mono);font-size:11.5px;
-  letter-spacing:.09em;text-transform:uppercase;padding:7px 13px;border-radius:2px;transition:background .12s,color .12s;white-space:nowrap}
+.btn{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--ink);background:transparent;color:var(--ink);
+  font-family:var(--mono);font-size:11.5px;letter-spacing:.09em;text-transform:uppercase;padding:7px 12px;border-radius:2px;
+  transition:background .12s,color .12s;white-space:nowrap}
 .btn:hover{background:var(--ink);color:var(--sheet)}
 .btn--key{border-color:var(--mimeo);background:var(--mimeo);color:#fff}
 .btn--key:hover{background:#3C319A;color:#fff}
@@ -44,12 +46,15 @@ button{font:inherit;cursor:pointer}
 .btn--keep{border-color:var(--verde-soft);background:var(--verde-wash);color:var(--verde)}
 .btn--keep:hover{background:var(--verde-soft);color:#17402D}
 .btn[disabled]{opacity:.35;pointer-events:none}
+.btn svg{width:13px;height:13px}
 
-.counters{display:flex;gap:16px;align-items:center}
+.counters{display:flex;gap:14px;align-items:center}
 .count{display:flex;flex-direction:column;line-height:1.1}
 .count b{font-family:var(--mono);font-size:17px;font-weight:600}
 .count span{font-family:var(--mono);font-size:9.5px;letter-spacing:.11em;text-transform:uppercase;color:var(--ink-faint)}
 .count--ok b{color:var(--verde)} .count--gap b{color:var(--rust)} .count--ley b{color:var(--ley)}
+.saved{font-family:var(--mono);font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-faint);opacity:0;transition:opacity .3s}
+.saved.on{opacity:1}
 
 .main{flex:1;display:flex;min-height:0}
 .reading{flex:1;display:flex;min-width:0;background:var(--sheet)}
@@ -65,8 +70,6 @@ button{font:inherit;cursor:pointer}
 .doc{max-width:660px;margin:0 auto;font-family:var(--serif);font-size:17.5px;line-height:1.72;color:#232329}
 .doc p{margin:0 0 1.05em}
 .doc h1,.doc h2,.doc h3{font-family:var(--mono);font-weight:600;font-size:14px;text-transform:uppercase;margin:2.2em 0 .9em;color:var(--mimeo)}
-.doc h1{font-size:16px}
-
 mark.cit{background:var(--mimeo-wash);color:inherit;padding:.05em .1em;border-radius:1px;cursor:pointer;
   box-decoration-break:clone;-webkit-box-decoration-break:clone;border-bottom:1.5px solid var(--mimeo-line)}
 mark.cit:hover{background:var(--mimeo-line)}
@@ -74,7 +77,6 @@ mark.cit.is-sug{background:transparent;border-bottom:1.5px dashed var(--rust);co
 mark.cit.is-sug:hover{background:var(--rust-wash)}
 mark.cit.is-done{background:var(--verde-wash);border-bottom-color:var(--verde)}
 mark.cit.is-ley{background:var(--ley-wash);border-bottom:1.5px solid var(--ley-line)}
-mark.cit.is-ley:hover{background:var(--ley-line)}
 mark.cit.is-active{box-shadow:0 0 0 2px var(--ink)}
 
 .empty{max-width:520px;margin:6vh auto 0}
@@ -82,49 +84,103 @@ mark.cit.is-active{box-shadow:0 0 0 2px var(--ink)}
 .empty p{color:var(--ink-soft);margin:0 0 14px;font-size:14.5px;line-height:1.6}
 .drop{border:1.5px dashed var(--mimeo-line);border-radius:3px;padding:34px 24px;text-align:center;background:var(--panel);margin:22px 0 14px}
 .drop.is-over{background:var(--mimeo-wash);border-color:var(--mimeo)}
-.paste{width:100%;min-height:120px;border:1px solid var(--rule);border-radius:3px;padding:12px;font-family:var(--serif);font-size:15px;background:var(--sheet);color:var(--ink);resize:vertical}
+.paste{width:100%;min-height:120px;border:1px solid var(--rule);border-radius:3px;padding:12px;font-family:var(--serif);
+  font-size:15px;background:var(--sheet);color:var(--ink);resize:vertical}
 .mini-note{font-size:12.5px;color:var(--ink-faint);line-height:1.55}
 
-.panel{width:400px;flex:none;border-left:1px solid var(--rule);background:var(--panel);display:flex;flex-direction:column;min-height:0}
+.resizer{width:7px;flex:none;cursor:col-resize;background:var(--rule);position:relative;transition:background .12s}
+.resizer::after{content:'';position:absolute;top:50%;left:2px;width:3px;height:38px;transform:translateY(-50%);
+  border-left:1px solid var(--ink-faint);border-right:1px solid var(--ink-faint);opacity:.45}
+.resizer:hover,.resizer.is-dragging{background:var(--mimeo-line)}
+
+.panel{width:410px;flex:none;border-left:1px solid var(--rule);background:var(--panel);display:flex;flex-direction:column;min-height:0}
 .tabs{display:flex;border-bottom:1px solid var(--rule);background:var(--sheet)}
-.tab{flex:1;border:0;background:transparent;padding:12px 6px;font-family:var(--mono);font-size:11px;letter-spacing:.1em;
+.tab{flex:1;border:0;background:transparent;padding:12px 4px;font-family:var(--mono);font-size:11px;letter-spacing:.1em;
   text-transform:uppercase;color:var(--ink-faint);border-bottom:2px solid transparent}
 .tab[aria-selected="true"]{color:var(--mimeo);border-bottom-color:var(--mimeo);background:var(--panel)}
-.panel-sub{padding:10px 14px;border-bottom:1px solid var(--rule);background:var(--sheet);display:flex;flex-direction:column;gap:8px}
+.tab .dot{display:inline-block;min-width:16px;margin-left:4px;font-size:9px;background:var(--rust);color:#fff;border-radius:8px;padding:1px 4px}
+.panel-sub{padding:10px 14px;border-bottom:1px solid var(--rule);background:var(--sheet)}
 .search{width:100%;padding:7px 9px;border:1px solid var(--rule);border-radius:2px;font-family:var(--mono);font-size:12px;background:var(--panel);color:var(--ink)}
 .panel-body{flex:1;overflow-y:auto;padding:14px}
 .panel-foot{border-top:1px solid var(--rule);padding:10px 14px;display:flex;gap:8px;flex-wrap:wrap;background:var(--sheet)}
 
 .section-head{display:flex;align-items:baseline;justify-content:space-between;gap:8px;font-family:var(--mono);font-size:10px;
-  letter-spacing:.13em;text-transform:uppercase;color:var(--ink-faint);margin:2px 0 10px}
-.section-head + .ficha{margin-top:0}
-.gap{margin-top:22px}
+  letter-spacing:.13em;text-transform:uppercase;color:var(--ink-faint);margin:2px 0 9px}
+.gap{margin-top:20px}
+.blank{color:var(--ink-faint);font-size:13.5px;line-height:1.6;padding:8px 0}
 
-.ficha{background:var(--sheet);border:1px solid var(--rule);border-left:3px solid var(--mimeo);border-radius:2px;padding:9px 11px;margin-bottom:8px}
+/* tarjetas compactas */
+.ficha{background:var(--sheet);border:1px solid var(--rule);border-left:3px solid var(--mimeo);border-radius:2px;padding:7px 9px;margin-bottom:6px}
 .ficha.is-done{border-left-color:var(--verde)}
 .ficha.is-open{border-left-color:var(--rust)}
 .ficha.is-sug{border-left-style:dashed;border-left-color:var(--rust)}
 .ficha.is-ley{border-left-color:var(--ley)}
-.ficha-top{display:flex;align-items:flex-start;gap:8px}
-.ficha-key{font-family:var(--mono);font-size:13px;font-weight:600;flex:1;line-height:1.35;word-break:break-word}
-.ficha-n{font-family:var(--mono);font-size:9.5px;color:var(--ink-faint);border:1px solid var(--rule);border-radius:8px;padding:1px 6px;flex:none;margin-top:2px}
-.ficha-src{font-family:var(--mono);font-size:9.5px;letter-spacing:.08em;text-transform:uppercase;margin-top:5px}
-.src-bib{color:var(--verde)} .src-none{color:var(--rust)} .src-ley{color:var(--ley)}
-.ficha-frag{font-family:var(--serif);font-size:13px;color:var(--ink-faint);margin-top:5px;font-style:italic}
-.ficha-ref{font-family:var(--serif);font-size:13.5px;line-height:1.5;color:var(--ink);margin-top:6px}
-.ficha-ref em{font-style:italic}
-.ficha-acts{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
-.ficha-warn{font-size:11.5px;color:var(--rust);margin-top:6px;line-height:1.45}
-.ficha-note{font-size:11.5px;color:var(--ink-faint);margin-top:6px;line-height:1.45}
+.fr{display:flex;align-items:center;gap:7px}
+.fk{flex:1;min-width:0;font-family:var(--mono);font-size:12.5px;font-weight:600;line-height:1.3;word-break:break-word}
+.fn{flex:none;font-family:var(--mono);font-size:9px;color:var(--ink-faint);border:1px solid var(--rule);border-radius:8px;padding:0 5px}
+.fa{flex:none;display:flex;gap:1px}
+.ico{display:flex;align-items:center;justify-content:center;width:24px;height:24px;border:0;background:transparent;
+  color:var(--ink-faint);border-radius:3px;padding:0}
+.ico svg{width:15px;height:15px}
+.ico:hover{background:var(--rule);color:var(--ink)}
+.ico.i-drop:hover{background:var(--rust-wash);color:var(--rust)}
+.ico.i-keep:hover{background:var(--verde-wash);color:var(--verde)}
+.ffrag{font-family:var(--serif);font-size:12.5px;color:var(--ink-faint);font-style:italic;margin-top:3px;line-height:1.4}
+.fwarn{font-size:11px;color:var(--rust);margin-top:4px;line-height:1.4}
+.fnote{font-size:11px;color:var(--ink-faint);margin-top:4px;line-height:1.4}
 
-.cand{border:1px solid var(--rule);background:var(--panel);border-radius:2px;padding:8px;margin-top:6px}
-.cand p{margin:0 0 6px;font-family:var(--serif);font-size:13px;line-height:1.45}
-.cand .from{font-family:var(--mono);font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-faint)}
-.blank{color:var(--ink-faint);font-size:13.5px;line-height:1.6;padding:8px 0}
-.progress{font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--mimeo)}
+/* pestaña buscar */
+.nav{display:flex;align-items:center;gap:8px}
+.nav .arrow{flex:none;width:30px;height:30px;border:1px solid var(--rule);background:var(--panel);border-radius:2px;
+  display:flex;align-items:center;justify-content:center;color:var(--ink-soft)}
+.nav .arrow:hover{background:var(--ink);color:var(--sheet);border-color:var(--ink)}
+.nav .arrow[disabled]{opacity:.3;pointer-events:none}
+.nav .who{flex:1;min-width:0;text-align:center}
+.nav .who b{display:block;font-family:var(--mono);font-size:14px;font-weight:600;line-height:1.25;word-break:break-word}
+.nav .who span{font-family:var(--mono);font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-faint)}
+.navbar{height:3px;background:var(--rule);margin-top:9px;border-radius:2px;overflow:hidden}
+.navbar>div{height:100%;background:var(--mimeo);transition:width .25s}
+.ctx{font-family:var(--serif);font-size:14px;line-height:1.6;background:var(--sheet);border-left:3px solid var(--mimeo-line);
+  padding:8px 11px;margin-bottom:7px;color:#2C2C33}
+.ctx mark{background:var(--mimeo-wash);border-bottom:1.5px solid var(--mimeo-line)}
+.opt{background:var(--sheet);border:1px solid var(--rule);border-radius:2px;padding:10px 11px;margin-bottom:8px;position:relative}
+.opt.is-bib{border-left:3px solid var(--verde)}
+.opt.is-picked{border-color:var(--verde);box-shadow:0 0 0 1px var(--verde)}
+.opt-tag{font-family:var(--mono);font-size:8.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-faint);
+  display:flex;gap:7px;align-items:center;margin-bottom:6px}
+.opt-tag .k{background:var(--ink);color:var(--sheet);border-radius:8px;padding:1px 6px}
+.opt-tag .ok{color:var(--verde)} .opt-tag .warn{color:var(--rust)}
+.f{display:grid;grid-template-columns:64px 1fr;gap:8px;font-size:12.8px;line-height:1.4;margin-bottom:3px}
+.f>b{font-family:var(--mono);font-size:8.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-faint);font-weight:400;padding-top:2px}
+.f>span{word-break:break-word}
+.opt-prev{font-family:var(--serif);font-size:12.5px;color:var(--ink-soft);line-height:1.45;border-top:1px dotted var(--rule);margin-top:7px;padding-top:7px}
+.opt-prev em{font-style:italic}
+.busy{font-size:13px;color:var(--mimeo);background:var(--sheet);border:1px dashed var(--mimeo-line);padding:14px;border-radius:2px}
+.nores{font-size:13px;color:var(--ink-soft);background:var(--sheet);border:1px dashed var(--rule);padding:14px;border-radius:2px;line-height:1.5}
+.manualbox{width:100%;min-height:70px;font-family:var(--serif);font-size:14px;padding:9px;border:1px solid var(--mimeo);
+  border-radius:2px;background:var(--sheet);color:var(--ink);resize:vertical;margin-top:8px}
+.alldone{text-align:center;padding:40px 10px}
+.alldone h3{font-family:var(--mono);font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:var(--verde);margin:0 0 8px}
 
-.pop{position:absolute;z-index:40;background:var(--sheet);border:1px solid var(--ink);border-radius:3px;padding:5px;display:flex;gap:5px;box-shadow:0 4px 14px rgba(0,0,0,.2)}
+/* pestaña exportar */
+.bib-doc{font-family:var(--serif);font-size:14.5px;line-height:1.62}
+.bib-item{position:relative;padding:4px 0 4px 1.7em;text-indent:-1.7em;border-radius:2px;margin-bottom:.45em}
+.bib-item:hover{background:var(--sheet)}
+.bib-ref{outline:0;border-radius:2px}
+.bib-ref em{font-style:italic}
+.bib-ref[contenteditable="true"]:focus{background:var(--sheet);box-shadow:0 0 0 2px var(--mimeo);padding:2px 4px}
+.bib-meta{display:flex;align-items:center;gap:5px;flex-wrap:wrap;text-indent:0;margin-top:2px;opacity:0;transition:opacity .12s}
+.bib-item:hover .bib-meta,.bib-item:focus-within .bib-meta{opacity:1}
+.badge{font-family:var(--mono);font-size:8.5px;letter-spacing:.09em;text-transform:uppercase;border:1px solid var(--rule);
+  border-radius:8px;padding:1px 6px;color:var(--ink-faint)}
+.badge.b-bib{color:var(--verde);border-color:var(--verde-soft)}
+.badge.b-auto{color:var(--mimeo);border-color:var(--mimeo-line)}
+.pend-strip{display:flex;align-items:center;gap:10px;flex-wrap:wrap;background:var(--rust-wash);border:1px solid var(--rust-soft);
+  border-radius:2px;padding:9px 11px;margin-bottom:14px}
+.pend-strip .n{font-family:var(--mono);font-size:19px;font-weight:600;color:var(--rust);line-height:1}
+.pend-strip .t{flex:1;font-size:12.5px;color:var(--rust);line-height:1.35;min-width:120px}
 
+/* modales */
 .veil{position:fixed;inset:0;background:rgba(23,23,27,.45);display:flex;align-items:center;justify-content:center;z-index:60;padding:20px;overflow-y:auto}
 .modal{background:var(--sheet);border-radius:3px;padding:20px;max-width:480px;width:100%;border:1px solid var(--ink);margin:auto}
 .modal h3{font-family:var(--mono);font-size:12px;letter-spacing:.12em;text-transform:uppercase;margin:0 0 12px;color:var(--mimeo)}
@@ -139,116 +195,20 @@ mark.cit.is-active{box-shadow:0 0 0 2px var(--ink)}
 .check span small{display:block;color:var(--ink-faint);font-size:11.5px}
 .cfg-group{border-top:1px solid var(--rule);padding-top:12px;margin-top:16px}
 .cfg-group>h4{font-family:var(--mono);font-size:10px;letter-spacing:.11em;text-transform:uppercase;color:var(--ink-faint);margin:0 0 6px}
+.preview{font-family:var(--serif);font-size:13.5px;line-height:1.55;background:var(--panel);border:1px solid var(--rule);
+  border-radius:2px;padding:10px;max-height:150px;overflow-y:auto;margin-top:10px}
+.preview em{font-style:italic}
+.preview div{padding-left:1.6em;text-indent:-1.6em;margin-bottom:.5em}
 
+.pop{position:absolute;z-index:40;background:var(--sheet);border:1px solid var(--ink);border-radius:3px;padding:4px;display:flex;gap:4px;box-shadow:0 4px 14px rgba(0,0,0,.2)}
 .toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--ink);color:var(--sheet);font-family:var(--mono);
   font-size:11px;letter-spacing:.08em;text-transform:uppercase;padding:9px 16px;border-radius:2px;z-index:80;max-width:80vw;text-align:center}
-.privacy{font-family:var(--mono);font-size:9.5px;letter-spacing:.06em;color:var(--ink-faint);border-top:1px dotted var(--rule);padding-top:8px;margin-top:14px;line-height:1.6}
-
-/* divisor arrastrable */
-.resizer{width:7px;flex:none;cursor:col-resize;background:var(--rule);position:relative;transition:background .12s}
-.resizer::after{content:'';position:absolute;top:50%;left:2px;width:3px;height:38px;transform:translateY(-50%);
-  border-left:1px solid var(--ink-faint);border-right:1px solid var(--ink-faint);opacity:.45}
-.resizer:hover,.resizer.is-dragging{background:var(--mimeo-line)}
-
-/* modal de búsqueda masiva */
-.find-head{display:flex;justify-content:space-between;font-family:var(--mono);font-size:11px;letter-spacing:.09em;
-  text-transform:uppercase;color:var(--ink-soft);margin:14px 0 6px}
-.find-bar{height:4px;background:var(--rule);border-radius:2px;overflow:hidden}
-.find-bar>div{height:100%;background:var(--mimeo);transition:width .2s}
-.find-list{max-height:230px;overflow-y:auto;border:1px solid var(--rule);border-radius:2px;margin-top:12px;background:var(--panel)}
-.find-row{display:flex;justify-content:space-between;gap:10px;padding:5px 9px;border-bottom:1px solid var(--rule);font-size:13px}
-.find-row:last-child{border-bottom:0}
-.fr-name{font-family:var(--mono);font-size:12px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.fr-state{font-family:var(--mono);font-size:10px;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-faint);flex:none}
-.fr-state.is-now{color:var(--mimeo)} .fr-state.is-hit{color:var(--verde)} .fr-state.is-miss{color:var(--rust)}
-
-/* chips de filtro */
-.chips{display:flex;gap:5px;flex-wrap:wrap}
-.chip{border:1px solid var(--rule);background:var(--panel);color:var(--ink-soft);font-family:var(--mono);
-  font-size:9.5px;letter-spacing:.07em;text-transform:uppercase;padding:4px 8px;border-radius:10px}
-.chip:hover{border-color:var(--ink-faint)}
-.chip[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:var(--sheet)}
-.chip b{font-weight:600;margin-left:4px;opacity:.65}
-
-/* tira de pendientes */
-.pend-strip{display:flex;align-items:center;gap:10px;flex-wrap:wrap;background:var(--rust-wash);
-  border:1px solid var(--rust-soft);border-radius:2px;padding:10px 12px;margin-bottom:14px}
-.pend-strip .n{font-family:var(--mono);font-size:19px;font-weight:600;color:var(--rust);line-height:1}
-.pend-strip .t{flex:1;font-size:12.5px;color:var(--rust);line-height:1.35;min-width:130px}
-
-/* bibliografía como documento */
-.bib-doc{font-family:var(--serif);font-size:14.5px;line-height:1.62}
-.bib-item{position:relative;padding:4px 0 4px 1.7em;text-indent:-1.7em;border-radius:2px;margin-bottom:.5em}
-.bib-item:hover{background:var(--sheet)}
-.bib-ref{outline:0;border-radius:2px}
-.bib-ref em{font-style:italic}
-.bib-ref[contenteditable="true"]:focus{background:var(--sheet);box-shadow:0 0 0 2px var(--mimeo);padding:2px 4px}
-.bib-meta{display:flex;align-items:center;gap:6px;flex-wrap:wrap;text-indent:0;margin-top:3px;opacity:0;transition:opacity .12s}
-.bib-item:hover .bib-meta,.bib-item:focus-within .bib-meta{opacity:1}
-.badge{font-family:var(--mono);font-size:8.5px;letter-spacing:.09em;text-transform:uppercase;border:1px solid var(--rule);
-  border-radius:8px;padding:1px 6px;color:var(--ink-faint)}
-.badge.b-bib{color:var(--verde);border-color:var(--verde-soft)}
-.badge.b-auto{color:var(--mimeo);border-color:var(--mimeo-line)}
-.badge.b-mano{color:var(--ink-soft)}
-.tiny{border:0;background:transparent;font-family:var(--mono);font-size:9.5px;letter-spacing:.07em;
-  text-transform:uppercase;color:var(--ink-faint);padding:2px 5px;border-radius:2px}
-.tiny:hover{background:var(--rule);color:var(--ink)}
-.tiny.t-drop:hover{background:var(--rust-wash);color:var(--rust)}
-details.norms{border-top:1px solid var(--rule);margin-top:22px;padding-top:12px}
-details.norms>summary{font-family:var(--mono);font-size:10px;letter-spacing:.13em;text-transform:uppercase;
-  color:var(--ink-faint);cursor:pointer;list-style:none}
-details.norms>summary::-webkit-details-marker{display:none}
-details.norms>summary::before{content:'▸ ';color:var(--ley)}
-details.norms[open]>summary::before{content:'▾ '}
-
-/* indicador de guardado */
-.saved{font-family:var(--mono);font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-faint);opacity:0;transition:opacity .3s}
-.saved.on{opacity:1}
-
-/* ---- modo resolución ---- */
-#resolve{position:fixed;inset:0;z-index:70;background:var(--paper);display:flex;flex-direction:column}
-.rs-top{background:var(--sheet);border-bottom:1px solid var(--rule);padding:12px 24px 0}
-.rs-head{display:flex;align-items:center;gap:16px;flex-wrap:wrap;padding-bottom:11px}
-.rs-title{font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--mimeo);margin-right:auto}
-.rs-pos{font-family:var(--mono);font-size:12px;color:var(--ink-soft)}
-.rs-bar{height:3px;background:var(--rule)}
-.rs-bar>div{height:100%;background:var(--mimeo);transition:width .25s}
-.rs-body{flex:1;overflow-y:auto;padding:26px 24px 40px}
-.rs-wrap{max-width:940px;margin:0 auto}
-.rs-cite{font-family:var(--mono);font-size:26px;font-weight:600;line-height:1.2;margin:0 0 4px;word-break:break-word}
-.rs-sub{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:18px}
-.rs-ctx{font-family:var(--serif);font-size:15.5px;line-height:1.62;background:var(--sheet);border-left:3px solid var(--mimeo-line);
-  padding:10px 15px;margin-bottom:10px;color:#2C2C33}
-.rs-ctx mark{background:var(--mimeo-wash);border-bottom:1.5px solid var(--mimeo-line);padding:.05em .1em}
-.rs-label{font-family:var(--mono);font-size:10px;letter-spacing:.13em;text-transform:uppercase;color:var(--ink-faint);margin:26px 0 10px}
-.rs-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:12px}
-.rs-card{background:var(--sheet);border:1px solid var(--rule);border-radius:2px;padding:12px 13px;display:flex;flex-direction:column}
-.rs-card:hover{border-color:var(--mimeo-line)}
-.rs-num{position:absolute;margin:-6px 0 0 -6px;font-family:var(--mono);font-size:9.5px;background:var(--ink);color:var(--sheet);
-  border-radius:9px;padding:2px 7px}
-.rs-f{display:grid;grid-template-columns:80px 1fr;gap:10px;font-size:13.2px;line-height:1.45;margin-bottom:5px}
-.rs-f>b{font-family:var(--mono);font-size:9px;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-faint);font-weight:400;padding-top:3px}
-.rs-f>span{word-break:break-word}
-.rs-prev{font-family:var(--serif);font-size:12.5px;color:var(--ink-faint);line-height:1.45;border-top:1px dotted var(--rule);
-  margin-top:8px;padding-top:8px}
-.rs-prev em{font-style:italic}
-.rs-pick{margin-top:10px;align-self:flex-start}
-.rs-actions{position:sticky;bottom:0;background:var(--sheet);border-top:1px solid var(--rule);padding:12px 24px;
-  display:flex;gap:8px;flex-wrap:wrap;align-items:center}
-.rs-keys{font-family:var(--mono);font-size:9.5px;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-faint);margin-left:auto}
-.rs-manual{width:100%;min-height:76px;font-family:var(--serif);font-size:14.5px;padding:10px;border:1px solid var(--mimeo);
-  border-radius:2px;background:var(--sheet);color:var(--ink);resize:vertical;margin-top:8px}
-.rs-empty{font-size:14px;color:var(--ink-soft);background:var(--sheet);border:1px dashed var(--rule);padding:20px;border-radius:2px}
-.rs-done{text-align:center;padding:60px 20px}
-.rs-done h2{font-family:var(--mono);font-size:15px;letter-spacing:.12em;text-transform:uppercase;color:var(--verde)}
+.privacy{font-family:var(--mono);font-size:9.5px;letter-spacing:.06em;color:var(--ink-faint);border-top:1px dotted var(--rule);
+  padding-top:8px;margin-top:14px;line-height:1.6}
 
 @media (max-width:900px){
-  .rs-body{padding:18px 14px 30px}
-  .rs-cite{font-size:20px}
-  .rs-grid{grid-template-columns:1fr}
-  .rs-keys{display:none}
   .resizer{display:none}
-  .panel{position:fixed;inset:auto 0 0 0;height:64vh;width:100% !important;border-left:0;border-top:1px solid var(--ink);z-index:30;box-shadow:0 -6px 20px rgba(0,0,0,.12)}
+  .panel{position:fixed;inset:auto 0 0 0;height:66vh;width:100% !important;border-left:0;border-top:1px solid var(--ink);z-index:30;box-shadow:0 -6px 20px rgba(0,0,0,.12)}
   .panel.is-hidden{display:none}
   .scroller{padding:24px 18px 70vh}
   .doc{font-size:16.5px}
@@ -260,108 +220,332 @@ details.norms[open]>summary::before{content:'▾ '}
 <body>
 <div class="shell">
   <header class="topbar">
-    <div class="brand"><span class="name">Fichero</span><span class="tag">citas → bibliografía</span></div>
+    <div class="brand"><span class="name">Fichero</span><span class="tag" data-i18n="brand_tag"></span></div>
     <div class="counters" id="counters"></div>
-    <span class="saved" id="saved">guardado</span>
-    <button class="btn btn--ghost" id="btnCfg">Configuración</button>
-    <button class="btn btn--ghost" id="btnBib">Cargar .bib</button>
-    <button class="btn btn--ghost" id="btnNew">Otro documento</button>
+    <span class="saved" id="saved"></span>
+    <button class="btn btn--ghost" id="btnCfg" data-i18n="cfg"></button>
+    <button class="btn btn--ghost" id="btnBib" data-i18n="load_bib"></button>
+    <button class="btn btn--ghost" id="btnClear"></button>
   </header>
 
   <div class="main">
     <div class="reading">
-      <div class="ruler" id="ruler"><span class="lbl">mapa de citas</span></div>
+      <div class="ruler" id="ruler"><span class="lbl" data-i18n="ruler_lbl"></span></div>
       <div class="scroller" id="scroller">
         <div class="empty" id="empty">
-          <h2>Cargá tu texto</h2>
-          <p>Fichero busca las citas de autor-año en tu manuscrito, te deja corregir lo que detectó mal y arma la bibliografía final. Todo pasa dentro de tu navegador: el archivo no se sube a ningún servidor.</p>
+          <h2 data-i18n="empty_h"></h2>
+          <p data-i18n="empty_p"></p>
           <div class="drop" id="drop">
-            <p class="mini-note">Arrastrá un <b>.docx</b> acá, o</p>
-            <button class="btn btn--key" id="btnPick">Elegir archivo</button>
+            <p class="mini-note" data-i18n="drop_hint"></p>
+            <button class="btn btn--key" id="btnPick" data-i18n="pick_file"></button>
           </div>
-          <p class="mini-note">También podés pegar el texto directamente:</p>
-          <textarea class="paste" id="pasteBox" placeholder="Pegá acá los capítulos, o un fragmento para probar…"></textarea>
-          <div style="margin-top:10px"><button class="btn" id="btnPaste">Analizar texto pegado</button></div>
-          <p class="privacy">Sin servidor, sin cuenta, sin base de datos. El .docx se lee con JavaScript en tu máquina. Solo salen datos hacia afuera si pedís buscar referencias, y en ese caso viaja únicamente el apellido y el año.</p>
+          <p class="mini-note" data-i18n="paste_hint"></p>
+          <textarea class="paste" id="pasteBox"></textarea>
+          <div style="margin-top:10px"><button class="btn" id="btnPaste" data-i18n="paste_btn"></button></div>
+          <p class="privacy" data-i18n="privacy"></p>
         </div>
         <div class="doc" id="doc"></div>
       </div>
     </div>
 
-    <div class="resizer" id="resizer" title="Arrastrá para cambiar el ancho · doble click para restablecer"></div>
+    <div class="resizer" id="resizer"></div>
 
     <aside class="panel" id="panel">
       <div class="tabs" role="tablist">
-        <button class="tab" id="tabCitas" role="tab" aria-selected="true">Citas</button>
-        <button class="tab" id="tabBiblio" role="tab" aria-selected="false">Bibliografía</button>
+        <button class="tab" id="tabList" role="tab" aria-selected="true"></button>
+        <button class="tab" id="tabFind" role="tab" aria-selected="false"></button>
+        <button class="tab" id="tabExp" role="tab" aria-selected="false"></button>
       </div>
-      <div class="panel-sub">
-        <input class="search" id="qCitas" type="search" placeholder="Buscar entre las citas…" autocomplete="off">
-        <input class="search hidden" id="qBiblio" type="search" placeholder="Buscar entre las referencias…" autocomplete="off">
-        <div id="biblioActions" class="hidden">
-          <div class="chips" id="bibChips"></div>
-        </div>
-      </div>
+      <div class="panel-sub" id="subList"><input class="search" id="qList" type="search" autocomplete="off"></div>
+      <div class="panel-sub hidden" id="subFind"></div>
+      <div class="panel-sub hidden" id="subExp"></div>
       <div class="panel-body" id="panelBody"></div>
       <div class="panel-foot" id="panelFoot"></div>
     </aside>
   </div>
 </div>
 
-<button class="btn btn--key toggle-panel hidden" id="togglePanel">Ver citas</button>
-
-<div id="resolve" class="hidden">
-  <div class="rs-top">
-    <div class="rs-head">
-      <span class="rs-title">Resolver referencias</span>
-      <span class="rs-pos" id="rsPos"></span>
-      <button class="btn btn--ghost btn--mini" id="rsClose">Salir</button>
-    </div>
-    <div class="rs-bar"><div id="rsBar" style="width:0%"></div></div>
-  </div>
-  <div class="rs-body" id="rsBody"></div>
-  <div class="rs-actions" id="rsActions"></div>
-</div>
+<button class="btn btn--key toggle-panel hidden" id="togglePanel"></button>
 <div class="pop hidden" id="pop"></div>
 <input type="file" id="fileDoc" accept=".docx" class="hidden">
 <input type="file" id="fileBib" accept=".bib,.bibtex,.txt" class="hidden">
 
 <script>
 /* ==========================================================================
-   FICHERO v2 — extractor de citas autor-año + normativa
-   Un solo archivo. Sin backend. Subilo como index.html y ya está publicado.
+   FICHERO v3 · un solo archivo, sin backend.
+   Publicalo como index.html en Vercel, Netlify o GitHub Pages.
    ========================================================================== */
 
-/* ------------------------------------------------------------ config */
+/* ------------------------------------------------------------------ íconos */
+const SV = (d, extra='') => `<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"
+  stroke-linecap="round" stroke-linejoin="round" ${extra}>${d}</svg>`;
+const ICON = {
+  eye:   SV('<path d="M1.2 8S3.7 3.6 8 3.6 14.8 8 14.8 8 12.3 12.4 8 12.4 1.2 8 1.2 8z"/><circle cx="8" cy="8" r="1.9"/>'),
+  pencil:SV('<path d="M11.4 2.3l2.3 2.3-8.2 8.2-3 .7.7-3 8.2-8.2z"/>'),
+  trash: SV('<path d="M2.4 4.2h11.2M6 4.2V2.4h4v1.8M3.8 4.2l.7 9.4h7l.7-9.4"/>'),
+  check: SV('<path d="M3 8.4l3.4 3.4L13 4.6"/>'),
+  cross: SV('<path d="M4.2 4.2l7.6 7.6M11.8 4.2l-7.6 7.6"/>'),
+  left:  SV('<path d="M10 3.2L5.2 8 10 12.8"/>'),
+  right: SV('<path d="M6 3.2L10.8 8 6 12.8"/>'),
+  down:  SV('<path d="M8 2.4v8.2M4.6 7.4L8 10.8l3.4-3.4M2.6 13.4h10.8"/>'),
+  copy:  SV('<rect x="5.4" y="5.4" width="8.2" height="8.2" rx="1"/><path d="M10.6 5.4V3.4a1 1 0 00-1-1H3.4a1 1 0 00-1 1v6.2a1 1 0 001 1h2"/>'),
+  gear:  SV('<circle cx="8" cy="8" r="2.2"/><path d="M8 1.6v1.6M8 12.8v1.6M14.4 8h-1.6M3.2 8H1.6M12.5 3.5l-1.1 1.1M4.6 11.4l-1.1 1.1M12.5 12.5l-1.1-1.1M4.6 4.6L3.5 3.5"/>')
+};
+
+/* ------------------------------------------------------------------- i18n */
+const I18N = {
+es:{
+ brand_tag:'citas → bibliografía', cfg:'Configuración', load_bib:'Cargar .bib', clear:'Limpiar',
+ clear_confirm:'Se borra el documento cargado, tus correcciones y las referencias. ¿Seguir?',
+ tab_list:'Lista', tab_find:'Buscar', tab_exp:'Exportar',
+ c_works:'obras citadas', c_mentions:'menciones', c_norms:'normas', c_review:'a revisar', c_withref:'con referencia',
+ ruler_lbl:'mapa de citas',
+ empty_h:'Cargá tu texto',
+ empty_p:'Fichero busca las citas de autor-año en tu manuscrito, te deja corregir lo que detectó mal y arma la bibliografía final. Todo pasa dentro de tu navegador: el archivo no se sube a ningún servidor.',
+ drop_hint:'Arrastrá un .docx acá, o', pick_file:'Elegir archivo',
+ paste_hint:'También podés pegar el texto directamente:', paste_ph:'Pegá acá los capítulos, o un fragmento para probar…',
+ paste_btn:'Analizar texto pegado',
+ privacy:'Sin servidor, sin cuenta, sin base de datos. El .docx se lee en tu máquina. Solo salen datos si pedís buscar referencias, y en ese caso viajan el apellido, el año y algunas palabras clave del contexto.',
+ search_ph:'Buscar entre las citas…',
+ sec_doubtful:'Dudosas — confirmá o descartá', sec_works:'Obras citadas', sec_norms:'Normativa citada',
+ sec_refs:'Referencias', sec_pending:'Sin resolver', sec_norm_refs:'Fuentes normativas',
+ a_view:'Ver en el texto', a_edit:'Editar', a_remove:'Quitar', a_keep:'Conservar cita', a_drop:'Quitar cita',
+ merged:'Unificada con la forma “et al.”.',
+ dup:'Posible duplicado: otra obra del mismo autor y año con distinta lista de autores.',
+ copy_list:'Copiar lista autor-año', copied:'Copiado', copied_n:'{0} copiadas',
+ f_of:'{0} de {1}', f_mentions:'{0} mención(es) en el texto',
+ f_bib_opt:'de tu .bib', f_use:'Usar esta', f_used:'En uso',
+ f_searching:'Buscando en {0}…',
+ f_nores:'Ninguna fuente devolvió resultados para {0}. Escribila a mano o buscala vos y pegá la referencia.',
+ f_options:'Opciones', f_manual:'Escribir a mano', f_manual_ph:'Apellido, N. (Año). Título. Editorial.',
+ f_save_next:'Guardar y seguir', f_again:'Buscar de nuevo', f_skip:'Saltear', f_prev:'Anterior', f_next:'Siguiente',
+ f_alldone_h:'No queda nada por resolver', f_alldone_p:'Todas las obras citadas tienen su referencia completa.',
+ f_none_h:'Todavía no hay citas', f_none_p:'Cargá un documento en la pestaña anterior.',
+ f_year_warn:'año distinto', f_author_ok:'autor coincide',
+ e_export:'Exportar', e_pending:'{0} obras sin referencia completa. Resolvelas en la pestaña Buscar.',
+ e_resolve:'Resolver', e_hint:'Hacé click sobre cualquier referencia para corregirla acá mismo. Se guarda al salir del campo.',
+ e_none:'Todavía no hay referencias completas.',
+ e_modal:'Exportar bibliografía', e_style:'Estilo de citación', e_lang:'Idioma de las referencias',
+ e_incl_norms:'Incluir las fuentes normativas', e_copy:'Copiar', e_copy_plain:'Copiar sin formato', e_download:'Descargar .txt',
+ e_preview:'Vista previa',
+ cfg_title:'Configuración', cfg_style:'Estilo de citación predeterminado', cfg_uilang:'Idioma de la interfaz',
+ cfg_reflang:'Idioma predeterminado de las referencias', cfg_area:'Área de estudios',
+ cfg_area_note:'Acota las búsquedas al campo disciplinar. Solo lo aplica OpenAlex.',
+ cfg_publang:'Preferir publicaciones en', cfg_publang_any:'Cualquier idioma',
+ cfg_detect:'Detección', cfg_laws:'Reconocer normativa',
+ cfg_laws_note:'Leyes, decretos, DNU, resoluciones, CCT y códigos, en una lista aparte.',
+ cfg_etal:'Unificar “et al.”', cfg_etal_note:'Junta “Graham et al., 2017” con “Graham, Hjorth y Lehdonvirta, 2017”.',
+ cfg_ctx:'Usar palabras del contexto', cfg_ctx_note:'Suma términos de tu propio texto a la búsqueda. Mejora mucho la puntería.',
+ cfg_sources:'Fuentes para buscar referencias',
+ cfg_sources_note:'Todas son gratuitas y sin clave. Solo se envían apellido, año y palabras clave.',
+ cfg_data:'Datos guardados',
+ cfg_data_ok:'El documento, tus correcciones y las referencias se guardan solos en este navegador. No salen de tu máquina.',
+ cfg_data_no:'Este entorno bloquea el almacenamiento del navegador: el trabajo se pierde al recargar. En un sitio publicado suele funcionar.',
+ cfg_wipe:'Borrar todo lo guardado', cancel:'Cancelar', save:'Guardar',
+ ed_frag_h:'Editar cita',
+ ed_frag_hint:'Ajustá el fragmento hasta que quede solo la cita. Por ejemplo, de “y siguiendo a Vercellone, 2011” dejá “Vercellone, 2011”.',
+ ed_frag_l:'Fragmento en el texto', ed_authors:'Autor o autores', ed_year:'Año',
+ ed_frag_note:'El texto del documento no se modifica: solo cambia lo que Fichero entiende por esta cita.',
+ add_h:'Agregar cita', add_sel:'Seleccionaste: “{0}”', add_btn:'Agregar', mark_cite:'Marcar como cita',
+ norm_h:'Referencia normativa', norm_note:'Completá los datos entre corchetes.',
+ t_docx_err:'No se pudo leer el .docx', t_no_text:'El documento no tiene texto legible',
+ t_bib_read:'{0} entradas leídas del .bib', t_bib_err:'El .bib no se pudo interpretar', t_bib_none:'No se encontraron entradas en el .bib',
+ t_cites:'{0} citas', t_norms:'{0} normas', t_review:'{0} a revisar',
+ t_session:'Sesión recuperada · {0} obras', t_missing:'Falta autor o año', t_nosources:'No hay fuentes activadas',
+ t_reanalyzed:'Texto reanalizado', t_deleted:'Datos borrados', t_paste_first:'Pegá algo de texto primero',
+ t_saved:'guardado', t_saved_p:'guardado (parcial)', t_saved_no:'sin espacio', t_nostore:'sin guardado en este entorno',
+ t_downloaded:'Archivo descargado',
+ lb_title:'Título', lb_authors:'Autores', lb_pub:'Publicado en', lb_year:'Año', lb_type:'Tipo',
+ ty_article:'Artículo', ty_book:'Libro', ty_chapter:'Capítulo', ty_paper:'Ponencia', ty_thesis:'Tesis',
+ ty_report:'Informe', ty_other:'Otro',
+ ar_none:'Todas las áreas', ar_soc:'Ciencias sociales', ar_hum:'Humanidades', ar_psy:'Psicología y educación',
+ ar_med:'Salud y medicina', ar_bio:'Biología y ciencias de la vida', ar_nat:'Ciencias exactas y naturales',
+ ar_eng:'Ingeniería y computación',
+ bd_bib:'de tu .bib', bd_auto:'encontrada', bd_mano:'a mano',
+ show_panel:'Ver citas', show_text:'Ver texto', resize:'Arrastrá para cambiar el ancho'
+},
+en:{
+ brand_tag:'citations → bibliography', cfg:'Settings', load_bib:'Load .bib', clear:'Clear',
+ clear_confirm:'This deletes the loaded document, your corrections and the references. Continue?',
+ tab_list:'List', tab_find:'Find', tab_exp:'Export',
+ c_works:'works cited', c_mentions:'mentions', c_norms:'statutes', c_review:'to review', c_withref:'with reference',
+ ruler_lbl:'citation map',
+ empty_h:'Load your text',
+ empty_p:'Fichero finds author-date citations in your manuscript, lets you fix what it got wrong and builds the final bibliography. Everything runs in your browser: the file is never uploaded.',
+ drop_hint:'Drop a .docx here, or', pick_file:'Choose file',
+ paste_hint:'You can also paste the text directly:', paste_ph:'Paste your chapters here, or a fragment to try it out…',
+ paste_btn:'Analyse pasted text',
+ privacy:'No server, no account, no database. The .docx is read on your machine. Data only leaves when you search for references, and then only the surname, the year and a few context keywords.',
+ search_ph:'Search the citations…',
+ sec_doubtful:'Uncertain — confirm or discard', sec_works:'Works cited', sec_norms:'Statutes cited',
+ sec_refs:'References', sec_pending:'Unresolved', sec_norm_refs:'Legal sources',
+ a_view:'Show in text', a_edit:'Edit', a_remove:'Remove', a_keep:'Keep citation', a_drop:'Remove citation',
+ merged:'Merged with the “et al.” form.',
+ dup:'Possible duplicate: another work by the same author and year with a different author list.',
+ copy_list:'Copy author-year list', copied:'Copied', copied_n:'{0} copied',
+ f_of:'{0} of {1}', f_mentions:'{0} mention(s) in the text',
+ f_bib_opt:'from your .bib', f_use:'Use this', f_used:'In use',
+ f_searching:'Searching {0}…',
+ f_nores:'No source returned results for {0}. Write it by hand or look it up and paste the reference.',
+ f_options:'Options', f_manual:'Write by hand', f_manual_ph:'Surname, N. (Year). Title. Publisher.',
+ f_save_next:'Save and continue', f_again:'Search again', f_skip:'Skip', f_prev:'Previous', f_next:'Next',
+ f_alldone_h:'Nothing left to resolve', f_alldone_p:'Every cited work has its full reference.',
+ f_none_h:'No citations yet', f_none_p:'Load a document in the previous tab.',
+ f_year_warn:'different year', f_author_ok:'author matches',
+ e_export:'Export', e_pending:'{0} works still lack a full reference. Resolve them in the Find tab.',
+ e_resolve:'Resolve', e_hint:'Click any reference to fix it right here. It saves when you leave the field.',
+ e_none:'No complete references yet.',
+ e_modal:'Export bibliography', e_style:'Citation style', e_lang:'Reference language',
+ e_incl_norms:'Include legal sources', e_copy:'Copy', e_copy_plain:'Copy as plain text', e_download:'Download .txt',
+ e_preview:'Preview',
+ cfg_title:'Settings', cfg_style:'Default citation style', cfg_uilang:'Interface language',
+ cfg_reflang:'Default reference language', cfg_area:'Field of study',
+ cfg_area_note:'Narrows searches to a discipline. Applied by OpenAlex only.',
+ cfg_publang:'Prefer publications in', cfg_publang_any:'Any language',
+ cfg_detect:'Detection', cfg_laws:'Detect statutes',
+ cfg_laws_note:'Acts, decrees, resolutions and codes, listed separately.',
+ cfg_etal:'Merge “et al.”', cfg_etal_note:'Joins “Graham et al., 2017” with “Graham, Hjorth and Lehdonvirta, 2017”.',
+ cfg_ctx:'Use context keywords', cfg_ctx_note:'Adds terms from your own text to the query. Improves accuracy a lot.',
+ cfg_sources:'Sources for finding references',
+ cfg_sources_note:'All free, no key required. Only surname, year and keywords are sent.',
+ cfg_data:'Saved data',
+ cfg_data_ok:'The document, your corrections and the references are saved in this browser. Nothing leaves your machine.',
+ cfg_data_no:'This environment blocks browser storage: work is lost on reload. On a published site it usually works.',
+ cfg_wipe:'Delete everything saved', cancel:'Cancel', save:'Save',
+ ed_frag_h:'Edit citation',
+ ed_frag_hint:'Trim the fragment down to the citation itself. From “and following Vercellone, 2011” leave “Vercellone, 2011”.',
+ ed_frag_l:'Fragment in the text', ed_authors:'Author or authors', ed_year:'Year',
+ ed_frag_note:'The document text is not modified: only what Fichero reads as this citation.',
+ add_h:'Add citation', add_sel:'You selected: “{0}”', add_btn:'Add', mark_cite:'Mark as citation',
+ norm_h:'Legal reference', norm_note:'Fill in the bracketed details.',
+ t_docx_err:'Could not read the .docx', t_no_text:'The document has no readable text',
+ t_bib_read:'{0} entries read from the .bib', t_bib_err:'The .bib could not be parsed', t_bib_none:'No entries found in the .bib',
+ t_cites:'{0} citations', t_norms:'{0} statutes', t_review:'{0} to review',
+ t_session:'Session restored · {0} works', t_missing:'Author or year missing', t_nosources:'No sources enabled',
+ t_reanalyzed:'Text re-analysed', t_deleted:'Data deleted', t_paste_first:'Paste some text first',
+ t_saved:'saved', t_saved_p:'saved (partial)', t_saved_no:'no space', t_nostore:'no storage here',
+ t_downloaded:'File downloaded',
+ lb_title:'Title', lb_authors:'Authors', lb_pub:'Published in', lb_year:'Year', lb_type:'Type',
+ ty_article:'Article', ty_book:'Book', ty_chapter:'Chapter', ty_paper:'Conference paper', ty_thesis:'Thesis',
+ ty_report:'Report', ty_other:'Other',
+ ar_none:'All fields', ar_soc:'Social sciences', ar_hum:'Humanities', ar_psy:'Psychology and education',
+ ar_med:'Health and medicine', ar_bio:'Biology and life sciences', ar_nat:'Physical and natural sciences',
+ ar_eng:'Engineering and computing',
+ bd_bib:'from .bib', bd_auto:'found', bd_mano:'by hand',
+ show_panel:'Show citations', show_text:'Show text', resize:'Drag to resize'
+},
+pt:{
+ brand_tag:'citações → bibliografia', cfg:'Configurações', load_bib:'Carregar .bib', clear:'Limpar',
+ clear_confirm:'Isto apaga o documento carregado, suas correções e as referências. Continuar?',
+ tab_list:'Lista', tab_find:'Buscar', tab_exp:'Exportar',
+ c_works:'obras citadas', c_mentions:'menções', c_norms:'normas', c_review:'a revisar', c_withref:'com referência',
+ ruler_lbl:'mapa de citações',
+ empty_h:'Carregue seu texto',
+ empty_p:'O Fichero encontra as citações autor-data no seu manuscrito, permite corrigir o que ele errou e monta a bibliografia final. Tudo acontece no seu navegador: o arquivo não é enviado a nenhum servidor.',
+ drop_hint:'Arraste um .docx aqui, ou', pick_file:'Escolher arquivo',
+ paste_hint:'Você também pode colar o texto diretamente:', paste_ph:'Cole aqui os capítulos, ou um trecho para testar…',
+ paste_btn:'Analisar texto colado',
+ privacy:'Sem servidor, sem conta, sem banco de dados. O .docx é lido na sua máquina. Só saem dados se você pedir para buscar referências, e nesse caso vão apenas o sobrenome, o ano e algumas palavras-chave.',
+ search_ph:'Buscar entre as citações…',
+ sec_doubtful:'Duvidosas — confirme ou descarte', sec_works:'Obras citadas', sec_norms:'Normas citadas',
+ sec_refs:'Referências', sec_pending:'Sem resolver', sec_norm_refs:'Fontes normativas',
+ a_view:'Ver no texto', a_edit:'Editar', a_remove:'Remover', a_keep:'Manter citação', a_drop:'Remover citação',
+ merged:'Unificada com a forma “et al.”.',
+ dup:'Possível duplicata: outra obra do mesmo autor e ano com lista de autores diferente.',
+ copy_list:'Copiar lista autor-ano', copied:'Copiado', copied_n:'{0} copiadas',
+ f_of:'{0} de {1}', f_mentions:'{0} menção(ões) no texto',
+ f_bib_opt:'do seu .bib', f_use:'Usar esta', f_used:'Em uso',
+ f_searching:'Buscando em {0}…',
+ f_nores:'Nenhuma fonte devolveu resultados para {0}. Escreva à mão ou busque e cole a referência.',
+ f_options:'Opções', f_manual:'Escrever à mão', f_manual_ph:'Sobrenome, N. (Ano). Título. Editora.',
+ f_save_next:'Salvar e seguir', f_again:'Buscar de novo', f_skip:'Pular', f_prev:'Anterior', f_next:'Próxima',
+ f_alldone_h:'Não há mais nada a resolver', f_alldone_p:'Todas as obras citadas têm sua referência completa.',
+ f_none_h:'Ainda não há citações', f_none_p:'Carregue um documento na aba anterior.',
+ f_year_warn:'ano diferente', f_author_ok:'autor confere',
+ e_export:'Exportar', e_pending:'{0} obras ainda sem referência completa. Resolva na aba Buscar.',
+ e_resolve:'Resolver', e_hint:'Clique em qualquer referência para corrigi-la aqui mesmo. Salva ao sair do campo.',
+ e_none:'Ainda não há referências completas.',
+ e_modal:'Exportar bibliografia', e_style:'Estilo de citação', e_lang:'Idioma das referências',
+ e_incl_norms:'Incluir as fontes normativas', e_copy:'Copiar', e_copy_plain:'Copiar sem formatação', e_download:'Baixar .txt',
+ e_preview:'Prévia',
+ cfg_title:'Configurações', cfg_style:'Estilo de citação padrão', cfg_uilang:'Idioma da interface',
+ cfg_reflang:'Idioma padrão das referências', cfg_area:'Área de estudos',
+ cfg_area_note:'Restringe as buscas ao campo disciplinar. Só o OpenAlex aplica.',
+ cfg_publang:'Preferir publicações em', cfg_publang_any:'Qualquer idioma',
+ cfg_detect:'Detecção', cfg_laws:'Reconhecer normas',
+ cfg_laws_note:'Leis, decretos, resoluções e códigos, em lista separada.',
+ cfg_etal:'Unificar “et al.”', cfg_etal_note:'Junta “Graham et al., 2017” com “Graham, Hjorth e Lehdonvirta, 2017”.',
+ cfg_ctx:'Usar palavras do contexto', cfg_ctx_note:'Soma termos do seu texto à busca. Melhora muito a precisão.',
+ cfg_sources:'Fontes para buscar referências',
+ cfg_sources_note:'Todas gratuitas e sem chave. Só se enviam sobrenome, ano e palavras-chave.',
+ cfg_data:'Dados salvos',
+ cfg_data_ok:'O documento, suas correções e as referências ficam salvos neste navegador. Nada sai da sua máquina.',
+ cfg_data_no:'Este ambiente bloqueia o armazenamento: o trabalho se perde ao recarregar. Num site publicado costuma funcionar.',
+ cfg_wipe:'Apagar tudo o que está salvo', cancel:'Cancelar', save:'Salvar',
+ ed_frag_h:'Editar citação',
+ ed_frag_hint:'Ajuste o trecho até sobrar só a citação. De “e seguindo Vercellone, 2011” deixe “Vercellone, 2011”.',
+ ed_frag_l:'Trecho no texto', ed_authors:'Autor ou autores', ed_year:'Ano',
+ ed_frag_note:'O texto do documento não muda: só muda o que o Fichero entende por esta citação.',
+ add_h:'Adicionar citação', add_sel:'Você selecionou: “{0}”', add_btn:'Adicionar', mark_cite:'Marcar como citação',
+ norm_h:'Referência normativa', norm_note:'Complete os dados entre colchetes.',
+ t_docx_err:'Não foi possível ler o .docx', t_no_text:'O documento não tem texto legível',
+ t_bib_read:'{0} entradas lidas do .bib', t_bib_err:'O .bib não pôde ser interpretado', t_bib_none:'Nenhuma entrada encontrada no .bib',
+ t_cites:'{0} citações', t_norms:'{0} normas', t_review:'{0} a revisar',
+ t_session:'Sessão recuperada · {0} obras', t_missing:'Falta autor ou ano', t_nosources:'Nenhuma fonte ativada',
+ t_reanalyzed:'Texto reanalisado', t_deleted:'Dados apagados', t_paste_first:'Cole algum texto primeiro',
+ t_saved:'salvo', t_saved_p:'salvo (parcial)', t_saved_no:'sem espaço', t_nostore:'sem salvamento aqui',
+ t_downloaded:'Arquivo baixado',
+ lb_title:'Título', lb_authors:'Autores', lb_pub:'Publicado em', lb_year:'Ano', lb_type:'Tipo',
+ ty_article:'Artigo', ty_book:'Livro', ty_chapter:'Capítulo', ty_paper:'Trabalho', ty_thesis:'Tese',
+ ty_report:'Relatório', ty_other:'Outro',
+ ar_none:'Todas as áreas', ar_soc:'Ciências sociais', ar_hum:'Humanidades', ar_psy:'Psicologia e educação',
+ ar_med:'Saúde e medicina', ar_bio:'Biologia e ciências da vida', ar_nat:'Ciências exatas e naturais',
+ ar_eng:'Engenharia e computação',
+ bd_bib:'do .bib', bd_auto:'encontrada', bd_mano:'à mão',
+ show_panel:'Ver citações', show_text:'Ver texto', resize:'Arraste para redimensionar'
+}};
+function t(k, ...a){
+  let s = (I18N[CFG.uiLang] && I18N[CFG.uiLang][k]) || I18N.es[k] || k;
+  a.forEach((v,i) => { s = s.split('{'+i+'}').join(v); });
+  return s;
+}
+
+/* palabras conectoras de la referencia, por idioma de salida */
+const REFL = {
+  es:{ conj:'y', in:'En', ed:'Ed.', eds:'Eds.', pp:'pp.', phd:'Tesis doctoral', ms:'Tesis de maestría',
+       thesis:'Tesis', paper:'Ponencia', nd:'s.f.', edn:'ed.', retr:'Recuperado de' },
+  en:{ conj:'&', in:'In', ed:'Ed.', eds:'Eds.', pp:'pp.', phd:'Doctoral dissertation', ms:"Master's thesis",
+       thesis:'Thesis', paper:'Conference paper', nd:'n.d.', edn:'ed.', retr:'Retrieved from' },
+  pt:{ conj:'e', in:'Em', ed:'Org.', eds:'Orgs.', pp:'pp.', phd:'Tese de doutorado', ms:'Dissertação de mestrado',
+       thesis:'Tese', paper:'Trabalho apresentado', nd:'s.d.', edn:'ed.', retr:'Recuperado de' }
+};
+
+/* áreas → campos de OpenAlex (códigos ASJC de primer nivel) */
+const AREAS = {
+  none:[], soc:[33,20,14,18], hum:[12], psy:[32,33], med:[27,36,29,30,35],
+  bio:[11,13,24,28,34], nat:[16,26,31,19,23,25], eng:[17,22,15,21]
+};
+
+/* ------------------------------------------------------------------ config */
 const CFG = {
-  conj: 'y',            // conjunción entre autores
-  style: 'apa7',        // apa7 | mla9 | chicago
-  laws: true,           // reconocer normativa
-  mergeEtal: true,      // unificar "X et al." con la forma completa
-  sources: { crossref:true, openalex:true, doaj:false, openlibrary:true }
+  uiLang:'es', refLang:'es', style:'apa7', area:'none', pubLang:'',
+  laws:true, mergeEtal:true, useCtx:true,
+  sources:{ crossref:true, openalex:true, doaj:false, openlibrary:true }
 };
-
 const SOURCES = {
-  crossref:    { label:'Crossref',     note:'DOIs de todo el mundo académico. Sin clave.' },
-  openalex:    { label:'OpenAlex',     note:'Índice abierto; buena cobertura de SciELO y Redalyc.' },
-  doaj:        { label:'DOAJ',         note:'Revistas de acceso abierto, fuerte en América Latina.' },
-  openlibrary: { label:'Open Library', note:'Libros. Útil porque Crossref casi no los tiene.' }
+  crossref:{ label:'Crossref' }, openalex:{ label:'OpenAlex' },
+  doaj:{ label:'DOAJ' }, openlibrary:{ label:'Open Library' }
 };
 
-/* ------------------------------------------------------------- estado */
+/* ------------------------------------------------------------------ estado */
 const S = {
-  paras: [], hits: [], works: [], norms: [],
-  bib: [], bibIndex: new Map(),
-  refOverride: new Map(),   // key de obra  → referencia final (HTML)
-  normOverride: new Map(),  // key de norma → referencia final (HTML)
-  origin: new Map(),        // key de obra  → 'auto' | 'mano'
-  cands: new Map(),         // key de obra  → candidatos encontrados
-  bibFilter: 'todas',
-  rs: { open:false, queue:[], i:0, busy:false, manual:false },
-  tab: 'citas', seq: 0, stopFind: false
+  paras:[], hits:[], works:[], norms:[], bib:[], bibIndex:new Map(),
+  refOverride:new Map(), normOverride:new Map(), origin:new Map(), cands:new Map(),
+  vocab:new Map(), bibVenues:new Set(), bibSurnames:new Set(),
+  tab:'list', seq:0, findI:0, busyKey:null, manualOpen:false
 };
 
-/* ---------------------------------------------------------- utilidades */
+/* --------------------------------------------------------------- utilidades */
 const $ = id => document.getElementById(id);
 const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const deacc = s => String(s||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'');
@@ -370,141 +554,117 @@ const stripTags = h => String(h).replace(/<[^>]+>/g,'');
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 
 function toast(msg){
-  const t = document.createElement('div');
-  t.className = 'toast'; t.textContent = msg;
-  document.body.appendChild(t); setTimeout(() => t.remove(), 2400);
+  const el = document.createElement('div');
+  el.className = 'toast'; el.textContent = msg;
+  document.body.appendChild(el); setTimeout(() => el.remove(), 2400);
 }
 async function copyText(txt, label){
-  try { await navigator.clipboard.writeText(txt); toast(label||'Copiado'); }
-  catch(e){ const ta=document.createElement('textarea'); ta.value=txt; document.body.appendChild(ta);
-    ta.select(); document.execCommand('copy'); ta.remove(); toast(label||'Copiado'); }
+  try { await navigator.clipboard.writeText(txt); toast(label || t('copied')); }
+  catch(e){ const ta = document.createElement('textarea'); ta.value = txt; document.body.appendChild(ta);
+    ta.select(); document.execCommand('copy'); ta.remove(); toast(label || t('copied')); }
 }
 async function copyRich(html, plain){
   try {
     await navigator.clipboard.write([new ClipboardItem({
-      'text/html': new Blob([html],{type:'text/html'}),
-      'text/plain': new Blob([plain],{type:'text/plain'})
-    })]);
-    toast('Copiado con cursivas');
-  } catch(e){ copyText(plain, 'Copiado (sin formato)'); }
+      'text/html': new Blob([html],{type:'text/html'}), 'text/plain': new Blob([plain],{type:'text/plain'}) })]);
+    toast(t('copied'));
+  } catch(e){ copyText(plain); }
+}
+function download(name, text){
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([text], {type:'text/plain;charset=utf-8'}));
+  a.download = name; a.click();
+  setTimeout(() => URL.revokeObjectURL(a.href), 2000);
+  toast(t('t_downloaded'));
 }
 
-/* ==========================================================================
-   0. PERSISTENCIA
-   Guarda en localStorage del navegador. Si el entorno lo bloquea (por ejemplo
-   una vista previa embebida), cae automáticamente a memoria y la app sigue
-   funcionando: solo se pierde al recargar.
-   ========================================================================== */
-const KEY = 'fichero.v1';
+/* =========================================================================
+   PERSISTENCIA
+   ========================================================================= */
+const KEY = 'fichero.v3';
 const DB = (() => {
   let ok = false;
-  try { localStorage.setItem('__f','1'); localStorage.removeItem('__f'); ok = true; } catch(e){ ok = false; }
+  try { localStorage.setItem('__f','1'); localStorage.removeItem('__f'); ok = true; } catch(e){}
   const mem = {};
-  return {
-    ok,
+  return { ok,
     get: k => { try { return ok ? localStorage.getItem(k) : (mem[k] ?? null); } catch(e){ return null; } },
     set: (k,v) => { if (ok) localStorage.setItem(k,v); else mem[k] = v; },
-    del: k => { try { ok ? localStorage.removeItem(k) : delete mem[k]; } catch(e){} }
-  };
+    del: k => { try { ok ? localStorage.removeItem(k) : delete mem[k]; } catch(e){} } };
 })();
-
 let saveTimer = null;
-function saveSoon(){ clearTimeout(saveTimer); saveTimer = setTimeout(saveNow, 700); }
+const saveSoon = () => { clearTimeout(saveTimer); saveTimer = setTimeout(saveNow, 700); };
 function snapshot(){
-  return { v:1, cfg:CFG, paras:S.paras, hits:S.hits, seq:S.seq, bib:S.bib, tab:S.tab,
-    refOverride:[...S.refOverride], normOverride:[...S.normOverride],
-    origin:[...S.origin], cands:[...S.cands],
-    width: (document.getElementById('panel')||{style:{}}).style.width || '' };
+  return { v:3, cfg:CFG, paras:S.paras, hits:S.hits, seq:S.seq, bib:S.bib, tab:S.tab, findI:S.findI,
+    refOverride:[...S.refOverride], normOverride:[...S.normOverride], origin:[...S.origin], cands:[...S.cands],
+    width:($('panel')||{style:{}}).style.width || '' };
 }
 function saveNow(){
   const full = snapshot();
-  const attempts = [full, {...full, cands:[]}, {...full, cands:[], bib:[]}];
-  for (let i = 0; i < attempts.length; i++){
-    try {
-      DB.set(KEY, JSON.stringify(attempts[i]));
-      flashSaved(i === 0 ? 'guardado' : (i === 1 ? 'guardado (sin candidatas)' : 'guardado (solo citas)'));
-      return;
-    } catch(e){ /* cuota excedida: probamos con menos */ }
+  const tries = [full, {...full, cands:[]}, {...full, cands:[], bib:[]}];
+  for (let i = 0; i < tries.length; i++){
+    try { DB.set(KEY, JSON.stringify(tries[i])); flashSaved(i===0?t('t_saved'):(i===1?t('t_saved_p'):t('t_saved_no'))); return; }
+    catch(e){}
   }
-  flashSaved('sin espacio para guardar');
+  flashSaved(t('t_saved_no'));
 }
 function flashSaved(txt){
-  const el = document.getElementById('saved'); if (!el) return;
-  el.textContent = DB.ok ? txt : 'sin guardado en este entorno';
-  el.classList.add('on');
-  clearTimeout(el._t); el._t = setTimeout(() => el.classList.remove('on'), 1800);
+  const el = $('saved'); if (!el) return;
+  el.textContent = DB.ok ? txt : t('t_nostore');
+  el.classList.add('on'); clearTimeout(el._t);
+  el._t = setTimeout(() => el.classList.remove('on'), 1800);
 }
 function restore(){
   const raw = DB.get(KEY); if (!raw) return false;
   try {
     const d = JSON.parse(raw);
-    Object.assign(CFG, d.cfg || {});
-    if (d.cfg && d.cfg.sources) Object.assign(CFG.sources, d.cfg.sources);
-    S.paras = d.paras || []; S.hits = d.hits || []; S.seq = d.seq || 0;
-    S.bib = d.bib || []; S.bibIndex = buildBibIndex(S.bib);
-    S.refOverride = new Map(d.refOverride || []);
-    S.normOverride = new Map(d.normOverride || []);
-    S.origin = new Map(d.origin || []);
-    S.cands = new Map(d.cands || []);
-    S.tab = d.tab === 'biblio' ? 'biblio' : 'citas';
-    if (d.width) document.getElementById('panel').style.width = d.width;
+    if (d.cfg){ Object.assign(CFG, d.cfg); if (d.cfg.sources) Object.assign(CFG.sources, d.cfg.sources); }
+    S.paras = d.paras||[]; S.hits = d.hits||[]; S.seq = d.seq||0;
+    S.bib = d.bib||[]; S.bibIndex = buildBibIndex(S.bib); indexBibProfile();
+    S.refOverride = new Map(d.refOverride||[]); S.normOverride = new Map(d.normOverride||[]);
+    S.origin = new Map(d.origin||[]); S.cands = new Map(d.cands||[]);
+    S.tab = ['list','find','exp'].includes(d.tab) ? d.tab : 'list';
+    S.findI = d.findI||0;
+    if (d.width) $('panel').style.width = d.width;
+    if (S.paras.length) buildVocab();
     return S.paras.length > 0;
   } catch(e){ console.error(e); return false; }
 }
 
-/* ==========================================================================
-   1. DETECCIÓN
-   Trampas contempladas:
-   - varias citas en un mismo paréntesis, separadas por ; o por ,
-   - año sin coma previa:  (Ventrici y Palermo 2023, Palermo y Doval 2025a)
-   - apellidos compuestos (Fernández Massi) y partículas (De Certeau, Da Silva)
-   - siglas institucionales (INDEC, OIT) y autor institucional + [sigla]
-   - et al. / y / e / & / and ; desambiguadores 2020a ; s.f. ; [1867] 1975
-   - localizadores  1974: 45  ·  1974, p. 45  ·  1974, pp. 45-60
-   - citas narrativas: Burawoy (1979) sostiene…
-   - prefijos cf. / ver / véase / vid.
-   - anafóricas ibid., ídem, op. cit. → se resuelven a la cita previa
-   - normativa argentina (leyes, decretos, DNU, CCT, resoluciones, códigos)
-   - falsos positivos: (en 2001 la crisis), (Gráfico 2), topónimos, meses
-   ========================================================================== */
-
+/* =========================================================================
+   DETECCIÓN
+   Trampas: varias citas por paréntesis (con ; o con ,), año sin coma previa,
+   apellidos compuestos y partículas, siglas institucionales, et al., 2020a,
+   localizadores, citas narrativas, cf./véase, ibid./op. cit., normativa,
+   y falsos positivos con años sueltos, topónimos y meses.
+   ========================================================================= */
 const UC = '\\p{Lu}';
 const LW = "[\\p{L}'\u2019\\-]";
 const NW = `${UC}${LW}*`;
 const PART = "(?:de las|de los|de la|del|de|da|das|do|dos|di|della|dello|van der|van den|van|von|le|la|du|des|d'|O'|Mc|Mac|St\\.)";
-const PART_SET = new Set(['de','del','de la','de los','de las','da','das','do','dos','di','della','dello',
-  'van','von','le','la','du','des',"d'","o'",'mc','mac']);
-
+const PART_SET = new Set(['de','del','da','das','do','dos','di','della','dello','van','von','le','la','du','des',"d'","o'",'mc','mac']);
 const SUR_IN = `(?:${PART}\\s+)?${NW}(?:[\\s\\-]+(?:${PART}\\s+)?${NW}){0,3}`;
 const SUR_NA = `(?:${PART}\\s+)?${NW}(?:\\s+(?:${PART}\\s+)?${NW}){0,1}`;
-const SEP    = "(?:\\s*,\\s*|\\s+(?:y|e|and|&)\\s+)";
-const ETAL   = "(?:\\s*,?\\s*et\\s*al\\.?)?";
-const SIGLA  = "(?:\\s*\\[[^\\]]{1,60}\\])?";
-const YEAR   = "(?:\\d{4}\\s*[a-h]?|s\\.\\s?f\\.|s\\/f|n\\.\\s?d\\.|en prensa|in press|forthcoming)";
-const ORIG   = "(?:\\s*\\[\\d{4}[a-z]?\\])?";
-/* el localizador NO puede comerse la inicial del apellido siguiente */
+const SEP = "(?:\\s*,\\s*|\\s+(?:y|e|and|&)\\s+)";
+const ETAL = "(?:\\s*,?\\s*et\\s*al\\.?)?";
+const SIGLA = "(?:\\s*\\[[^\\]]{1,60}\\])?";
+const YEAR = "(?:\\d{4}\\s*[a-h]?|s\\.\\s?[fd]\\.|s\\/f|n\\.\\s?d\\.|en prensa|in press|no prelo|forthcoming)";
+const ORIG = "(?:\\s*\\[\\d{4}[a-z]?\\])?";
 const LOCNUM = "(?:\\d+(?:\\s*[-–—]\\s*\\d+)?|[IVXLCivxlc]{1,7}(?![\\p{L}]))";
-const LOC    = `(?:\\s*[:,]\\s*(?:pp?\\.|p[áa]gs?\\.|p[áa]gina[s]?|cap\\.)?\\s*${LOCNUM})?`;
-
+const LOC = `(?:\\s*[:,]\\s*(?:pp?\\.|p[áa]gs?\\.|cap\\.)?\\s*${LOCNUM})?`;
 const AUTHORS_IN = `${SUR_IN}(?:${SEP}${SUR_IN})*${ETAL}`;
 const AUTHORS_NA = `${SUR_NA}(?:${SEP}${SUR_NA})*${ETAL}`;
-
-/* unidad autor-año, escaneada globalmente dentro de cada paréntesis */
 const RE_UNIT = new RegExp(`(${AUTHORS_IN})${SIGLA}\\s*,?\\s*\\(?\\s*(${YEAR})\\s*\\)?${ORIG}${LOC}`, 'giu');
 const RE_NARR = new RegExp(`(${AUTHORS_NA})${SIGLA}\\s*\\(\\s*(${YEAR})${ORIG}${LOC}\\s*\\)`, 'gu');
 const RE_ANAPH = /\b(ib[ií]d\.?(?:em)?|[ií]dem|op\.\s?cit\.|art\.\s?cit\.|loc\.\s?cit\.)/gi;
 const RE_LOOSE = new RegExp(`^(${AUTHORS_IN})\\s*,?\\s*\\(?\\s*(${YEAR})`, 'iu');
-
-/* --- normativa --- */
 const RE_NORMA = new RegExp(
-  "\\b(Leyes?|Decreto\\s+de\\s+Necesidad\\s+y\\s+Urgencia|Decreto[-\\s]?Ley|Decretos?|DNU|Resoluci[oó]n(?:es)?|Res\\.|" +
-  "Disposici[oó]n|Disp\\.|Acordada|Ordenanza|Convenio\\s+Colectivo(?:\\s+de\\s+Trabajo)?|CCT|Convenios?|" +
-  "Recomendaci[oó]n|Directiva|Reglamento|Laudo|Acta)\\s*(?:N[°ºo]?\\.?\\s*)?" +
-  "(\\d{1,3}(?:\\.\\d{3})+|\\d{1,6})(\\s*\\/\\s*\\d{2,4})?", "gu");
+  "\\b(Leis?|Leyes?|Ley|Decreto\\s+de\\s+Necesidad\\s+y\\s+Urgencia|Decreto[-\\s]?Ley|Decretos?|DNU|Resoluç[ãa]o|Resoluci[oó]n(?:es)?|Res\\.|" +
+  "Disposici[oó]n|Disp\\.|Acordada|Ordenanza|Portaria|Medida\\s+Provis[óo]ria|Convenio\\s+Colectivo(?:\\s+de\\s+Trabajo)?|CCT|Convenios?|" +
+  "Recomendaci[oó]n|Directiva|Reglamento|Laudo|Acta)\\s*(?:N[°ºo]?\\.?\\s*)?(\\d{1,3}(?:\\.\\d{3})+|\\d{1,6})(\\s*\\/\\s*\\d{2,4})?", "gu");
 const RE_CUERPO = new RegExp(
-  "\\b(C[oó]digo\\s+(?:Civil\\s+y\\s+Comercial|Civil|Penal|Procesal\\s+\\p{L}+|Aeron[aá]utico|de\\s+Comercio|de\\s+Miner[ií]a|" +
-  "Alimentario\\s+Argentino)|Constituci[oó]n\\s+(?:Nacional|de\\s+la\\s+Naci[oó]n\\s+Argentina|Provincial)|" +
-  "Ley\\s+de\\s+Contrato\\s+de\\s+Trabajo|Ley\\s+de\\s+Riesgos\\s+del\\s+Trabajo|LCT|LRT)\\b", "gu");
+  "\\b(C[oó]digo\\s+(?:Civil\\s+y\\s+Comercial|Civil|Penal|Procesal\\s+\\p{L}+|Aeron[aá]utico|de\\s+Comercio|de\\s+Miner[ií]a|Alimentario\\s+Argentino)|" +
+  "Consolidaç[ãa]o\\s+das\\s+Leis\\s+do\\s+Trabalho|Constituci[oó]n\\s+(?:Nacional|de\\s+la\\s+Naci[oó]n\\s+Argentina|Provincial)|" +
+  "Ley\\s+de\\s+Contrato\\s+de\\s+Trabajo|Ley\\s+de\\s+Riesgos\\s+del\\s+Trabajo|LCT|LRT|CLT)\\b", "gu");
 
 const STOP = new Set(['en','el','la','los','las','un','una','unos','unas','este','esta','estos','estas','ese','esa','esos','esas',
 'aquel','aquella','otro','otra','otros','otras','mismo','misma','todo','toda','todos','todas','cada','algunos','algunas','muchos',
@@ -519,19 +679,17 @@ const STOP = new Set(['en','el','la','los','las','un','una','unos','unas','este'
 'estado','gobierno','ministerio','congreso','the','of','in','and','this','that','these','those','however','moreover','while','since',
 'after','before','during','also','thus','therefore','nuestro','nuestra','nuestros','nuestras','su','sus','mi','mis','le','les','lo',
 'se','es','son','fue','fueron','ser','estar','haber','hay','habia','sera','puede','pueden','debe','deben','fuente','elaboracion',
-'propia','ibid','ibidem','idem','vease','ver','cfr','cit']);
+'propia','ibid','ibidem','idem','vease','ver','cfr','cit','os','as','uma','nao','com','para','por','mas','dos','das','pelo','pela']);
 
-function normYear(y){
-  const t = String(y).replace(/\s+/g,'').toLowerCase();
-  if (/^\d{4}[a-h]?$/.test(t)) return t;
-  if (/^s\.?\/?f\.?$/.test(t) || /^n\.?d\.?$/.test(t)) return 's.f.';
-  if (/prensa|press|forthcoming/.test(t)) return 'en prensa';
-  return t;
-}
-/* quita las palabras capitalizadas iniciales que no son apellido,
-   respetando las partículas (De la Garza no se recorta) */
-function trimStop(authors){
-  let a = String(authors).trim().replace(/\s+/g,' ');
+const normYear = y => {
+  const s = String(y).replace(/\s+/g,'').toLowerCase();
+  if (/^\d{4}[a-h]?$/.test(s)) return s;
+  if (/^s\.?\/?[fd]\.?$/.test(s) || /^n\.?d\.?$/.test(s)) return 's.f.';
+  if (/prensa|press|prelo|forthcoming/.test(s)) return 'en prensa';
+  return s;
+};
+function trimStop(a0){
+  let a = String(a0).trim().replace(/\s+/g,' ');
   for (let g = 0; g < 6; g++){
     const m = a.match(new RegExp(`^(${LW}+)\\s+(?=\\p{Lu})`,'u'));
     if (!m) break;
@@ -539,109 +697,97 @@ function trimStop(authors){
     if (PART_SET.has(tok)) break;
     if (STOP.has(tok)) a = a.slice(m[0].length); else break;
   }
-  const first = deacc((a.split(/\s+/)[0]||'')).toLowerCase();
+  const first = deacc(a.split(/\s+/)[0]||'').toLowerCase();
   if (!a || (STOP.has(first) && !PART_SET.has(first))) return '';
   return a;
 }
-function tidyAuthors(a){
-  return String(a).replace(/\s+/g,' ').replace(/\s*,\s*et\s*al\.?/i,' et al.')
-    .replace(/\s+et\s*al\.?$/i,' et al.').replace(/\s*&\s*/g,' & ').trim().replace(/[,;]$/,'');
-}
+const tidyAuthors = a => String(a).replace(/\s+/g,' ').replace(/\s*,\s*et\s*al\.?/i,' et al.')
+  .replace(/\s+et\s*al\.?$/i,' et al.').replace(/\s*&\s*/g,' & ').trim().replace(/[,;]$/,'');
 function firstSurname(authors){
   let a = String(authors).replace(/\s+et\s+al\.?/i,'').trim();
   a = a.split(/\s*,\s*|\s+(?:y|e|and|&)\s+/)[0] || a;
   return a.replace(/\s*\[[^\]]*\]\s*/g,'').trim();
 }
-function mkHit(para, start, end, authors, year, kind, status){
-  return { id:'h'+(S.seq++), para, start, end, authors, year, kind, status };
-}
-function fragOf(h){ return (S.paras[h.para] ? S.paras[h.para].text.slice(h.start, h.end) : ''); }
+const mkHit = (para,start,end,authors,year,kind,status) =>
+  ({ id:'h'+(S.seq++), para, start, end, authors, year, kind, status });
+const fragOf = h => S.paras[h.para] ? S.paras[h.para].text.slice(h.start, h.end) : '';
 
 function detect(paras){
-  const hits = [];
-  let last = null;
-
+  const hits = []; let last = null;
   paras.forEach((p, pi) => {
-    const text = p.text;
-    const taken = [];
+    const text = p.text, taken = [];
     const busy = (s,e) => taken.some(r => s < r[1] && e > r[0]);
     const claim = (s,e) => taken.push([s,e]);
 
-    /* --- 0. normativa (primero, para que no la lean como bibliografía) --- */
     if (CFG.laws){
       let m;
+      /* si la norma viene seguida de su sigla —"Ley de Contrato de Trabajo (LCT)"—
+         absorbemos el paréntesis para no contarla dos veces */
+      const withSigla = end => {
+        const tail = text.slice(end).match(/^\s*\(\s*[\p{Lu}]{2,8}\s*\)/u);
+        return tail ? end + tail[0].length : end;
+      };
       RE_NORMA.lastIndex = 0;
       while ((m = RE_NORMA.exec(text)) !== null){
-        const label = m[0].replace(/\s+/g,' ').replace(/\s*\/\s*/,'/').trim();
-        const h = mkHit(pi, m.index, m.index + m[0].length, label, '', 'ley', 'ok');
+        const h = mkHit(pi, m.index, withSigla(m.index+m[0].length),
+          m[0].replace(/\s+/g,' ').replace(/\s*\/\s*/,'/').trim(), '', 'ley', 'ok');
         hits.push(h); claim(h.start, h.end);
       }
       RE_CUERPO.lastIndex = 0;
       while ((m = RE_CUERPO.exec(text)) !== null){
-        if (busy(m.index, m.index + m[0].length)) continue;
-        const h = mkHit(pi, m.index, m.index + m[0].length, m[0].replace(/\s+/g,' ').trim(), '', 'ley', 'ok');
+        if (busy(m.index, m.index+m[0].length)) continue;
+        const h = mkHit(pi, m.index, withSigla(m.index+m[0].length), m[0].replace(/\s+/g,' ').trim(), '', 'ley', 'ok');
         hits.push(h); claim(h.start, h.end);
       }
     }
 
-    /* --- 1. paréntesis: escaneo de unidades autor-año --- */
     const reParen = /\(([^()]{2,500})\)/g;
     let pm;
     while ((pm = reParen.exec(text)) !== null){
-      const inner = pm[1], base = pm.index + 1;
-      const covered = [];
+      const inner = pm[1], base = pm.index + 1, covered = [];
       RE_UNIT.lastIndex = 0;
       let u;
       while ((u = RE_UNIT.exec(inner)) !== null){
-        const rawAuthors = u[1];
-        const authors = tidyAuthors(trimStop(rawAuthors));
-        const shift = u[0].indexOf(authors.split(' ')[0] || rawAuthors.trim().split(' ')[0]);
+        const authors = tidyAuthors(trimStop(u[1]));
+        const firstTok = (authors.split(' ')[0] || u[1].trim().split(' ')[0]);
+        const shift = u[0].indexOf(firstTok);
         const st = base + u.index + (shift > 0 ? shift : 0);
         const en = base + u.index + u[0].length;
         covered.push([u.index, u.index + u[0].length]);
-        if (!authors || authors.length < 2) continue;
-        if (busy(st, en)) continue;
+        if (!authors || authors.length < 2 || busy(st,en)) continue;
         const h = mkHit(pi, st, en, authors, normYear(u[2]), 'paren', 'ok');
-        hits.push(h); claim(st, en); last = h;
+        hits.push(h); claim(st,en); last = h;
       }
-      /* --- restos con año pero sin patrón → dudosas --- */
-      let cursor = 0;
-      const leftovers = [];
-      covered.sort((a,b) => a[0]-b[0]).forEach(([a,b]) => { if (a > cursor) leftovers.push([cursor,a]); cursor = Math.max(cursor,b); });
-      if (cursor < inner.length) leftovers.push([cursor, inner.length]);
-      leftovers.forEach(([a,b]) => {
+      let cursor = 0; const left = [];
+      covered.sort((a,b) => a[0]-b[0]).forEach(([a,b]) => { if (a > cursor) left.push([cursor,a]); cursor = Math.max(cursor,b); });
+      if (cursor < inner.length) left.push([cursor, inner.length]);
+      left.forEach(([a,b]) => {
         const seg = inner.slice(a,b);
-        if (!/\d{4}/.test(seg)) return;
-        if (!new RegExp(UC,'u').test(seg)) return;
-        if (seg.length > 110) return;
+        if (!/\d{4}/.test(seg) || !new RegExp(UC,'u').test(seg) || seg.length > 110) return;
         if (/^\s*[,;.\s]*$/.test(seg)) return;
         if (/^[\s,;]*(?:tabla|cuadro|gr[áa]fico|figura|anexo|art)/i.test(seg)) return;
         const ym = seg.match(/\b(\d{4}[a-h]?)\b/);
         const am = trimStop(seg.replace(/\b\d{4}[a-h]?\b[\s\S]*$/,'').replace(/[,;:]\s*$/,'').trim());
         if (!ym || !am || am.length < 3) return;
-        const st = base + a + (seg.length - seg.replace(/^[\s,;]+/,'').length);
-        const en = base + b;
+        const st = base + a + (seg.length - seg.replace(/^[\s,;]+/,'').length), en = base + b;
         if (busy(st,en)) return;
         const h = mkHit(pi, st, en, tidyAuthors(am), normYear(ym[1]), 'paren', 'sug');
         hits.push(h); claim(st,en);
       });
     }
 
-    /* --- 2. narrativas --- */
     RE_NARR.lastIndex = 0;
     let nm;
     while ((nm = RE_NARR.exec(text)) !== null){
       const st0 = nm.index, en0 = nm.index + nm[0].length;
-      if (busy(st0, en0)) continue;
-      const cleaned = trimStop(nm[1]);
-      if (!cleaned) continue;
+      if (busy(st0,en0)) continue;
+      const cleaned = trimStop(nm[1]); if (!cleaned) continue;
       const shift = nm[0].indexOf(cleaned);
       const st = st0 + (shift > 0 ? shift : 0);
       const h = mkHit(pi, st, en0, tidyAuthors(cleaned), normYear(nm[2]), 'narr', 'ok');
-      hits.push(h); claim(st, en0); last = h;
+      hits.push(h); claim(st,en0); last = h;
     }
 
-    /* --- 3. anafóricas --- */
     RE_ANAPH.lastIndex = 0;
     let am2;
     while ((am2 = RE_ANAPH.exec(text)) !== null){
@@ -651,14 +797,13 @@ function detect(paras){
       hits.push(h); claim(st,en);
     }
   });
-
   hits.sort((a,b) => a.para - b.para || a.start - b.start);
   return hits;
 }
 
-/* ==========================================================================
-   2. AGRUPACIÓN
-   ========================================================================== */
+/* =========================================================================
+   AGRUPACIÓN
+   ========================================================================= */
 function groupWorks(hits){
   const map = new Map();
   hits.filter(h => h.status === 'ok' && h.kind !== 'ley').forEach(h => {
@@ -667,29 +812,23 @@ function groupWorks(hits){
       surname:firstSurname(h.authors), hits:[], bib:null, dup:false, merged:false });
     map.get(key).hits.push(h);
   });
-
   let list = [...map.values()];
   if (CFG.mergeEtal){
     const byFirst = new Map();
-    list.forEach(w => {
-      const k = slug(w.surname)+'|'+slug(w.year);
-      if (!byFirst.has(k)) byFirst.set(k, []);
-      byFirst.get(k).push(w);
-    });
+    list.forEach(w => { const k = slug(w.surname)+'|'+slug(w.year);
+      if (!byFirst.has(k)) byFirst.set(k,[]); byFirst.get(k).push(w); });
     const out = [];
-    byFirst.forEach(group => {
-      if (group.length === 1){ out.push(group[0]); return; }
-      const etal = group.filter(w => /et al\./i.test(w.authors));
-      const full = group.filter(w => !/et al\./i.test(w.authors));
+    byFirst.forEach(g => {
+      if (g.length === 1){ out.push(g[0]); return; }
+      const etal = g.filter(w => /et al\./i.test(w.authors)), full = g.filter(w => !/et al\./i.test(w.authors));
       if (etal.length && full.length === 1){
-        const t = full[0];
-        etal.forEach(e => e.hits.forEach(h => t.hits.push(h)));
-        t.merged = true; out.push(t);
-      } else { group.forEach(w => { w.dup = true; out.push(w); }); }
+        const target = full[0];
+        etal.forEach(e => e.hits.forEach(h => target.hits.push(h)));
+        target.merged = true; out.push(target);
+      } else g.forEach(w => { w.dup = true; out.push(w); });
     });
     list = out;
   }
-
   list.forEach(w => {
     w.hits.sort((a,b) => a.para - b.para || a.start - b.start);
     w.manual = S.refOverride.get(w.key) || null;
@@ -697,7 +836,6 @@ function groupWorks(hits){
   list.sort((a,b) => slug(a.surname).localeCompare(slug(b.surname)) || String(a.year).localeCompare(String(b.year)));
   return list;
 }
-
 function groupNorms(hits){
   const map = new Map();
   hits.filter(h => h.kind === 'ley').forEach(h => {
@@ -711,18 +849,20 @@ function groupNorms(hits){
   return list;
 }
 
-/* ==========================================================================
-   3. BIBTEX
-   ========================================================================== */
+/* =========================================================================
+   BIBTEX
+   ========================================================================= */
 const LATEX = [
   [/\\'\{?a\}?/g,'á'],[/\\'\{?e\}?/g,'é'],[/\\'\{?i\}?/g,'í'],[/\\'\{?o\}?/g,'ó'],[/\\'\{?u\}?/g,'ú'],
   [/\\'\{?A\}?/g,'Á'],[/\\'\{?E\}?/g,'É'],[/\\'\{?I\}?/g,'Í'],[/\\'\{?O\}?/g,'Ó'],[/\\'\{?U\}?/g,'Ú'],
-  [/\\~\{?n\}?/g,'ñ'],[/\\~\{?N\}?/g,'Ñ'],[/\\"\{?u\}?/g,'ü'],[/\\"\{?U\}?/g,'Ü'],
-  [/\\`\{?a\}?/g,'à'],[/\\`\{?e\}?/g,'è'],[/\\\^\{?e\}?/g,'ê'],[/\\c\{?c\}?/g,'ç'],
+  [/\\~\{?n\}?/g,'ñ'],[/\\~\{?N\}?/g,'Ñ'],[/\\~\{?a\}?/g,'ã'],[/\\~\{?o\}?/g,'õ'],
+  [/\\"\{?u\}?/g,'ü'],[/\\"\{?U\}?/g,'Ü'],[/\\`\{?a\}?/g,'à'],[/\\`\{?e\}?/g,'è'],
+  [/\\\^\{?e\}?/g,'ê'],[/\\\^\{?a\}?/g,'â'],[/\\\^\{?o\}?/g,'ô'],[/\\c\{?c\}?/g,'ç'],
   [/\\&/g,'&'],[/\\%/g,'%'],[/\\_/g,'_'],[/\\\$/g,'$'],[/\\#/g,'#'],
   [/\\emph\{([^}]*)\}/g,'$1'],[/\\textit\{([^}]*)\}/g,'$1'],[/--/g,'–']
 ];
-const delatex = s => { let t=String(s); LATEX.forEach(([r,v]) => t=t.replace(r,v)); return t.replace(/[{}]/g,'').replace(/\s+/g,' ').trim(); };
+const delatex = s => { let x = String(s); LATEX.forEach(([r,v]) => x = x.replace(r,v));
+  return x.replace(/[{}]/g,'').replace(/\s+/g,' ').trim(); };
 
 function parseBib(src){
   const entries = []; let i = 0;
@@ -732,10 +872,7 @@ function parseBib(src){
     const type = src.slice(at+1, ob).trim().toLowerCase();
     if (['comment','string','preamble'].includes(type)){ i = ob+1; continue; }
     let d = 0, end = -1;
-    for (let j = ob; j < src.length; j++){
-      if (src[j]==='{') d++;
-      else if (src[j]==='}'){ d--; if (!d){ end=j; break; } }
-    }
+    for (let j = ob; j < src.length; j++){ if (src[j]==='{') d++; else if (src[j]==='}'){ d--; if (!d){ end=j; break; } } }
     if (end === -1) break;
     const body = src.slice(ob+1, end); i = end+1;
     const comma = body.indexOf(',');
@@ -747,19 +884,13 @@ function parseBib(src){
       const name = raw.slice(k, eq).replace(/^[\s,]+/,'').trim().toLowerCase();
       let p = eq+1; while (p < raw.length && /\s/.test(raw[p])) p++;
       let val = '';
-      if (raw[p] === '{'){
-        let dd=0,q=p; for (; q<raw.length; q++){ if(raw[q]==='{')dd++; else if(raw[q]==='}'){dd--; if(!dd)break;} }
-        val = raw.slice(p+1,q); p=q+1;
-      } else if (raw[p] === '"'){
-        let q=p+1; while (q<raw.length && !(raw[q]==='"' && raw[q-1]!=='\\')) q++;
-        val = raw.slice(p+1,q); p=q+1;
-      } else {
-        let q=p; while (q<raw.length && raw[q] !== ',' && raw[q] !== '\n') q++;
-        val = raw.slice(p,q); p=q;
-      }
+      if (raw[p] === '{'){ let dd=0,q=p; for (; q<raw.length; q++){ if(raw[q]==='{')dd++; else if(raw[q]==='}'){dd--; if(!dd)break;} }
+        val = raw.slice(p+1,q); p = q+1; }
+      else if (raw[p] === '"'){ let q=p+1; while (q<raw.length && !(raw[q]==='"' && raw[q-1]!=='\\')) q++;
+        val = raw.slice(p+1,q); p = q+1; }
+      else { let q=p; while (q<raw.length && raw[q] !== ',' && raw[q] !== '\n') q++; val = raw.slice(p,q); p = q; }
       if (name) e.fields[name] = delatex(val);
-      const nc = raw.indexOf(',', p);
-      k = nc === -1 ? raw.length : nc+1;
+      const nc = raw.indexOf(',', p); k = nc === -1 ? raw.length : nc+1;
     }
     if (Object.keys(e.fields).length) entries.push(e);
   }
@@ -776,112 +907,255 @@ function splitAuthors(raw){
   return raw.split(/\s+and\s+/i).map(a => {
     a = a.trim(); if (!a) return null;
     if (a.includes(',')){ const [l,f] = a.split(','); return { last:l.trim(), first:(f||'').trim() }; }
-    const t = a.split(/\s+/);
-    if (t.length === 1) return { last:t[0], first:'' };
-    let idx = t.findIndex((x,i) => i>0 && /^[a-záéíóúñü']/.test(x));
-    if (idx === -1) idx = t.length-1;
-    return { last:t.slice(idx).join(' '), first:t.slice(0,idx).join(' ') };
+    const tk = a.split(/\s+/);
+    if (tk.length === 1) return { last:tk[0], first:'' };
+    let idx = tk.findIndex((x,i) => i>0 && /^[a-záéíóúñüãõç']/.test(x));
+    if (idx === -1) idx = tk.length-1;
+    return { last:tk.slice(idx).join(' '), first:tk.slice(0,idx).join(' ') };
   }).filter(Boolean);
 }
 function buildBibIndex(entries){
   const idx = new Map();
   const push = (k,e) => { if(!k) return; if(!idx.has(k)) idx.set(k,[]); idx.get(k).push(e); };
   entries.forEach(e => {
-    const people = e.authors.length ? e.authors : e.editors;
-    if (!people.length) return;
-    push(slug(people[0].last)+'|'+e.year, e);
-    people.slice(1).forEach(p => push('any:'+slug(p.last)+'|'+e.year, e));
+    const ppl = e.authors.length ? e.authors : e.editors;
+    if (!ppl.length) return;
+    push(slug(ppl[0].last)+'|'+e.year, e);
+    ppl.slice(1).forEach(p => push('any:'+slug(p.last)+'|'+e.year, e));
   });
   return idx;
+}
+/* perfil disciplinar implícito en tu propia bibliografía */
+function indexBibProfile(){
+  S.bibVenues = new Set(); S.bibSurnames = new Set();
+  S.bib.forEach(e => {
+    [e.fields.journal, e.fields.journaltitle, e.fields.booktitle, e.fields.publisher]
+      .filter(Boolean).forEach(v => { if (slug(v).length > 4) S.bibVenues.add(slug(v)); });
+    (e.authors||[]).concat(e.editors||[]).forEach(p => S.bibSurnames.add(slug(p.last)));
+  });
 }
 function matchWork(w){
   if (!S.bibIndex.size) return null;
   const sur = slug(w.surname), yF = String(w.year), yN = yF.replace(/[a-h]$/,'');
-  let c = S.bibIndex.get(sur+'|'+yF) || S.bibIndex.get(sur+'|'+yN) || S.bibIndex.get('any:'+sur+'|'+yN);
-  if (!c || !c.length) return null;
-  return { entry:c[0], ambiguous:c.length>1, alts:c };
+  const c = S.bibIndex.get(sur+'|'+yF) || S.bibIndex.get(sur+'|'+yN) || S.bibIndex.get('any:'+sur+'|'+yN);
+  return (c && c.length) ? { entry:c[0], ambiguous:c.length>1, alts:c } : null;
 }
 
-/* ==========================================================================
-   4. FORMATOS DE REFERENCIA
-   ========================================================================== */
-const initials = f => !f ? '' : f.split(/[\s.]+/).filter(Boolean).map(t => t[0].toUpperCase()+'.').join(' ');
+/* =========================================================================
+   VOCABULARIO DEL DOCUMENTO Y PALABRAS DE CONTEXTO
+   ========================================================================= */
+const tokenize = s => deacc(String(s)).toLowerCase().replace(/[^a-z0-9áéíóúñü\s]/g,' ')
+  .split(/\s+/).filter(w => w.length >= 5 && !STOP.has(w) && !/^\d+$/.test(w));
+
+function buildVocab(){
+  const f = new Map();
+  S.paras.forEach(p => tokenize(p.text).forEach(w => f.set(w, (f.get(w)||0)+1)));
+  /* nos quedamos con los términos frecuentes: son el campo semántico de la tesis */
+  S.vocab = new Map([...f.entries()].filter(([,n]) => n >= 3).sort((a,b) => b[1]-a[1]).slice(0, 400));
+}
+/* términos que rodean a esta cita en particular */
+function ctxWords(w, n = 5){
+  if (!CFG.useCtx) return [];
+  const bag = new Map();
+  const own = new Set(slug(w.authors).match(/[a-z]+/g) || []);
+  w.hits.slice(0, 4).forEach(h => {
+    const txt = S.paras[h.para] ? S.paras[h.para].text : '';
+    const seg = txt.slice(Math.max(0, h.start-240), Math.min(txt.length, h.end+240));
+    tokenize(seg).forEach(t2 => {
+      if (own.has(t2)) return;
+      bag.set(t2, (bag.get(t2)||0) + 1 + (S.vocab.has(t2) ? 1 : 0));
+    });
+  });
+  return [...bag.entries()].sort((a,b) => b[1]-a[1]).slice(0, n).map(x => x[0]);
+}
+
+/* =========================================================================
+   FORMATOS DE REFERENCIA
+   ========================================================================= */
+const initials = f => !f ? '' : f.split(/[\s.]+/).filter(Boolean).map(x => x[0].toUpperCase()+'.').join(' ');
 function joinNames(names, conj){
   if (!names.length) return '';
   if (names.length === 1) return names[0];
   if (names.length > 20) return names.slice(0,19).join(', ')+', … '+names[names.length-1];
   return names.slice(0,-1).join(', ')+` ${conj} `+names[names.length-1];
 }
-const apaNames  = (ppl,c) => joinNames(ppl.map(p => initials(p.first) ? `${p.last}, ${initials(p.first)}` : p.last), c);
-const fullNames = (ppl,c) => joinNames(ppl.map((p,i) => i===0 ? (p.first ? `${p.last}, ${p.first}` : p.last) : (p.first ? `${p.first} ${p.last}` : p.last)), c);
-function apaEds(ppl,c){
-  if (!ppl.length) return '';
-  const n = joinNames(ppl.map(p => initials(p.first) ? `${initials(p.first)} ${p.last}` : p.last), c);
-  return `${n} (${ppl.length>1?'Eds.':'Ed.'})`;
-}
+const apaNames = (ppl,c) => joinNames(ppl.map(p => initials(p.first) ? `${p.last}, ${initials(p.first)}` : p.last), c);
+const fullNames = (ppl,c) => joinNames(ppl.map((p,i) => i===0
+  ? (p.first ? `${p.last}, ${p.first}` : p.last) : (p.first ? `${p.first} ${p.last}` : p.last)), c);
 
-function formatRef(entry, year, cfg){
-  const f = entry.fields, t = entry.type, c = cfg.conj;
-  const Y = year || entry.year || 's.f.';
-  const T = f.title || '[Sin título]';
+function formatRef(entry, year, style, lang){
+  const L = REFL[lang] || REFL.es, c = L.conj;
+  const f = entry.fields || {}, ty = entry.type;
+  const Y = year || entry.year || L.nd;
+  const T = f.title || '—';
   const em = s => `<em>${esc(s)}</em>`;
   const pages = f.pages ? f.pages.replace(/--/g,'–') : '';
   const jour = f.journal || f.journaltitle || '';
   const book = f.booktitle || '';
-  const pub  = f.publisher || f.institution || f.organization || f.school || '';
-  const doi  = f.doi ? (f.doi.startsWith('http') ? f.doi : 'https://doi.org/'+f.doi) : (f.url || '');
-  const people = entry.authors.length ? entry.authors : entry.editors;
+  const pub = f.publisher || f.institution || f.organization || f.school || '';
+  const doi = f.doi ? (String(f.doi).startsWith('http') ? f.doi : 'https://doi.org/'+f.doi) : (f.url || '');
+  const ppl = entry.authors && entry.authors.length ? entry.authors : (entry.editors||[]);
   let out;
 
-  if (cfg.style === 'mla9'){
-    const A = fullNames(people, c) + (!entry.authors.length && entry.editors.length ? ', editor' : '');
-    if (t==='article'){ out = `${esc(A)}. "${esc(T)}." ${jour?em(jour):''}${f.volume?`, vol. ${esc(f.volume)}`:''}${f.number?`, no. ${esc(f.number)}`:''}, ${esc(Y)}${pages?`, pp. ${esc(pages)}`:''}.`; }
-    else if (t==='incollection'||t==='inbook'){ out = `${esc(A)}. "${esc(T)}." ${book?em(book):''}${entry.editors.length?`, editado por ${esc(fullNames(entry.editors,c))}`:''}, ${esc(pub)}, ${esc(Y)}${pages?`, pp. ${esc(pages)}`:''}.`; }
-    else { out = `${esc(A)}. ${em(T)}. ${esc(pub)}, ${esc(Y)}.`; }
+  if (style === 'mla9'){
+    const A = fullNames(ppl, c);
+    if (ty==='article') out = `${esc(A)}. "${esc(T)}." ${jour?em(jour):''}${f.volume?`, vol. ${esc(f.volume)}`:''}${f.number?`, no. ${esc(f.number)}`:''}, ${esc(Y)}${pages?`, ${L.pp} ${esc(pages)}`:''}.`;
+    else if (ty==='incollection'||ty==='inbook') out = `${esc(A)}. "${esc(T)}." ${book?em(book):''}, ${esc(pub)}, ${esc(Y)}${pages?`, ${L.pp} ${esc(pages)}`:''}.`;
+    else out = `${esc(A)}. ${em(T)}. ${esc(pub)}, ${esc(Y)}.`;
     if (doi) out += ` ${esc(doi)}.`;
-  }
-  else if (cfg.style === 'chicago'){
-    const A = fullNames(people, c);
-    if (t==='article'){ out = `${esc(A)}. ${esc(Y)}. "${esc(T)}." ${jour?em(jour):''}${f.volume?` ${esc(f.volume)}`:''}${f.number?` (${esc(f.number)})`:''}${pages?`: ${esc(pages)}`:''}.`; }
-    else if (t==='incollection'||t==='inbook'){ out = `${esc(A)}. ${esc(Y)}. "${esc(T)}." En ${book?em(book):''}${entry.editors.length?`, editado por ${esc(fullNames(entry.editors,c))}`:''}${pages?`, ${esc(pages)}`:''}. ${esc(pub)}.`; }
-    else { out = `${esc(A)}. ${esc(Y)}. ${em(T)}. ${esc(pub)}.`; }
+  } else if (style === 'chicago'){
+    const A = fullNames(ppl, c);
+    if (ty==='article') out = `${esc(A)}. ${esc(Y)}. "${esc(T)}." ${jour?em(jour):''}${f.volume?` ${esc(f.volume)}`:''}${f.number?` (${esc(f.number)})`:''}${pages?`: ${esc(pages)}`:''}.`;
+    else if (ty==='incollection'||ty==='inbook') out = `${esc(A)}. ${esc(Y)}. "${esc(T)}." ${L.in} ${book?em(book):''}${pages?`, ${esc(pages)}`:''}. ${esc(pub)}.`;
+    else out = `${esc(A)}. ${esc(Y)}. ${em(T)}. ${esc(pub)}.`;
     if (doi) out += ` ${esc(doi)}.`;
-  }
-  else { /* APA 7 */
-    const A = apaNames(people, c) + (!entry.authors.length && entry.editors.length ? ' (Ed.)' : '');
+  } else {
+    const A = apaNames(ppl, c);
     const link = doi ? ` ${esc(doi)}` : '';
-    if (t==='article'||t==='periodical'){
+    if (ty==='article'||ty==='periodical'){
       out = `${esc(A)} (${esc(Y)}). ${esc(T)}. ${jour?em(jour):''}${f.volume?', '+em(f.volume):''}${f.number?`(${esc(f.number)})`:''}${pages?`, ${esc(pages)}`:''}.${link}`;
-    } else if (t==='incollection'||t==='inbook'||t==='chapter'){
-      const eds = apaEds(entry.editors, c);
-      out = `${esc(A)} (${esc(Y)}). ${esc(T)}. En ${eds?esc(eds)+', ':''}${book?em(book):''}${pages?` (pp. ${esc(pages)})`:''}. ${esc(pub)}.${link}`;
-    } else if (t==='inproceedings'||t==='conference'){
-      out = `${esc(A)} (${esc(Y)}). ${esc(T)} [Ponencia]. ${book?em(book):''}${pub?'. '+esc(pub):''}.${link}`;
-    } else if (t==='phdthesis'||t==='mastersthesis'||t==='thesis'){
-      const kind = t==='phdthesis'?'Tesis doctoral':(t==='mastersthesis'?'Tesis de maestría':(f.type||'Tesis'));
+    } else if (ty==='incollection'||ty==='inbook'||ty==='chapter'){
+      const eds = (entry.editors||[]).length
+        ? `${joinNames((entry.editors).map(p => initials(p.first)?`${initials(p.first)} ${p.last}`:p.last), c)} (${entry.editors.length>1?L.eds:L.ed}), ` : '';
+      out = `${esc(A)} (${esc(Y)}). ${esc(T)}. ${L.in} ${esc(eds)}${book?em(book):''}${pages?` (${L.pp} ${esc(pages)})`:''}. ${esc(pub)}.${link}`;
+    } else if (ty==='inproceedings'||ty==='conference'){
+      out = `${esc(A)} (${esc(Y)}). ${esc(T)} [${L.paper}]. ${book?em(book):''}${pub?'. '+esc(pub):''}.${link}`;
+    } else if (ty==='phdthesis'||ty==='mastersthesis'||ty==='thesis'){
+      const kind = ty==='phdthesis'?L.phd:(ty==='mastersthesis'?L.ms:(f.type||L.thesis));
       out = `${esc(A)} (${esc(Y)}). ${em(T)} [${esc(kind)}, ${esc(f.school||f.institution||'s/i')}].${link}`;
-    } else if (t==='techreport'||t==='report'){
+    } else if (ty==='techreport'||ty==='report'){
       out = `${esc(A)} (${esc(Y)}). ${em(T)}${f.number?` (${esc(f.number)})`:''}. ${esc(pub)}.${link}`;
-    } else if (t==='online'||t==='misc'||t==='electronic'){
-      const site = f.howpublished || pub;
-      out = `${esc(A)} (${esc(Y)}). ${em(T)}.${site?' '+esc(site)+'.':''}${link}`;
+    } else if (ty==='online'||ty==='misc'||ty==='electronic'){
+      out = `${esc(A)} (${esc(Y)}). ${em(T)}.${(f.howpublished||pub)?' '+esc(f.howpublished||pub)+'.':''}${link}`;
     } else {
-      out = `${esc(A)} (${esc(Y)}). ${em(T)}${f.edition?` (${esc(f.edition)} ed.)`:''}. ${esc(pub)}.${link}`;
+      out = `${esc(A)} (${esc(Y)}). ${em(T)}${f.edition?` (${esc(f.edition)} ${L.edn})`:''}. ${esc(pub)}.${link}`;
     }
   }
   return out.replace(/\s+\./g,'.').replace(/\.{2,}/g,'.').replace(/\s{2,}/g,' ').replace(/,\s*\./g,'.').trim();
 }
-
-/* plantilla editable para normativa */
-function normTemplate(label){
-  if (CFG.style === 'chicago') return `${label}. [Año]. [Título de la norma]. [Boletín Oficial, fecha].`;
-  if (CFG.style === 'mla9') return `${label}. [Título de la norma]. [Año]. [Boletín Oficial].`;
+const fmt = (entry, year) => formatRef(entry, year, CFG.style, CFG.refLang);
+function normTemplate(label, style, lang){
+  const L = lang || CFG.refLang;
+  if (L === 'en') return `${label} of [year]. [Title of the statute]. [Date]. [Official gazette].`;
+  if (L === 'pt') return `${label} de [ano]. [Título da norma]. [Data]. [Diário Oficial].`;
   return `${label} de [año]. [Título de la norma]. [Fecha de sanción]. Boletín Oficial [N°].`;
 }
 
-/* ==========================================================================
-   5. RENDER DEL MANUSCRITO
-   ========================================================================== */
+/* =========================================================================
+   FUENTES (libres, sin clave, opcionales)
+   ========================================================================= */
+const mkEntry = (type, authors, year, fields, src, lang) =>
+  ({ type, authors, editors:[], year:String(year||''), fields, _src:src, _lang:lang||'' });
+const splitDisplay = name => {
+  const tk = String(name).trim().split(/\s+/);
+  return tk.length === 1 ? { last:tk[0], first:'' } : { last:tk[tk.length-1], first:tk.slice(0,-1).join(' ') };
+};
+const jget = async u => { const r = await fetch(u); if (!r.ok) throw new Error(r.status); return r.json(); };
+
+async function qCrossref(sur, year, kw){
+  const u = `https://api.crossref.org/works?query.author=${encodeURIComponent(sur)}`
+    + (kw.length ? `&query.bibliographic=${encodeURIComponent(kw.join(' '))}` : '')
+    + (/^\d{4}$/.test(year) ? `&filter=from-pub-date:${year}-01-01,until-pub-date:${year}-12-31` : '')
+    + `&rows=6&select=title,author,issued,container-title,volume,issue,page,publisher,DOI,type,language`;
+  const j = await jget(u);
+  const map = {'journal-article':'article','book':'book','book-chapter':'incollection','proceedings-article':'inproceedings','report':'techreport','dissertation':'phdthesis'};
+  return (j.message?.items||[]).map(it => mkEntry(map[it.type]||'misc',
+    (it.author||[]).map(a => ({last:a.family||a.name||'', first:a.given||''})).filter(a=>a.last),
+    it.issued?.['date-parts']?.[0]?.[0] || '',
+    { title:[].concat(it.title||[])[0]||'', journal:[].concat(it['container-title']||[])[0]||'',
+      booktitle:[].concat(it['container-title']||[])[0]||'', volume:it.volume||'', number:it.issue||'',
+      pages:it.page||'', publisher:it.publisher||'', doi:it.DOI||'' }, 'Crossref', (it.language||'').slice(0,2)));
+}
+async function qOpenAlex(sur, year, kw){
+  const build = withArea => {
+    const f = [`raw_author_name.search:${sur}`];
+    if (/^\d{4}$/.test(year)) f.push(`publication_year:${year}`);
+    if (withArea && AREAS[CFG.area] && AREAS[CFG.area].length)
+      f.push('primary_topic.field.id:' + AREAS[CFG.area].map(n => 'fields/'+n).join('|'));
+    if (CFG.pubLang) f.push('language:' + CFG.pubLang);
+    return `https://api.openalex.org/works?filter=${encodeURIComponent(f.join(','))}&per-page=6`;
+  };
+  let j;
+  try { j = await jget(build(true)); }
+  catch(e){ j = await jget(build(false)); }        // si el filtro de área falla, buscamos sin él
+  if (!(j.results||[]).length && (AREAS[CFG.area]||[]).length) { try { j = await jget(build(false)); } catch(e){} }
+  const map = {'article':'article','book-chapter':'incollection','book':'book','dissertation':'phdthesis','report':'techreport'};
+  return (j.results||[]).map(it => {
+    const loc = it.primary_location?.source?.display_name || '';
+    return mkEntry(map[it.type]||'misc',
+      (it.authorships||[]).map(a => splitDisplay(a.author?.display_name || a.raw_author_name || '')).filter(a=>a.last),
+      it.publication_year||'',
+      { title:it.title||it.display_name||'', journal:loc, booktitle:loc,
+        volume:it.biblio?.volume||'', number:it.biblio?.issue||'',
+        pages:[it.biblio?.first_page,it.biblio?.last_page].filter(Boolean).join('–'),
+        publisher:it.primary_location?.source?.host_organization_name||'',
+        doi:(it.doi||'').replace('https://doi.org/','') }, 'OpenAlex', it.language||'');
+  });
+}
+async function qDoaj(sur, year, kw){
+  let q = `bibjson.author.name:"${sur}"` + (/^\d{4}$/.test(year) ? ` AND bibjson.year:${year}` : '');
+  const j = await jget(`https://doaj.org/api/search/articles/${encodeURIComponent(q)}?pageSize=6`);
+  return (j.results||[]).map(r => {
+    const b = r.bibjson||{}, doi = (b.identifier||[]).find(i => i.type==='doi');
+    return mkEntry('article', (b.author||[]).map(a => splitDisplay(a.name||'')).filter(a=>a.last), b.year||'',
+      { title:b.title||'', journal:b.journal?.title||'', volume:b.journal?.volume||'', number:b.journal?.number||'',
+        pages:[b.start_page,b.end_page].filter(Boolean).join('–'), publisher:b.journal?.publisher||'',
+        doi:doi?doi.id:'' }, 'DOAJ', (b.journal?.language||[])[0]||'');
+  });
+}
+async function qOpenLibrary(sur, year, kw){
+  const q = `author:"${sur}"` + (/^\d{4}$/.test(year) ? ` first_publish_year:${year}` : '')
+          + (kw.length ? ' ' + kw.slice(0,2).join(' ') : '');
+  const j = await jget(`https://openlibrary.org/search.json?q=${encodeURIComponent(q)}&limit=6&fields=title,author_name,first_publish_year,publisher,language`);
+  return (j.docs||[]).map(d => mkEntry('book', (d.author_name||[]).map(splitDisplay), d.first_publish_year||'',
+    { title:d.title||'', publisher:(d.publisher||[])[0]||'' }, 'Open Library',
+    ({spa:'es',eng:'en',por:'pt'})[(d.language||[])[0]] || ''));
+}
+const QFN = { crossref:qCrossref, openalex:qOpenAlex, doaj:qDoaj, openlibrary:qOpenLibrary };
+
+/* puntuar en vez de filtrar: si el orden se equivoca, la buena sigue estando */
+function scoreCand(e, w, kw){
+  const target = slug(w.surname), yN = String(w.year).replace(/[a-h]$/,'');
+  let s = 0;
+  if (String(e.year) === yN) s += 4; else if (Math.abs(+e.year - +yN) === 1) s += 1;
+  if (slug((e.authors[0]||{}).last||'') === target) s += 4;
+  else if (e.authors.some(a => slug(a.last) === target)) s += 2;
+  const venue = slug(e.fields.journal || e.fields.booktitle || '');
+  if (venue && S.bibVenues.has(venue)) s += 2.5;
+  if (slug(e.fields.publisher||'') && S.bibVenues.has(slug(e.fields.publisher))) s += 1.5;
+  let co = 0;
+  e.authors.forEach(a => { if (slug(a.last) !== target && S.bibSurnames.has(slug(a.last))) co++; });
+  s += Math.min(co, 2) * 1.2;
+  const tt = new Set(tokenize(e.fields.title || ''));
+  let voc = 0, ctx = 0;
+  tt.forEach(x => { if (S.vocab.has(x)) voc++; if (kw.includes(x)) ctx++; });
+  s += Math.min(voc, 4) * 0.7 + Math.min(ctx, 3) * 1.3;
+  if (e._lang && CFG.pubLang && e._lang === CFG.pubLang) s += 1;
+  else if (e._lang && !CFG.pubLang && e._lang === CFG.refLang) s += 0.5;
+  if (e.fields.doi) s += 0.5;
+  if (!e.fields.title) s -= 5;
+  return s;
+}
+async function lookup(w){
+  const sur = w.surname, year = String(w.year).replace(/[a-h]$/,'');
+  const kw = ctxWords(w);
+  const active = Object.keys(CFG.sources).filter(k => CFG.sources[k]);
+  const res = await Promise.allSettled(active.map(k => QFN[k](sur, year, kw)));
+  const seen = new Set(), out = [];
+  res.forEach(r => { if (r.status !== 'fulfilled') return;
+    r.value.forEach(e => {
+      const k = e.fields.doi ? slug(e.fields.doi) : slug(e.fields.title)+e.year;
+      if (!k || seen.has(k)) return; seen.add(k); out.push(e);
+    });
+  });
+  out.forEach(e => e._score = scoreCand(e, w, kw));
+  out.sort((a,b) => b._score - a._score);
+  return out.filter(e => e._score > 0).slice(0, 8);
+}
+
+/* =========================================================================
+   RENDER DEL MANUSCRITO
+   ========================================================================= */
 function renderDoc(){
   const doc = $('doc');
   if (!S.paras.length){ doc.innerHTML=''; return; }
@@ -889,8 +1163,7 @@ function renderDoc(){
   const byPara = new Map();
   S.hits.forEach(h => { if(!byPara.has(h.para)) byPara.set(h.para,[]); byPara.get(h.para).push(h); });
   const resolved = new Set();
-  S.works.forEach(w => { if (w.manual || w.bib) w.hits.forEach(h => resolved.add(h.id)); });
-
+  S.works.forEach(w => { if (refOf(w)) w.hits.forEach(h => resolved.add(h.id)); });
   doc.innerHTML = S.paras.map((p,i) => {
     const marks = (byPara.get(i)||[]).slice().sort((a,b)=>a.start-b.start);
     let out='', cur=0;
@@ -909,234 +1182,357 @@ function renderDoc(){
   }).join('');
   requestAnimationFrame(drawRuler);
 }
-
 function drawRuler(){
   const ruler = $('ruler');
-  [...ruler.querySelectorAll('.tick')].forEach(t=>t.remove());
+  [...ruler.querySelectorAll('.tick')].forEach(x => x.remove());
   const total = $('scroller').scrollHeight; if (!total) return;
   const H = ruler.clientHeight;
   document.querySelectorAll('mark.cit').forEach(m => {
     const top = m.offsetTop + (m.offsetParent ? m.offsetParent.offsetTop : 0);
-    const t = document.createElement('div');
-    t.className = 'tick' + (m.classList.contains('is-ley') ? ' is-ley'
+    const el = document.createElement('div');
+    el.className = 'tick' + (m.classList.contains('is-ley') ? ' is-ley'
       : m.classList.contains('is-sug') ? ' is-sug'
-      : m.classList.contains('is-done') ? ' is-done'
-      : (S.bib.length ? ' is-open' : ''));
-    t.style.top = (Math.round((top/total)*(H-12))+6)+'px';
-    t.title = m.textContent;
-    t.onclick = () => jumpTo(m.dataset.hit);
-    ruler.appendChild(t);
+      : m.classList.contains('is-done') ? ' is-done' : (S.bib.length ? ' is-open' : ''));
+    el.style.top = (Math.round((top/total)*(H-12))+6)+'px';
+    el.title = m.textContent;
+    el.onclick = () => jumpTo(m.dataset.hit);
+    ruler.appendChild(el);
   });
 }
 function jumpTo(id){
   const el = document.querySelector(`mark[data-hit="${id}"]`); if (!el) return;
   el.scrollIntoView({behavior:'smooth', block:'center'});
-  document.querySelectorAll('mark.is-active').forEach(m=>m.classList.remove('is-active'));
-  el.classList.add('is-active'); setTimeout(()=>el.classList.remove('is-active'), 2400);
+  document.querySelectorAll('mark.is-active').forEach(m => m.classList.remove('is-active'));
+  el.classList.add('is-active'); setTimeout(() => el.classList.remove('is-active'), 2400);
   if (window.innerWidth <= 900) $('panel').classList.add('is-hidden');
 }
+function contextOf(h){
+  const txt = S.paras[h.para] ? S.paras[h.para].text : ''; if (!txt) return '';
+  let a = h.start, b = h.end;
+  const back = txt.slice(Math.max(0, a-300), a), mb = back.lastIndexOf('. ');
+  a = mb === -1 ? Math.max(0, a-300) : Math.max(0, a-300) + mb + 2;
+  const fwd = txt.slice(b, b+300), mf = fwd.indexOf('. ');
+  b = mf === -1 ? Math.min(txt.length, b+300) : b + mf + 1;
+  return (a>0?'… ':'') + esc(txt.slice(a, h.start)) + `<mark>${esc(txt.slice(h.start,h.end))}</mark>`
+       + esc(txt.slice(h.end, b)) + (b < txt.length ? ' …' : '');
+}
 
-/* ==========================================================================
-   6. PANEL
-   ========================================================================== */
+/* =========================================================================
+   PANEL
+   ========================================================================= */
+const refOf = w => w.manual || (w.bib ? fmt(w.bib, w.year) : null);
+const originOf = w => w.manual ? (S.origin.get(w.key)==='auto'?'auto':'mano') : (w.bib ? 'bib' : null);
+const pendingWorks = () => S.works.filter(w => !refOf(w));
+const iconBtn = (act, key, icon, cls='') =>
+  `<button class="ico ${cls}" ${act}="${key}" title="${esc(t(icon.k))}" aria-label="${esc(t(icon.k))}">${ICON[icon.i]}</button>`;
+
 function recount(){
   S.works = groupWorks(S.hits);
   S.norms = groupNorms(S.hits);
   S.works.forEach(w => {
-    if (w.manual) return;
+    if (w.manual){ w.bib = (matchWork(w)||{}).entry || null; return; }
     const m = matchWork(w);
     w.bib = m ? m.entry : null; w.ambiguous = m ? m.ambiguous : false; w.alts = m ? m.alts : null;
   });
   const sug = S.hits.filter(h => h.status==='sug').length;
-  const ok = S.works.filter(w => w.manual || w.bib).length;
+  const ok = S.works.filter(w => refOf(w)).length;
   $('counters').innerHTML =
-    `<div class="count"><b>${S.works.length}</b><span>obras citadas</span></div>` +
-    `<div class="count"><b>${S.hits.filter(h=>h.status==='ok'&&h.kind!=='ley').length}</b><span>menciones</span></div>` +
-    (S.norms.length ? `<div class="count count--ley"><b>${S.norms.length}</b><span>normas</span></div>` : '') +
-    (sug ? `<div class="count count--gap"><b>${sug}</b><span>a revisar</span></div>` : '') +
-    ((S.bib.length||ok) ? `<div class="count count--ok"><b>${ok}/${S.works.length}</b><span>con referencia</span></div>` : '');
+    `<div class="count"><b>${S.works.length}</b><span>${t('c_works')}</span></div>` +
+    `<div class="count"><b>${S.hits.filter(h=>h.status==='ok'&&h.kind!=='ley').length}</b><span>${t('c_mentions')}</span></div>` +
+    (S.norms.length ? `<div class="count count--ley"><b>${S.norms.length}</b><span>${t('c_norms')}</span></div>` : '') +
+    (sug ? `<div class="count count--gap"><b>${sug}</b><span>${t('c_review')}</span></div>` : '') +
+    ((S.bib.length||ok) ? `<div class="count count--ok"><b>${ok}/${S.works.length}</b><span>${t('c_withref')}</span></div>` : '');
+  const pend = pendingWorks().length;
+  $('tabFind').innerHTML = t('tab_find') + (pend ? `<span class="dot">${pend}</span>` : '');
 }
-const refOf = w => w.manual || (w.bib ? formatRef(w.bib, w.year, CFG) : null);
 
 function renderPanel(){
   recount();
-  const body = $('panelBody'), foot = $('panelFoot');
-  $('qCitas').classList.toggle('hidden', S.tab!=='citas');
-  $('qBiblio').classList.toggle('hidden', S.tab!=='biblio');
-  $('biblioActions').classList.toggle('hidden', S.tab!=='biblio');
-
-  if (S.tab === 'citas') renderCitas(body, foot);
-  else renderBiblio(body, foot);
-  bindPanel();
+  $('subList').classList.toggle('hidden', S.tab!=='list');
+  $('subFind').classList.toggle('hidden', S.tab!=='find');
+  $('subExp').classList.toggle('hidden', S.tab!=='exp');
+  if (S.tab === 'list') renderList();
+  else if (S.tab === 'find') renderFind();
+  else renderExport();
   renderDoc();
   saveSoon();
 }
 
-function renderCitas(body, foot){
-  const q = slug($('qCitas').value);
+/* ------------------------------------------------------------ pestaña LISTA */
+function renderList(){
+  const body = $('panelBody'), foot = $('panelFoot');
+  const q = slug($('qList').value);
   const hit = s => !q || slug(s).includes(q);
   if (!S.hits.length){
-    body.innerHTML = `<p class="blank">Todavía no hay nada. Cargá un .docx o pegá texto y las citas aparecen acá, deduplicadas por autor y año.</p>`;
-    foot.innerHTML = ''; return;
+    body.innerHTML = `<p class="blank">${esc(t('f_none_p'))}</p>`; foot.innerHTML=''; return;
   }
-  const sugs = S.hits.filter(h => h.status==='sug' && hit(h.authors+' '+h.year+' '+fragOf(h)));
-  const works = S.works.filter(w => hit(w.authors+' '+w.year));
+  const sugs = S.hits.filter(h => h.status==='sug' && hit(h.authors+h.year+fragOf(h)));
+  const works = S.works.filter(w => hit(w.authors+w.year));
   const norms = S.norms.filter(n => hit(n.label));
   let html = '';
 
   if (sugs.length){
-    html += `<div class="section-head"><span>Dudosas — confirmá o descartá</span><span>${sugs.length}</span></div>`;
+    html += `<div class="section-head"><span>${esc(t('sec_doubtful'))}</span><span>${sugs.length}</span></div>`;
     sugs.forEach(h => {
-      html += `<div class="ficha is-sug">
-        <div class="ficha-top"><div class="ficha-key">${esc(h.authors)}, ${esc(h.year)}</div></div>
-        <div class="ficha-frag">“${esc(fragOf(h))}”</div>
-        <div class="ficha-acts">
-          <button class="btn btn--mini" data-jump="${h.id}">Ver en el texto</button>
-          <button class="btn btn--mini btn--keep" data-confirm="${h.id}">Conservar cita</button>
-          <button class="btn btn--mini btn--drop" data-drop="${h.id}">Quitar cita</button>
-        </div></div>`;
+      html += `<div class="ficha is-sug"><div class="fr">
+        <span class="fk">${esc(h.authors)}, ${esc(h.year)}</span>
+        <span class="fa">
+          ${iconBtn('data-jump', h.id, {i:'eye', k:'a_view'})}
+          ${iconBtn('data-confirm', h.id, {i:'check', k:'a_keep'}, 'i-keep')}
+          ${iconBtn('data-drop', h.id, {i:'cross', k:'a_drop'}, 'i-drop')}
+        </span></div>
+        <div class="ffrag">“${esc(fragOf(h))}”</div></div>`;
     });
   }
 
-  html += `<div class="section-head${sugs.length?' gap':''}"><span>Obras citadas</span><span>${works.length}</span></div>`;
-  if (!works.length) html += `<p class="blank">Nada que coincida.</p>`;
+  html += `<div class="section-head${sugs.length?' gap':''}"><span>${esc(t('sec_works'))}</span><span>${works.length}</span></div>`;
+  if (!works.length) html += `<p class="blank">—</p>`;
   works.forEach(w => {
-    const h0 = w.hits[0];
-    html += `<div class="ficha ${refOf(w)?'is-done':(S.bib.length?'is-open':'')}">
-      <div class="ficha-top">
-        <div class="ficha-key">${esc(w.authors)}, ${esc(w.year)}</div>
-        <div class="ficha-n">${w.hits.length}×</div>
-      </div>
-      <div class="ficha-frag">“${esc(fragOf(h0))}”</div>
-      ${w.merged ? `<div class="ficha-note">Se unificó con la forma “et al.”.</div>`:''}
-      ${w.dup ? `<div class="ficha-warn">Posible duplicado: otra obra del mismo autor y año con distinta lista de autores.</div>`:''}
-      <div class="ficha-acts">
-        <button class="btn btn--mini" data-jump="${h0.id}">Ver en el texto</button>
-        <button class="btn btn--mini btn--ghost" data-editfrag="${h0.id}">Editar</button>
-        <button class="btn btn--mini btn--drop" data-killwork="${w.key}">Quitar</button>
-      </div></div>`;
+    const h0 = w.hits[0], frag = fragOf(h0);
+    /* el fragmento solo aporta cuando difiere de la cita interpretada */
+    const shows = slug(frag) !== slug(w.authors + w.year);
+    html += `<div class="ficha ${refOf(w)?'is-done':(S.bib.length?'is-open':'')}"><div class="fr">
+      <span class="fk">${esc(w.authors)}, ${esc(w.year)}</span>
+      <span class="fn">${w.hits.length}×</span>
+      <span class="fa">
+        ${iconBtn('data-jump', h0.id, {i:'eye', k:'a_view'})}
+        ${iconBtn('data-editfrag', h0.id, {i:'pencil', k:'a_edit'})}
+        ${iconBtn('data-killwork', w.key, {i:'trash', k:'a_remove'}, 'i-drop')}
+      </span></div>
+      ${shows ? `<div class="ffrag">“${esc(frag)}”</div>` : ''}
+      ${w.merged ? `<div class="fnote">${esc(t('merged'))}</div>` : ''}
+      ${w.dup ? `<div class="fwarn">${esc(t('dup'))}</div>` : ''}</div>`;
   });
 
   if (S.norms.length){
-    html += `<div class="section-head gap"><span>Normativa citada</span><span>${norms.length}</span></div>`;
+    html += `<div class="section-head gap"><span>${esc(t('sec_norms'))}</span><span>${norms.length}</span></div>`;
     norms.forEach(n => {
-      html += `<div class="ficha is-ley">
-        <div class="ficha-top"><div class="ficha-key">${esc(n.label)}</div><div class="ficha-n">${n.hits.length}×</div></div>
-        <div class="ficha-acts">
-          <button class="btn btn--mini" data-jump="${n.hits[0].id}">Ver en el texto</button>
-          <button class="btn btn--mini btn--drop" data-killnorm="${n.key}">Quitar</button>
-        </div></div>`;
+      html += `<div class="ficha is-ley"><div class="fr">
+        <span class="fk">${esc(n.label)}</span><span class="fn">${n.hits.length}×</span>
+        <span class="fa">
+          ${iconBtn('data-jump', n.hits[0].id, {i:'eye', k:'a_view'})}
+          ${iconBtn('data-killnorm', n.key, {i:'trash', k:'a_remove'}, 'i-drop')}
+        </span></div></div>`;
     });
   }
   body.innerHTML = html;
-
-  const plain = S.works.map(w => `${w.authors}, ${w.year}`).join('\n');
-  foot.innerHTML = `<button class="btn btn--key" id="copyList">Copiar lista autor-año</button>`;
-  $('copyList').onclick = () => copyText(plain, `${S.works.length} obras copiadas`);
+  foot.innerHTML = `<button class="btn btn--key" id="copyList">${ICON.copy}${esc(t('copy_list'))}</button>`;
+  $('copyList').onclick = () => copyText(S.works.map(w => `${w.authors}, ${w.year}`).join('\n'),
+    t('copied_n', S.works.length));
+  bindCommon(body);
 }
 
-const originOf = w => w.manual ? (S.origin.get(w.key) === 'auto' ? 'auto' : 'mano') : (w.bib ? 'bib' : null);
-const BADGE = { bib:['b-bib','de tu .bib'], auto:['b-auto','encontrada'], mano:['b-mano','a mano'] };
+/* ----------------------------------------------------------- pestaña BUSCAR */
+function findQueue(){ return S.works; }
+function renderFind(){
+  const body = $('panelBody'), foot = $('panelFoot'), sub = $('subFind');
+  const q = findQueue();
+  foot.innerHTML = '';
+  if (!q.length){
+    sub.innerHTML = `<div class="nav"><div class="who"><b>${esc(t('f_none_h'))}</b></div></div>`;
+    body.innerHTML = `<p class="blank">${esc(t('f_none_p'))}</p>`; return;
+  }
+  if (S.findI >= q.length) S.findI = q.length - 1;
+  if (S.findI < 0) S.findI = 0;
+  const w = q[S.findI];
 
-function renderBiblio(body, foot){
-  const q = slug($('qBiblio').value);
-  const done = [], open = [];
-  S.works.forEach(w => (refOf(w) ? done : open).push(w));
-  done.sort((a,b) => stripTags(refOf(a)).localeCompare(stripTags(refOf(b)),'es'));
+  sub.innerHTML = `<div class="nav">
+      <button class="arrow" id="fPrev" ${S.findI===0?'disabled':''} title="${esc(t('f_prev'))}">${ICON.left}</button>
+      <div class="who"><b>${esc(w.authors)}, ${esc(w.year)}</b>
+        <span>${esc(t('f_of', S.findI+1, q.length))} · ${esc(t('f_mentions', w.hits.length))}</span></div>
+      <button class="arrow" id="fNext" ${S.findI>=q.length-1?'disabled':''} title="${esc(t('f_next'))}">${ICON.right}</button>
+    </div><div class="navbar"><div style="width:${Math.round((S.findI+1)/q.length*100)}%"></div></div>`;
+  $('fPrev').onclick = () => { S.findI--; S.manualOpen = false; renderPanel(); };
+  $('fNext').onclick = () => { S.findI++; S.manualOpen = false; renderPanel(); };
 
-  /* --- chips de filtro --- */
-  const counts = { todas:S.works.length, bib:0, auto:0, mano:0, pend:open.length };
-  done.forEach(w => counts[originOf(w)]++);
-  const CH = [['todas','Todas'],['bib','De tu .bib'],['auto','Encontradas'],['mano','A mano'],['pend','Sin resolver']];
-  $('bibChips').innerHTML = CH.filter(([k]) => k==='todas' || counts[k])
-    .map(([k,l]) => `<button class="chip" data-chip="${k}" aria-pressed="${S.bibFilter===k}">${l}<b>${counts[k]}</b></button>`).join('');
-  $('bibChips').querySelectorAll('[data-chip]').forEach(c => c.onclick = () => {
-    S.bibFilter = c.dataset.chip; renderBiblio(body, foot); bindPanel();
-  });
+  const ctxs = w.hits.slice(0,2).map(contextOf).filter(Boolean);
+  const cands = S.cands.get(w.key);
+  const cur = refOf(w);
+  let html = ctxs.map(c => `<div class="ctx">${c}</div>`).join('');
+  html += `<div class="section-head gap"><span>${esc(t('f_options'))}</span><span></span></div>`;
 
-  const match = w => !q || slug(w.authors + w.year + (refOf(w) ? stripTags(refOf(w)) : '')).includes(q);
-  const showDone = S.bibFilter === 'pend' ? []
-    : done.filter(w => (S.bibFilter === 'todas' || originOf(w) === S.bibFilter) && match(w));
-  const showOpen = (S.bibFilter === 'todas' || S.bibFilter === 'pend') ? open.filter(match) : [];
+  /* opción 1: lo que ya está en tu .bib */
+  if (w.bib){
+    const ref = fmt(w.bib, w.year);
+    const picked = !w.manual;
+    html += `<div class="opt is-bib ${picked?'is-picked':''}">
+      <div class="opt-tag"><span class="ok">${esc(t('f_bib_opt'))}</span>${picked?`<span class="k">${esc(t('f_used'))}</span>`:''}</div>
+      <div class="opt-prev" style="border:0;margin:0;padding:0">${ref}</div>
+      ${!picked ? `<div style="margin-top:8px"><button class="btn btn--mini btn--keep" id="useBib">${esc(t('f_use'))}</button></div>`:''}
+    </div>`;
+  }
+  /* opción 2: lo escrito a mano, si lo hay */
+  if (w.manual){
+    html += `<div class="opt is-picked">
+      <div class="opt-tag"><span class="ok">${esc(t(S.origin.get(w.key)==='auto'?'bd_auto':'bd_mano'))}</span><span class="k">${esc(t('f_used'))}</span></div>
+      <div class="opt-prev" style="border:0;margin:0;padding:0">${w.manual}</div>
+      <div style="margin-top:8px">${iconBtn('data-editref', w.key, {i:'pencil', k:'a_edit'})}</div>
+    </div>`;
+  }
+  /* opción 3+: candidatas de las fuentes */
+  if (S.busyKey === w.key){
+    html += `<div class="busy">${esc(t('f_searching', Object.keys(CFG.sources).filter(k=>CFG.sources[k]).map(k=>SOURCES[k].label).join(', ')))}</div>`;
+  } else if (cands && !cands.length){
+    html += `<div class="nores">${esc(t('f_nores', w.surname + ' ' + w.year))}</div>`;
+  } else if (cands){
+    const yN = String(w.year).replace(/[a-h]$/,'');
+    html += cands.map((e,n) => {
+      const au = e.authors.slice(0,3).map(a => a.last).join(', ') + (e.authors.length>3 ? ' et al.' : '');
+      const okAuthor = e.authors.some(a => slug(a.last) === slug(w.surname));
+      const badYear = e.year && String(e.year) !== yN;
+      return `<div class="opt">
+        <div class="opt-tag"><span class="k">${n+1}</span><span>${esc(e._src)}</span>
+          ${okAuthor?`<span class="ok">${esc(t('f_author_ok'))}</span>`:''}
+          ${badYear?`<span class="warn">${esc(t('f_year_warn'))}</span>`:''}</div>
+        <div class="f"><b>${esc(t('lb_title'))}</b><span>${esc(e.fields.title||'—')}</span></div>
+        <div class="f"><b>${esc(t('lb_authors'))}</b><span>${esc(au||'—')}</span></div>
+        <div class="f"><b>${esc(t('lb_pub'))}</b><span>${esc(e.fields.journal||e.fields.booktitle||e.fields.publisher||'—')}</span></div>
+        <div class="f"><b>${esc(t('lb_year'))}</b><span>${esc(e.year||'—')}</span></div>
+        <div class="opt-prev">${fmt(e, w.year)}</div>
+        <div style="margin-top:8px"><button class="btn btn--mini btn--keep" data-pick="${n}">${esc(t('f_use'))} (${n+1})</button></div>
+      </div>`;
+    }).join('');
+  }
+  if (S.manualOpen){
+    html += `<textarea class="manualbox" id="manBox" placeholder="${esc(t('f_manual_ph'))}">${esc(cur?stripTags(cur):'')}</textarea>
+      <div style="margin-top:8px"><button class="btn btn--mini btn--key" id="manSave">${esc(t('f_save_next'))}</button></div>`;
+  }
+  body.innerHTML = html;
+
+  foot.innerHTML = `<button class="btn btn--mini" id="fAgain">${esc(t('f_again'))}</button>
+    <button class="btn btn--mini btn--ghost" id="fMan">${esc(t('f_manual'))}</button>
+    <button class="btn btn--mini btn--ghost" id="fSkip">${esc(t('f_skip'))}</button>`;
+  $('fAgain').onclick = () => { S.cands.delete(w.key); renderPanel(); };
+  $('fMan').onclick = () => { S.manualOpen = !S.manualOpen; renderPanel(); };
+  $('fSkip').onclick = () => { S.findI = Math.min(S.findI+1, q.length-1); S.manualOpen=false; renderPanel(); };
+  if ($('useBib')) $('useBib').onclick = () => { S.refOverride.delete(w.key); S.origin.delete(w.key); renderPanel(); };
+  if ($('manSave')) $('manSave').onclick = () => {
+    const v = $('manBox').value.trim(); if (!v){ toast(t('t_missing')); return; }
+    S.refOverride.set(w.key, esc(v).replace(/_([^_]+)_/g,'<em>$1</em>'));
+    S.origin.set(w.key, 'mano'); S.manualOpen = false; advance(); };
+  body.querySelectorAll('[data-pick]').forEach(b => b.onclick = () => {
+    S.refOverride.set(w.key, fmt(cands[+b.dataset.pick], w.year));
+    S.origin.set(w.key, 'auto'); advance(); });
+  bindCommon(body);
+
+  if (!cands && S.busyKey !== w.key && Object.values(CFG.sources).some(Boolean)) autoLookup(w);
+}
+function advance(){
+  const q = findQueue();
+  let i = S.findI + 1;
+  while (i < q.length && refOf(q[i])) i++;
+  S.findI = Math.min(i, q.length - 1);
+  S.manualOpen = false; renderPanel();
+}
+async function autoLookup(w){
+  S.busyKey = w.key;
+  if (S.tab === 'find') renderFind();
+  let items = [];
+  try { items = await lookup(w); } catch(e){ items = []; }
+  S.cands.set(w.key, items);
+  S.busyKey = null;
+  if (S.tab === 'find') renderPanel();
+}
+
+/* -------------------------------------------------------- pestaña EXPORTAR */
+function renderExport(){
+  const body = $('panelBody'), foot = $('panelFoot'), sub = $('subExp');
+  const done = S.works.filter(w => refOf(w)).slice()
+    .sort((a,b) => stripTags(refOf(a)).localeCompare(stripTags(refOf(b)),'es'));
+  const pend = pendingWorks();
+
+  sub.innerHTML = `<button class="btn btn--key" id="expBtn" ${done.length?'':'disabled'}>${ICON.down}${esc(t('e_export'))}</button>`;
+  $('expBtn').onclick = openExport;
 
   let html = '';
-  if (!S.works.length && !S.norms.length){
-    body.innerHTML = `<p class="blank">Todavía no hay citas cargadas.</p>`; foot.innerHTML = ''; return;
+  if (pend.length){
+    html += `<div class="pend-strip"><span class="n">${pend.length}</span>
+      <span class="t">${esc(t('e_pending', pend.length))}</span>
+      <button class="btn btn--mini btn--key" id="goFind">${esc(t('e_resolve'))}</button></div>`;
   }
-
-  /* --- tira de pendientes --- */
-  if (open.length && S.bibFilter !== 'pend'){
-    html += `<div class="pend-strip">
-      <span class="n">${open.length}</span>
-      <span class="t">obras sin referencia completa. El modo resolución las va mostrando de a una con sus candidatas.</span>
-      <button class="btn btn--mini btn--key" id="goResolve">Resolver ahora</button></div>`;
-  }
-
-  /* --- pendientes en detalle --- */
-  if (showOpen.length && S.bibFilter === 'pend'){
-    html += `<div class="section-head"><span>Sin resolver</span><span>${showOpen.length}</span></div>`;
-    showOpen.forEach(w => {
-      const c = S.cands.get(w.key);
-      html += `<div class="ficha is-open">
-        <div class="ficha-top"><div class="ficha-key">${esc(w.authors)}, ${esc(w.year)}</div><div class="ficha-n">${w.hits.length}×</div></div>
-        <div class="ficha-src src-none">${c ? (c.length ? `${c.length} candidatas esperando` : 'sin resultados en las fuentes') : 'sin buscar todavía'}</div>
-        <div class="ficha-acts">
-          <button class="btn btn--mini btn--key" data-resolve="${w.key}">Resolver</button>
-          <button class="btn btn--mini" data-jump="${w.hits[0].id}">Ver en el texto</button>
-          <button class="btn btn--mini btn--drop" data-killwork="${w.key}">Quitar</button>
+  if (!done.length){
+    html += `<p class="blank">${esc(t('e_none'))}</p>`;
+  } else {
+    html += `<div class="section-head"><span>${esc(t('sec_refs'))}</span><span>${done.length}</span></div><div class="bib-doc">`;
+    done.forEach(w => {
+      const o = originOf(w);
+      html += `<div class="bib-item">
+        <div class="bib-ref" contenteditable="true" spellcheck="false" data-ref="${w.key}">${refOf(w)}</div>
+        <div class="bib-meta"><span class="badge b-${o}">${esc(t('bd_'+o))}</span><span class="badge">${w.hits.length}×</span>
+          ${iconBtn('data-jump', w.hits[0].id, {i:'eye', k:'a_view'})}
+          ${iconBtn('data-killwork', w.key, {i:'trash', k:'a_remove'}, 'i-drop')}
         </div></div>`;
     });
+    html += `</div><p class="mini-note" style="margin-top:10px">${esc(t('e_hint'))}</p>`;
   }
-
-  /* --- la bibliografía, como se va a ver --- */
-  if (showDone.length){
-    html += `<div class="section-head"><span>${S.bibFilter==='todas'?'Referencias':'Referencias filtradas'}</span><span>${showDone.length}</span></div>`;
-    html += `<div class="bib-doc">` + showDone.map(w => {
-      const o = originOf(w), b = BADGE[o] || ['',''];
-      return `<div class="bib-item" data-item="${w.key}">
-        <div class="bib-ref" contenteditable="true" spellcheck="false" data-ref="${w.key}">${refOf(w)}</div>
-        <div class="bib-meta">
-          <span class="badge ${b[0]}">${b[1]}</span>
-          <span class="badge">${w.hits.length}×</span>
-          <button class="tiny" data-jump="${w.hits[0].id}">Ver en el texto</button>
-          ${w.manual && w.bib ? `<button class="tiny" data-revert="${w.key}">Volver al .bib</button>` : ''}
-          ${o !== 'bib' ? `<button class="tiny" data-resolve="${w.key}">Buscar otra</button>` : ''}
-          <button class="tiny t-drop" data-killwork="${w.key}">Quitar</button>
-        </div></div>`;
-    }).join('') + `</div>`;
-    html += `<p class="mini-note" style="margin-top:12px">Hacé click sobre cualquier referencia para corregirla acá mismo. Se guarda al salir del campo.</p>`;
-  } else if (!showOpen.length){
-    html += `<p class="blank">Nada que coincida con este filtro.</p>`;
-  }
-
-  /* --- normativa, plegada --- */
   if (S.norms.length){
-    html += `<details class="norms"><summary>Fuentes normativas (${S.norms.length})</summary>
-      <div class="bib-doc" style="margin-top:12px">` +
-      S.norms.map(n => `<div class="bib-item">
+    html += `<div class="section-head gap"><span>${esc(t('sec_norm_refs'))}</span><span>${S.norms.length}</span></div><div class="bib-doc">`;
+    S.norms.forEach(n => {
+      html += `<div class="bib-item">
         <div class="bib-ref" contenteditable="true" spellcheck="false" data-norm="${n.key}">${n.manual || esc(normTemplate(n.label))}</div>
         <div class="bib-meta"><span class="badge">${n.hits.length}×</span>
-          <button class="tiny" data-jump="${n.hits[0].id}">Ver en el texto</button>
-          <button class="tiny t-drop" data-killnorm="${n.key}">Quitar</button></div></div>`).join('') +
-      `</div><div style="margin-top:10px"><button class="btn btn--mini btn--ghost" id="copyNorms">Copiar normativa</button></div></details>`;
+          ${iconBtn('data-jump', n.hits[0].id, {i:'eye', k:'a_view'})}
+          ${iconBtn('data-killnorm', n.key, {i:'trash', k:'a_remove'}, 'i-drop')}
+        </div></div>`;
+    });
+    html += `</div>`;
   }
   body.innerHTML = html;
-
-  const refs = done.map(refOf);
-  const plainAll = refs.map(stripTags).join('\n\n');
-  const htmlAll = `<div>${refs.map(r => `<p style="text-indent:-2em;padding-left:2em">${r}</p>`).join('')}</div>`;
-  foot.innerHTML = `<button class="btn btn--key" id="copyBib" ${refs.length?'':'disabled'}>Copiar bibliografía (${refs.length})</button>
-                    <button class="btn btn--ghost" id="copyBibPlain" ${refs.length?'':'disabled'}>Sin formato</button>`;
-  if (refs.length){
-    $('copyBib').onclick = () => copyRich(htmlAll, plainAll);
-    $('copyBibPlain').onclick = () => copyText(plainAll, `${refs.length} referencias copiadas`);
-  }
-  if ($('copyNorms')) $('copyNorms').onclick = () =>
-    copyText(S.norms.map(n => stripTags(n.manual || normTemplate(n.label))).join('\n\n'), 'Normativa copiada');
-  if ($('goResolve')) $('goResolve').onclick = () => openResolve();
+  foot.innerHTML = '';
+  if ($('goFind')) $('goFind').onclick = () => {
+    const q = findQueue(); const i = q.findIndex(w => !refOf(w));
+    S.findI = i < 0 ? 0 : i; S.tab = 'find'; syncTabs(); renderPanel();
+  };
+  bindCommon(body);
 }
 
-/* limpieza de lo que se escribe en el campo editable: solo cursivas */
+function buildList(style, lang, inclNorms){
+  const done = S.works.filter(w => refOf(w));
+  const refs = done.map(w => w.manual || fmt(w.bib, w.year))
+    .sort((a,b) => stripTags(a).localeCompare(stripTags(b),'es'));
+  /* al reformatear pedimos el estilo elegido en el modal, no el predeterminado */
+  const rebuilt = done.map(w => w.manual ? w.manual : formatRef(w.bib, w.year, style, lang))
+    .sort((a,b) => stripTags(a).localeCompare(stripTags(b),'es'));
+  const norms = inclNorms ? S.norms.map(n => n.manual || esc(normTemplate(n.label, style, lang))) : [];
+  return rebuilt.concat(norms.length ? [''].concat(norms) : []);
+}
+function openExport(){
+  const v = modal(`<h3>${esc(t('e_modal'))}</h3>
+    <label>${esc(t('e_style'))}</label>
+    <select id="xStyle">
+      <option value="apa7"${CFG.style==='apa7'?' selected':''}>APA 7</option>
+      <option value="mla9"${CFG.style==='mla9'?' selected':''}>MLA 9</option>
+      <option value="chicago"${CFG.style==='chicago'?' selected':''}>Chicago (autor-fecha)</option>
+    </select>
+    <label>${esc(t('e_lang'))}</label>
+    <select id="xLang">
+      <option value="es"${CFG.refLang==='es'?' selected':''}>Español</option>
+      <option value="en"${CFG.refLang==='en'?' selected':''}>English</option>
+      <option value="pt"${CFG.refLang==='pt'?' selected':''}>Português</option>
+    </select>
+    ${S.norms.length ? `<label class="check" style="margin-top:14px"><input type="checkbox" id="xNorms" checked>
+      <span>${esc(t('e_incl_norms'))}</span></label>` : ''}
+    <label>${esc(t('e_preview'))}</label>
+    <div class="preview" id="xPrev"></div>
+    <div class="row">
+      <button class="btn btn--ghost" id="xClose">${esc(t('cancel'))}</button>
+      <button class="btn btn--ghost" id="xDown">${esc(t('e_download'))}</button>
+      <button class="btn btn--ghost" id="xPlain">${esc(t('e_copy_plain'))}</button>
+      <button class="btn btn--key" id="xCopy">${esc(t('e_copy'))}</button>
+    </div>`);
+  const get = () => buildList($('xStyle').value, $('xLang').value, $('xNorms') ? $('xNorms').checked : false);
+  const paint = () => { $('xPrev').innerHTML = get().map(r => r ? `<div>${r}</div>` : '<div>&nbsp;</div>').join(''); };
+  ['xStyle','xLang','xNorms'].forEach(id => { if ($(id)) $(id).addEventListener('change', paint); });
+  paint();
+  $('xClose').onclick = () => v.remove();
+  $('xCopy').onclick = () => copyRich(
+    `<div>${get().map(r => `<p style="text-indent:-2em;padding-left:2em">${r}</p>`).join('')}</div>`,
+    get().map(stripTags).join('\n\n'));
+  $('xPlain').onclick = () => copyText(get().map(stripTags).join('\n\n'));
+  $('xDown').onclick = () => download('bibliografia.txt', get().map(stripTags).join('\n\n'));
+}
+
+/* ------------------------------------------------------------- comunes */
 function cleanRef(html){
   const d = document.createElement('div'); d.innerHTML = html;
   (function walk(n){
@@ -1151,62 +1547,45 @@ function cleanRef(html){
   })(d);
   return d.innerHTML.replace(/\s+/g,' ').trim();
 }
-
-function bindPanel(){
-  const b = $('panelBody');
+function bindCommon(b){
   b.querySelectorAll('[data-jump]').forEach(x => x.onclick = () => jumpTo(x.dataset.jump));
   b.querySelectorAll('[data-confirm]').forEach(x => x.onclick = () => {
-    const h = S.hits.find(y => y.id===x.dataset.confirm); if (h) h.status='ok'; renderPanel();
-  });
+    const h = S.hits.find(y => y.id===x.dataset.confirm); if (h) h.status='ok'; renderPanel(); });
   b.querySelectorAll('[data-drop]').forEach(x => x.onclick = () => {
-    S.hits = S.hits.filter(y => y.id!==x.dataset.drop); renderPanel();
-  });
+    S.hits = S.hits.filter(y => y.id!==x.dataset.drop); renderPanel(); });
   b.querySelectorAll('[data-killwork]').forEach(x => x.onclick = () => {
     const w = S.works.find(y => y.key===x.dataset.killwork); if (!w) return;
     const ids = new Set(w.hits.map(h=>h.id));
-    S.hits = S.hits.filter(h => !ids.has(h.id)); renderPanel();
-  });
+    S.hits = S.hits.filter(h => !ids.has(h.id)); S.refOverride.delete(w.key); renderPanel(); });
   b.querySelectorAll('[data-killnorm]').forEach(x => x.onclick = () => {
     const n = S.norms.find(y => y.key===x.dataset.killnorm); if (!n) return;
     const ids = new Set(n.hits.map(h=>h.id));
-    S.hits = S.hits.filter(h => !ids.has(h.id)); renderPanel();
-  });
+    S.hits = S.hits.filter(h => !ids.has(h.id)); renderPanel(); });
   b.querySelectorAll('[data-editfrag]').forEach(x => x.onclick = () => openFragEditor(x.dataset.editfrag));
-  b.querySelectorAll('[data-editref]').forEach(x => x.onclick = () => openRefEditor(x.dataset.editref));
-  b.querySelectorAll('[data-editnorm]').forEach(x => x.onclick = () => openNormEditor(x.dataset.editnorm));
-  b.querySelectorAll('[data-resolve]').forEach(x => x.onclick = () => openResolve(x.dataset.resolve));
-  b.querySelectorAll('[data-revert]').forEach(x => x.onclick = () => {
-    S.refOverride.delete(x.dataset.revert); S.origin.delete(x.dataset.revert); renderPanel();
-  });
-  /* edición en el lugar de la bibliografía */
-  b.querySelectorAll('[data-ref]').forEach(el => {
-    el.addEventListener('blur', () => {
-      const key = el.dataset.ref, w = S.works.find(y => y.key === key); if (!w) return;
-      const clean = cleanRef(el.innerHTML);
-      if (!clean){ el.innerHTML = refOf(w) || ''; return; }
-      if (clean === (refOf(w) || '')) return;
-      S.refOverride.set(key, clean); S.origin.set(key, 'mano');
-      renderPanel();
-    });
-  });
-  b.querySelectorAll('[data-norm]').forEach(el => {
-    el.addEventListener('blur', () => {
-      const key = el.dataset.norm, n = S.norms.find(y => y.key === key); if (!n) return;
-      const clean = cleanRef(el.innerHTML);
-      const cur = n.manual || esc(normTemplate(n.label));
-      if (!clean || clean === cur) return;
-      S.normOverride.set(key, clean); renderPanel();
-    });
-  });
+  b.querySelectorAll('[data-editref]').forEach(x => x.onclick = () => { S.manualOpen = true; renderPanel(); });
+  b.querySelectorAll('[data-ref]').forEach(el => el.addEventListener('blur', () => {
+    const w = S.works.find(y => y.key===el.dataset.ref); if (!w) return;
+    const clean = cleanRef(el.innerHTML);
+    if (!clean){ el.innerHTML = refOf(w)||''; return; }
+    if (clean === (refOf(w)||'')) return;
+    S.refOverride.set(w.key, clean); S.origin.set(w.key, 'mano'); renderPanel();
+  }));
+  b.querySelectorAll('[data-norm]').forEach(el => el.addEventListener('blur', () => {
+    const n = S.norms.find(y => y.key===el.dataset.norm); if (!n) return;
+    const clean = cleanRef(el.innerHTML);
+    if (!clean || clean === (n.manual || esc(normTemplate(n.label)))) return;
+    S.normOverride.set(n.key, clean); renderPanel();
+  }));
 }
 function syncTabs(){
-  $('tabCitas').setAttribute('aria-selected', S.tab==='citas');
-  $('tabBiblio').setAttribute('aria-selected', S.tab==='biblio');
+  $('tabList').setAttribute('aria-selected', S.tab==='list');
+  $('tabFind').setAttribute('aria-selected', S.tab==='find');
+  $('tabExp').setAttribute('aria-selected', S.tab==='exp');
 }
 
-/* ==========================================================================
-   7. EDITORES
-   ========================================================================== */
+/* =========================================================================
+   MODALES
+   ========================================================================= */
 function modal(html, dismissible = true){
   const v = document.createElement('div');
   v.className = 'veil'; v.innerHTML = `<div class="modal">${html}</div>`;
@@ -1214,420 +1593,89 @@ function modal(html, dismissible = true){
   if (dismissible) v.addEventListener('click', e => { if (e.target===v) v.remove(); });
   return v;
 }
-
-/* editar el FRAGMENTO del texto del que sale la cita */
 function openFragEditor(hitId){
   const h = S.hits.find(x => x.id===hitId); if (!h) return;
   const original = fragOf(h);
-  const v = modal(`<h3>Editar cita</h3>
-    <p class="mini-note">Ajustá el fragmento hasta que quede solo la cita. Por ejemplo, de “y siguiendo a Vercellone, 2011” dejá “Vercellone, 2011”.</p>
-    <label>Fragmento en el texto</label>
-    <input type="text" id="fFrag" value="${esc(original)}">
+  const v = modal(`<h3>${esc(t('ed_frag_h'))}</h3>
+    <p class="mini-note">${esc(t('ed_frag_hint'))}</p>
+    <label>${esc(t('ed_frag_l'))}</label><input type="text" id="eFrag" value="${esc(original)}">
     <div class="two">
-      <div><label>Autor o autores</label><input type="text" id="fA" value="${esc(h.authors)}"></div>
-      <div><label>Año</label><input type="text" id="fY" value="${esc(h.year)}"></div>
+      <div><label>${esc(t('ed_authors'))}</label><input type="text" id="eA" value="${esc(h.authors)}"></div>
+      <div><label>${esc(t('ed_year'))}</label><input type="text" id="eY" value="${esc(h.year)}"></div>
     </div>
-    <p class="mini-note" style="margin-top:8px">El texto del documento no se modifica: solo cambia lo que Fichero entiende por esta cita.</p>
-    <div class="row">
-      <button class="btn btn--ghost" id="fCancel">Cancelar</button>
-      <button class="btn btn--key" id="fSave">Guardar</button>
-    </div>`);
-  const reparse = () => {
-    const g = $('fFrag').value.replace(/^[(\[]|[)\]]$/g,'').trim().match(RE_LOOSE);
-    if (g){ $('fA').value = tidyAuthors(trimStop(g[1])) || g[1]; $('fY').value = normYear(g[2]); }
-  };
-  $('fFrag').addEventListener('input', reparse);
-  $('fFrag').focus();
-  $('fCancel').onclick = () => v.remove();
-  $('fSave').onclick = () => {
-    const nf = $('fFrag').value.trim(), a = $('fA').value.trim(), y = $('fY').value.trim();
-    if (!a || !y){ toast('Falta autor o año'); return; }
-    // si el fragmento nuevo está contenido en el viejo, ajustamos el resaltado
+    <p class="mini-note" style="margin-top:8px">${esc(t('ed_frag_note'))}</p>
+    <div class="row"><button class="btn btn--ghost" id="eC">${esc(t('cancel'))}</button>
+    <button class="btn btn--key" id="eS">${esc(t('save'))}</button></div>`);
+  $('eFrag').addEventListener('input', () => {
+    const g = $('eFrag').value.replace(/^[(\[]|[)\]]$/g,'').trim().match(RE_LOOSE);
+    if (g){ $('eA').value = tidyAuthors(trimStop(g[1])) || g[1]; $('eY').value = normYear(g[2]); }
+  });
+  $('eFrag').focus();
+  $('eC').onclick = () => v.remove();
+  $('eS').onclick = () => {
+    const nf = $('eFrag').value.trim(), a = $('eA').value.trim(), y = $('eY').value.trim();
+    if (!a || !y){ toast(t('t_missing')); return; }
     const at = original.indexOf(nf);
     if (nf && at !== -1 && nf.length !== original.length){ h.start += at; h.end = h.start + nf.length; }
     h.authors = tidyAuthors(a); h.year = normYear(y);
     v.remove(); renderPanel();
   };
 }
-
-/* editar la REFERENCIA final */
-function openRefEditor(key){
-  const w = S.works.find(x => x.key===key); if (!w) return;
-  const cur = refOf(w) ? stripTags(refOf(w)) : '';
-  const v = modal(`<h3>Referencia de ${esc(w.authors)}, ${esc(w.year)}</h3>
-    <label>Referencia completa</label>
-    <textarea id="rRef" placeholder="Apellido, N. (Año). Título. Editorial.">${esc(cur)}</textarea>
-    <p class="mini-note" style="margin-top:8px">Usá _guiones bajos_ alrededor del título para que salga en cursiva.</p>
-    <div class="row">
-      ${w.manual ? `<button class="btn btn--drop" id="rReset">Volver al .bib</button>`:''}
-      <button class="btn btn--ghost" id="rCancel">Cancelar</button>
-      <button class="btn btn--key" id="rSave">Guardar</button>
-    </div>`);
-  $('rRef').focus();
-  $('rCancel').onclick = () => v.remove();
-  if ($('rReset')) $('rReset').onclick = () => { S.refOverride.delete(key); v.remove(); renderPanel(); };
-  $('rSave').onclick = () => {
-    const t = $('rRef').value.trim();
-    if (t) S.refOverride.set(key, esc(t).replace(/_([^_]+)_/g,'<em>$1</em>'));
-    else S.refOverride.delete(key);
-    v.remove(); renderPanel();
-  };
-}
-
-function openNormEditor(key){
-  const n = S.norms.find(x => x.key===key); if (!n) return;
-  const cur = n.manual ? stripTags(n.manual) : normTemplate(n.label);
-  const v = modal(`<h3>${esc(n.label)}</h3>
-    <label>Referencia normativa</label>
-    <textarea id="nRef">${esc(cur)}</textarea>
-    <p class="mini-note" style="margin-top:8px">Completá los datos entre corchetes. Estas fuentes suelen ir en un apartado aparte de la bibliografía.</p>
-    <div class="row"><button class="btn btn--ghost" id="nCancel">Cancelar</button>
-    <button class="btn btn--key" id="nSave">Guardar</button></div>`);
-  $('nRef').focus();
-  $('nCancel').onclick = () => v.remove();
-  $('nSave').onclick = () => {
-    const t = $('nRef').value.trim();
-    if (t) S.normOverride.set(key, esc(t).replace(/_([^_]+)_/g,'<em>$1</em>')); else S.normOverride.delete(key);
-    v.remove(); renderPanel();
-  };
-}
-
-/* ==========================================================================
-   8. FUENTES BIBLIOGRÁFICAS (todas libres, sin clave, opcionales)
-   Solo viajan apellido y año. Nunca el texto del documento.
-   ========================================================================== */
-function mkEntry(type, authors, year, fields, src){
-  return { type, authors, editors:[], year:String(year||''), fields, _src:src };
-}
-const splitDisplay = name => {
-  const t = String(name).trim().split(/\s+/);
-  if (t.length === 1) return { last:t[0], first:'' };
-  return { last:t[t.length-1], first:t.slice(0,-1).join(' ') };
-};
-
-async function qCrossref(sur, year){
-  const u = `https://api.crossref.org/works?query.author=${encodeURIComponent(sur)}`
-    + (/^\d{4}$/.test(year) ? `&filter=from-pub-date:${year}-01-01,until-pub-date:${year}-12-31` : '')
-    + `&rows=5&select=title,author,issued,container-title,volume,issue,page,publisher,DOI,type`;
-  const j = await (await fetch(u)).json();
-  const map = {'journal-article':'article','book':'book','book-chapter':'incollection','proceedings-article':'inproceedings','report':'techreport','dissertation':'phdthesis'};
-  return (j.message?.items||[]).map(it => mkEntry(
-    map[it.type]||'misc',
-    (it.author||[]).map(a => ({last:a.family||a.name||'', first:a.given||''})).filter(a=>a.last),
-    it.issued?.['date-parts']?.[0]?.[0] || '',
-    { title:[].concat(it.title||[])[0]||'', journal:[].concat(it['container-title']||[])[0]||'',
-      booktitle:[].concat(it['container-title']||[])[0]||'', volume:it.volume||'', number:it.issue||'',
-      pages:it.page||'', publisher:it.publisher||'', doi:it.DOI||'' }, 'Crossref'));
-}
-
-async function qOpenAlex(sur, year){
-  const f = [`raw_author_name.search:${sur}`];
-  if (/^\d{4}$/.test(year)) f.push(`publication_year:${year}`);
-  const u = `https://api.openalex.org/works?filter=${encodeURIComponent(f.join(','))}&per-page=5`;
-  const j = await (await fetch(u)).json();
-  const map = {'article':'article','book-chapter':'incollection','book':'book','dissertation':'phdthesis','report':'techreport'};
-  return (j.results||[]).map(it => {
-    const loc = it.primary_location?.source?.display_name || '';
-    return mkEntry(map[it.type]||'misc',
-      (it.authorships||[]).map(a => splitDisplay(a.author?.display_name || a.raw_author_name || '')).filter(a=>a.last),
-      it.publication_year||'',
-      { title: it.title || it.display_name || '', journal: loc, booktitle: loc,
-        volume: it.biblio?.volume||'', number: it.biblio?.issue||'',
-        pages: [it.biblio?.first_page, it.biblio?.last_page].filter(Boolean).join('–'),
-        publisher: it.primary_location?.source?.host_organization_name || '',
-        doi: (it.doi||'').replace('https://doi.org/','') }, 'OpenAlex');
-  });
-}
-
-async function qDoaj(sur, year){
-  const q = `bibjson.author.name:"${sur}"` + (/^\d{4}$/.test(year) ? ` AND bibjson.year:${year}` : '');
-  const u = `https://doaj.org/api/search/articles/${encodeURIComponent(q)}?pageSize=5`;
-  const j = await (await fetch(u)).json();
-  return (j.results||[]).map(r => {
-    const b = r.bibjson||{};
-    const doi = (b.identifier||[]).find(i => i.type==='doi');
-    return mkEntry('article',
-      (b.author||[]).map(a => splitDisplay(a.name||'')).filter(a=>a.last),
-      b.year||'',
-      { title:b.title||'', journal:b.journal?.title||'', volume:b.journal?.volume||'',
-        number:b.journal?.number||'', pages:[b.start_page,b.end_page].filter(Boolean).join('–'),
-        publisher:b.journal?.publisher||'', doi:doi?doi.id:'' }, 'DOAJ');
-  });
-}
-
-async function qOpenLibrary(sur, year){
-  const q = `author:"${sur}"` + (/^\d{4}$/.test(year) ? ` first_publish_year:${year}` : '');
-  const u = `https://openlibrary.org/search.json?q=${encodeURIComponent(q)}&limit=5&fields=title,author_name,first_publish_year,publisher`;
-  const j = await (await fetch(u)).json();
-  return (j.docs||[]).map(d => mkEntry('book',
-    (d.author_name||[]).map(splitDisplay), d.first_publish_year||'',
-    { title:d.title||'', publisher:(d.publisher||[])[0]||'' }, 'Open Library'));
-}
-
-const QFN = { crossref:qCrossref, openalex:qOpenAlex, doaj:qDoaj, openlibrary:qOpenLibrary };
-
-async function lookup(w){
-  const sur = w.surname, year = String(w.year).replace(/[a-h]$/,'');
-  const active = Object.keys(CFG.sources).filter(k => CFG.sources[k]);
-  const res = await Promise.allSettled(active.map(k => QFN[k](sur, year)));
-  const seen = new Set(); const out = [];
-  res.forEach(r => {
-    if (r.status !== 'fulfilled') return;
-    r.value.forEach(e => {
-      const k = (e.fields.doi || slug(e.fields.title)+e.year);
-      if (!k || seen.has(k)) return;
-      seen.add(k); out.push(e);
-    });
-  });
-  /* las más plausibles primero: año exacto y apellido del primer autor */
-  const target = slug(sur);
-  out.forEach(e => {
-    let s = 0;
-    if (String(e.year) === year) s += 3;
-    if (e.authors.some(a => slug(a.last) === target)) s += 3;
-    if (slug((e.authors[0]||{}).last || '') === target) s += 1;
-    if (e.fields.title) s += 1;
-    if (e.fields.doi) s += 1;
-    e._score = s;
-  });
-  out.sort((a,b) => b._score - a._score);
-  return out.slice(0, 9);
-}
-
-/* ==========================================================================
-   8b. MODO RESOLUCIÓN
-   Una cita por vez, a pantalla completa, con el contexto del manuscrito
-   y las candidatas en campos alineados para poder compararlas.
-   ========================================================================== */
-const TIPO = { article:'Artículo', book:'Libro', incollection:'Capítulo', inbook:'Capítulo',
-  inproceedings:'Ponencia', phdthesis:'Tesis', techreport:'Informe', misc:'Otro' };
-
-/* la oración donde aparece la cita, para decidir sin volver al texto */
-function contextOf(h){
-  const t = S.paras[h.para] ? S.paras[h.para].text : '';
-  if (!t) return '';
-  let a = h.start, b = h.end;
-  const back = t.slice(Math.max(0, a-320), a);
-  const mb = back.lastIndexOf('. ');
-  a = mb === -1 ? Math.max(0, a-320) : Math.max(0, a-320) + mb + 2;
-  const fwd = t.slice(b, b+320);
-  const mf = fwd.indexOf('. ');
-  b = mf === -1 ? Math.min(t.length, b+320) : b + mf + 1;
-  const pre = (a > 0 ? '… ' : '') + esc(t.slice(a, h.start));
-  const cit = esc(t.slice(h.start, h.end));
-  const post = esc(t.slice(h.end, b)) + (b < t.length ? ' …' : '');
-  return `${pre}<mark>${cit}</mark>${post}`;
-}
-
-function openResolve(onlyKey){
-  const pend = onlyKey ? [onlyKey] : S.works.filter(w => !refOf(w)).map(w => w.key);
-  if (!pend.length){ toast('No hay referencias pendientes'); return; }
-  S.rs = { open:true, queue:pend, i:0, busy:false, manual:false };
-  $('resolve').classList.remove('hidden');
-  document.addEventListener('keydown', rsKeys);
-  renderResolve();
-}
-function closeResolve(){
-  S.rs.open = false;
-  $('resolve').classList.add('hidden');
-  document.removeEventListener('keydown', rsKeys);
-  renderPanel();
-}
-function rsGo(d){
-  const n = S.rs.i + d;
-  if (n < 0) return;
-  if (n >= S.rs.queue.length){ S.rs.i = S.rs.queue.length; renderResolve(); return; }
-  S.rs.i = n; S.rs.manual = false; renderResolve();
-}
-function rsKeys(e){
-  if (!S.rs.open) return;
-  if (e.target.matches('textarea, input, [contenteditable]')) { if (e.key === 'Escape') e.target.blur(); return; }
-  if (e.key === 'Escape'){ closeResolve(); return; }
-  if (e.key === 'ArrowRight'){ rsGo(1); return; }
-  if (e.key === 'ArrowLeft'){ rsGo(-1); return; }
-  if (/^[1-9]$/.test(e.key)){
-    const w = rsWork(); if (!w) return;
-    const c = S.cands.get(w.key) || [];
-    const pick = c[+e.key - 1];
-    if (pick){ rsTake(w, pick); }
-  }
-}
-const rsWork = () => S.works.find(w => w.key === S.rs.queue[S.rs.i]) || null;
-
-function rsTake(w, entry){
-  S.refOverride.set(w.key, formatRef(entry, w.year, CFG));
-  S.origin.set(w.key, 'auto');
-  saveSoon();
-  rsGo(1);
-}
-
-async function renderResolve(){
-  const body = $('rsBody'), acts = $('rsActions');
-  const total = S.rs.queue.length;
-  $('rsBar').style.width = Math.round(Math.min(S.rs.i, total) / total * 100) + '%';
-
-  if (S.rs.i >= total){
-    const left = S.works.filter(w => !refOf(w)).length;
-    $('rsPos').textContent = `${total} de ${total}`;
-    body.innerHTML = `<div class="rs-wrap rs-done">
-      <h2>Terminaste la cola</h2>
-      <p class="mini-note">${left ? `Quedan ${left} obras sin referencia: podés volver a pasar por ellas cuando quieras.` : 'Todas las obras citadas tienen su referencia completa.'}</p></div>`;
-    acts.innerHTML = `<button class="btn btn--ghost" id="rsBack">Volver atrás</button>
-      ${left ? `<button class="btn" id="rsAgain">Repasar las ${left} que faltan</button>` : ''}
-      <button class="btn btn--key" id="rsDone">Ir a la bibliografía</button>`;
-    $('rsBack').onclick = () => rsGo(-1);
-    if ($('rsAgain')) $('rsAgain').onclick = () => openResolve();
-    $('rsDone').onclick = () => { S.tab = 'biblio'; syncTabs(); closeResolve(); };
-    return;
-  }
-
-  const w = rsWork();
-  if (!w){ rsGo(1); return; }   // la obra fue eliminada mientras tanto
-  $('rsPos').textContent = `${S.rs.i + 1} de ${total}`;
-
-  const ctxs = w.hits.slice(0, 3).map(contextOf).filter(Boolean);
-  const head = `<div class="rs-wrap">
-    <h1 class="rs-cite">${esc(w.authors)}, ${esc(w.year)}</h1>
-    <div class="rs-sub">${w.hits.length} mención${w.hits.length>1?'es':''} en el texto</div>
-    ${ctxs.map(c => `<div class="rs-ctx">${c}</div>`).join('')}
-    <div class="rs-label">Candidatas</div>
-    <div id="rsCands"></div></div>`;
-  body.innerHTML = head;
-  body.scrollTop = 0;
-
-  const paint = () => {
-    const c = S.cands.get(w.key);
-    const box = $('rsCands'); if (!box) return;
-    if (S.rs.busy){ box.innerHTML = `<div class="rs-empty">Buscando en ${Object.keys(CFG.sources).filter(k=>CFG.sources[k]).map(k=>SOURCES[k].label).join(', ')}…</div>`; return; }
-    if (!c){ box.innerHTML = `<div class="rs-empty">Sin buscar todavía.</div>`; return; }
-    if (!c.length){ box.innerHTML = `<div class="rs-empty">Ninguna de las fuentes activadas devolvió resultados para <b>${esc(w.surname)} ${esc(w.year)}</b>. Escribila a mano o buscala vos y pegá la referencia.</div>`; return; }
-    box.innerHTML = `<div class="rs-grid">` + c.map((it, n) => {
-      const au = it.authors.slice(0,3).map(a => a.last).join(', ') + (it.authors.length>3 ? ' et al.' : '');
-      const pubn = it.fields.journal || it.fields.booktitle || it.fields.publisher || '—';
-      return `<div class="rs-card">
-        <div class="rs-num">${n+1}</div>
-        <div class="rs-f"><b>Título</b><span>${esc(it.fields.title || '—')}</span></div>
-        <div class="rs-f"><b>Autores</b><span>${esc(au || '—')}</span></div>
-        <div class="rs-f"><b>Publicado</b><span>${esc(pubn)}</span></div>
-        <div class="rs-f"><b>Año</b><span>${esc(it.year || '—')}${it.year && String(it.year) !== String(w.year).replace(/[a-h]$/,'') ? ' ⚠' : ''}</span></div>
-        <div class="rs-f"><b>Tipo</b><span>${esc(TIPO[it.type] || it.type)} · ${esc(it._src)}</span></div>
-        <div class="rs-prev">${formatRef(it, w.year, CFG)}</div>
-        <button class="btn btn--mini btn--keep rs-pick" data-pick="${n}">Usar esta (${n+1})</button>
-      </div>`;
-    }).join('') + `</div>`;
-    box.querySelectorAll('[data-pick]').forEach(btn => btn.onclick = () => rsTake(w, c[+btn.dataset.pick]));
-  };
-
-  acts.innerHTML = `<button class="btn btn--ghost" id="rsPrev" ${S.rs.i===0?'disabled':''}>Anterior</button>
-    <button class="btn" id="rsSkip">Saltear</button>
-    <button class="btn" id="rsSearch">${S.cands.has(w.key) ? 'Buscar de nuevo' : 'Buscar'}</button>
-    <button class="btn btn--ghost" id="rsManual">Escribir a mano</button>
-    <span class="rs-keys">1-9 elegir · ← → moverse · esc salir</span>`;
-  $('rsPrev').onclick = () => rsGo(-1);
-  $('rsSkip').onclick = () => rsGo(1);
-  $('rsSearch').onclick = () => { S.cands.delete(w.key); renderResolve(); };
-  $('rsManual').onclick = () => {
-    if ($('rsManualBox')) return;
-    const cur = refOf(w) ? stripTags(refOf(w)) : '';
-    const box = document.createElement('div');
-    box.className = 'rs-wrap';
-    box.innerHTML = `<div class="rs-label">Referencia escrita a mano</div>
-      <textarea class="rs-manual" id="rsManualBox" placeholder="Apellido, N. (Año). Título. Editorial.">${esc(cur)}</textarea>
-      <div style="margin-top:8px"><button class="btn btn--key btn--mini" id="rsManualSave">Guardar y seguir</button></div>`;
-    $('rsBody').appendChild(box);
-    $('rsManualBox').focus();
-    $('rsManualSave').onclick = () => {
-      const t = $('rsManualBox').value.trim();
-      if (!t){ toast('Escribí la referencia'); return; }
-      S.refOverride.set(w.key, esc(t).replace(/_([^_]+)_/g,'<em>$1</em>'));
-      S.origin.set(w.key, 'mano'); saveSoon(); rsGo(1);
-    };
-  };
-
-  paint();
-  /* si no hay candidatas todavía, se buscan solas al llegar */
-  if (!S.cands.has(w.key) && Object.values(CFG.sources).some(Boolean)){
-    S.rs.busy = true; paint();
-    const at = S.rs.i;
-    let items = [];
-    try { items = await lookup(w); } catch(e){ items = []; }
-    S.cands.set(w.key, items);
-    S.rs.busy = false;
-    if (S.rs.open && S.rs.i === at) paint();
-    saveSoon();
-  }
-}
-
-/* ==========================================================================
-   9. CONFIGURACIÓN
-   ========================================================================== */
 function openConfig(){
-  const srcRows = Object.keys(SOURCES).map(k => `
-    <label class="check"><input type="checkbox" id="cs_${k}" ${CFG.sources[k]?'checked':''}>
-    <span>${SOURCES[k].label}<small>${SOURCES[k].note}</small></span></label>`).join('');
-  const v = modal(`<h3>Configuración</h3>
-    <label>Estilo de citación</label>
-    <select id="cStyle">
-      <option value="apa7" ${CFG.style==='apa7'?'selected':''}>APA 7</option>
-      <option value="mla9" ${CFG.style==='mla9'?'selected':''}>MLA 9</option>
-      <option value="chicago" ${CFG.style==='chicago'?'selected':''}>Chicago (autor-fecha)</option>
-    </select>
-    <label>Conjunción entre autores</label>
-    <select id="cConj">
-      <option value="y" ${CFG.conj==='y'?'selected':''}>… y … (español)</option>
-      <option value="&amp;" ${CFG.conj==='&'?'selected':''}>… &amp; … (inglés)</option>
-    </select>
+  const opt = (v,cur,label) => `<option value="${v}"${cur===v?' selected':''}>${esc(label)}</option>`;
+  const areas = Object.keys(AREAS).map(k => opt(k, CFG.area, t('ar_'+k))).join('');
+  const srcs = Object.keys(SOURCES).map(k =>
+    `<label class="check"><input type="checkbox" id="cs_${k}"${CFG.sources[k]?' checked':''}><span>${SOURCES[k].label}</span></label>`).join('');
+  const v = modal(`<h3>${esc(t('cfg_title'))}</h3>
+    <label>${esc(t('cfg_uilang'))}</label>
+    <select id="cUi">${opt('es',CFG.uiLang,'Español')}${opt('en',CFG.uiLang,'English')}${opt('pt',CFG.uiLang,'Português')}</select>
+    <label>${esc(t('cfg_style'))}</label>
+    <select id="cStyle">${opt('apa7',CFG.style,'APA 7')}${opt('mla9',CFG.style,'MLA 9')}${opt('chicago',CFG.style,'Chicago')}</select>
+    <label>${esc(t('cfg_reflang'))}</label>
+    <select id="cRef">${opt('es',CFG.refLang,'Español')}${opt('en',CFG.refLang,'English')}${opt('pt',CFG.refLang,'Português')}</select>
 
-    <div class="cfg-group"><h4>Detección</h4>
-      <label class="check"><input type="checkbox" id="cLaws" ${CFG.laws?'checked':''}>
-        <span>Reconocer normativa<small>Leyes, decretos, DNU, resoluciones, CCT y códigos, en una lista aparte de la bibliografía.</small></span></label>
-      <label class="check"><input type="checkbox" id="cEtal" ${CFG.mergeEtal?'checked':''}>
-        <span>Unificar “et al.”<small>Junta “Graham et al., 2017” con “Graham, Hjorth y Lehdonvirta, 2017”.</small></span></label>
+    <div class="cfg-group"><h4>${esc(t('cfg_sources'))}</h4>
+      <label>${esc(t('cfg_area'))}</label><select id="cArea">${areas}</select>
+      <p class="mini-note" style="margin-top:5px">${esc(t('cfg_area_note'))}</p>
+      <label>${esc(t('cfg_publang'))}</label>
+      <select id="cPub">${opt('',CFG.pubLang,t('cfg_publang_any'))}${opt('es',CFG.pubLang,'Español')}${opt('pt',CFG.pubLang,'Português')}${opt('en',CFG.pubLang,'English')}${opt('fr',CFG.pubLang,'Français')}</select>
+      <div style="margin-top:10px">${srcs}</div>
+      <label class="check"><input type="checkbox" id="cCtx"${CFG.useCtx?' checked':''}>
+        <span>${esc(t('cfg_ctx'))}<small>${esc(t('cfg_ctx_note'))}</small></span></label>
+      <p class="mini-note">${esc(t('cfg_sources_note'))}</p>
     </div>
 
-    <div class="cfg-group"><h4>Fuentes para buscar referencias</h4>
-      ${srcRows}
-      <p class="mini-note">Todas son gratuitas y sin clave. Solo se envía el apellido y el año, nunca el texto de tu documento.</p>
+    <div class="cfg-group"><h4>${esc(t('cfg_detect'))}</h4>
+      <label class="check"><input type="checkbox" id="cLaws"${CFG.laws?' checked':''}>
+        <span>${esc(t('cfg_laws'))}<small>${esc(t('cfg_laws_note'))}</small></span></label>
+      <label class="check"><input type="checkbox" id="cEtal"${CFG.mergeEtal?' checked':''}>
+        <span>${esc(t('cfg_etal'))}<small>${esc(t('cfg_etal_note'))}</small></span></label>
     </div>
 
-    <div class="cfg-group"><h4>Datos guardados</h4>
-      <p class="mini-note">${DB.ok
-        ? 'El documento, tus correcciones y las referencias se guardan solos en este navegador. No salen de tu máquina ni se sincronizan.'
-        : 'Este entorno bloquea el almacenamiento del navegador, así que el trabajo se pierde al recargar. En un sitio publicado normalmente funciona.'}</p>
-      <div style="margin-top:8px"><button class="btn btn--drop btn--mini" id="cWipe">Borrar todo lo guardado</button></div>
+    <div class="cfg-group"><h4>${esc(t('cfg_data'))}</h4>
+      <p class="mini-note">${esc(DB.ok ? t('cfg_data_ok') : t('cfg_data_no'))}</p>
+      <div style="margin-top:8px"><button class="btn btn--drop btn--mini" id="cWipe">${ICON.trash}${esc(t('cfg_wipe'))}</button></div>
     </div>
-
-    <div class="row"><button class="btn btn--ghost" id="cCancel">Cancelar</button>
-    <button class="btn btn--key" id="cSave">Guardar</button></div>`);
-  $('cWipe').onclick = () => {
-    if (!confirm('Se borra el documento cargado, las correcciones y las referencias. ¿Seguir?')) return;
-    DB.del(KEY); v.remove();
-    S.paras=[]; S.hits=[]; S.works=[]; S.norms=[]; S.bib=[]; S.bibIndex=new Map();
-    S.cands.clear(); S.refOverride.clear(); S.normOverride.clear(); S.origin.clear();
-    $('doc').innerHTML=''; $('empty').classList.remove('hidden');
-    [...$('ruler').querySelectorAll('.tick')].forEach(t=>t.remove());
-    renderPanel(); toast('Datos borrados');
-  };
-  $('cCancel').onclick = () => v.remove();
-  $('cSave').onclick = () => {
+    <div class="row"><button class="btn btn--ghost" id="cC">${esc(t('cancel'))}</button>
+    <button class="btn btn--key" id="cS">${esc(t('save'))}</button></div>`);
+  $('cC').onclick = () => v.remove();
+  $('cWipe').onclick = () => { if (!confirm(t('clear_confirm'))) return; v.remove(); wipeAll(); };
+  $('cS').onclick = () => {
     const prevLaws = CFG.laws;
-    CFG.style = $('cStyle').value;
-    CFG.conj = $('cConj').value === '&' ? '&' : 'y';
-    CFG.laws = $('cLaws').checked;
-    CFG.mergeEtal = $('cEtal').checked;
+    CFG.uiLang = $('cUi').value; CFG.style = $('cStyle').value; CFG.refLang = $('cRef').value;
+    CFG.area = $('cArea').value; CFG.pubLang = $('cPub').value;
+    CFG.laws = $('cLaws').checked; CFG.mergeEtal = $('cEtal').checked; CFG.useCtx = $('cCtx').checked;
     Object.keys(SOURCES).forEach(k => CFG.sources[k] = $('cs_'+k).checked);
     v.remove();
-    if (CFG.laws !== prevLaws && S.paras.length){
-      S.hits = detect(S.paras);
-      toast('Texto reanalizado');
-    }
-    renderPanel();
+    applyI18n();
+    if (CFG.laws !== prevLaws && S.paras.length){ S.hits = detect(S.paras); toast(t('t_reanalyzed')); }
+    renderPanel(); saveNow();
   };
 }
 
-/* ==========================================================================
-   10. SELECCIÓN MANUAL EN EL TEXTO
-   ========================================================================== */
+/* =========================================================================
+   SELECCIÓN MANUAL EN EL TEXTO
+   ========================================================================= */
 function paraOffset(pEl, node, offset){
   let acc = 0, done = false;
   (function walk(n){
@@ -1638,8 +1686,13 @@ function paraOffset(pEl, node, offset){
   })(pEl);
   return acc;
 }
+function showPop(rect, html){
+  const pop = $('pop'); pop.innerHTML = html; pop.classList.remove('hidden');
+  pop.style.top = (window.scrollY + rect.top - 40)+'px';
+  pop.style.left = Math.max(8, window.scrollX + rect.left)+'px';
+}
 function onSelect(){
-  const pop = $('pop'), sel = window.getSelection();
+  const sel = window.getSelection(), pop = $('pop');
   if (!sel || sel.isCollapsed || !sel.rangeCount){ pop.classList.add('hidden'); return; }
   const r = sel.getRangeAt(0);
   const a = r.startContainer.parentElement?.closest('[data-p]');
@@ -1650,53 +1703,40 @@ function onSelect(){
   const pi = +a.dataset.p;
   const st = paraOffset(a, r.startContainer, r.startOffset);
   const en = paraOffset(a, r.endContainer, r.endOffset);
-  const rect = r.getBoundingClientRect();
-  pop.innerHTML = `<button class="btn btn--mini btn--keep" id="popAdd">Marcar como cita</button>`;
-  showPop(pop, rect);
+  showPop(r.getBoundingClientRect(), `<button class="btn btn--mini btn--keep" id="popAdd">${esc(t('mark_cite'))}</button>`);
   $('popAdd').onclick = () => { addManual(pi, st, en, txt); pop.classList.add('hidden'); sel.removeAllRanges(); };
-}
-function showPop(pop, rect){
-  pop.classList.remove('hidden');
-  pop.style.top = (window.scrollY + rect.top - 44)+'px';
-  pop.style.left = Math.max(8, window.scrollX + rect.left)+'px';
 }
 function addManual(pi, st, en, txt){
   const g = txt.replace(/^[(\[]|[)\]]$/g,'').trim().match(RE_LOOSE);
   if (g){
-    const a = tidyAuthors(trimStop(g[1])) || g[1];
-    S.hits.push(mkHit(pi, st, en, a, normYear(g[2]), 'manual', 'ok'));
-    S.hits.sort((x,z) => x.para-z.para || x.start-z.start);
-    renderPanel(); return;
+    S.hits.push(mkHit(pi, st, en, tidyAuthors(trimStop(g[1])) || g[1], normYear(g[2]), 'manual', 'ok'));
+    S.hits.sort((x,z) => x.para-z.para || x.start-z.start); renderPanel(); return;
   }
   const gy = (txt.match(/\b(\d{4}[a-h]?)\b/)||[])[1] || '';
   const ga = trimStop(txt.replace(/[(\[\])]/g,'').replace(/\b\d{4}[a-h]?\b[\s\S]*$/,'').replace(/[,;:]\s*$/,'').trim());
-  const v = modal(`<h3>Agregar cita</h3>
-    <p class="mini-note">Seleccionaste: “${esc(txt)}”</p>
-    <div class="two">
-      <div><label>Autor o autores</label><input type="text" id="mA" value="${esc(ga)}" placeholder="Fernández Massi"></div>
-      <div><label>Año</label><input type="text" id="mY" value="${esc(gy)}" placeholder="2019"></div>
-    </div>
-    <div class="row"><button class="btn btn--ghost" id="mC">Cancelar</button>
-    <button class="btn btn--key" id="mOk">Agregar</button></div>`);
-  $('mA').focus();
-  $('mC').onclick = () => v.remove();
-  $('mOk').onclick = () => {
-    const a = $('mA').value.trim(), y = $('mY').value.trim();
-    if (!a || !y){ toast('Falta autor o año'); return; }
+  const v = modal(`<h3>${esc(t('add_h'))}</h3>
+    <p class="mini-note">${esc(t('add_sel', txt))}</p>
+    <div class="two"><div><label>${esc(t('ed_authors'))}</label><input type="text" id="aA" value="${esc(ga)}"></div>
+    <div><label>${esc(t('ed_year'))}</label><input type="text" id="aY" value="${esc(gy)}"></div></div>
+    <div class="row"><button class="btn btn--ghost" id="aC">${esc(t('cancel'))}</button>
+    <button class="btn btn--key" id="aO">${esc(t('add_btn'))}</button></div>`);
+  $('aA').focus();
+  $('aC').onclick = () => v.remove();
+  $('aO').onclick = () => {
+    const a = $('aA').value.trim(), y = $('aY').value.trim();
+    if (!a || !y){ toast(t('t_missing')); return; }
     S.hits.push(mkHit(pi, st, en, tidyAuthors(a), normYear(y), 'manual', 'ok'));
     S.hits.sort((x,z) => x.para-z.para || x.start-z.start);
     v.remove(); renderPanel();
   };
 }
-
 $('doc').addEventListener('click', e => {
   const m = e.target.closest('mark.cit'); if (!m) return;
   const h = S.hits.find(x => x.id === m.dataset.hit); if (!h) return;
   const pop = $('pop');
-  pop.innerHTML = h.status === 'sug'
-    ? `<button class="btn btn--mini btn--keep" id="pK">Conservar cita</button><button class="btn btn--mini btn--drop" id="pD">Quitar cita</button>`
-    : `<button class="btn btn--mini btn--ghost" id="pE">Editar</button><button class="btn btn--mini btn--drop" id="pD">Quitar</button>`;
-  showPop(pop, m.getBoundingClientRect());
+  showPop(m.getBoundingClientRect(), h.status === 'sug'
+    ? `<button class="btn btn--mini btn--keep" id="pK">${esc(t('a_keep'))}</button><button class="btn btn--mini btn--drop" id="pD">${esc(t('a_drop'))}</button>`
+    : `<button class="btn btn--mini btn--ghost" id="pE">${esc(t('a_edit'))}</button><button class="btn btn--mini btn--drop" id="pD">${esc(t('a_remove'))}</button>`);
   if ($('pK')) $('pK').onclick = () => { h.status='ok'; pop.classList.add('hidden'); renderPanel(); };
   if ($('pE')) $('pE').onclick = () => { pop.classList.add('hidden'); if (h.kind!=='ley') openFragEditor(h.id); };
   $('pD').onclick = () => { S.hits = S.hits.filter(x => x.id!==h.id); pop.classList.add('hidden'); renderPanel(); };
@@ -1705,105 +1745,91 @@ document.addEventListener('mouseup', e => {
   if (!e.target.closest('.pop') && !e.target.closest('mark.cit')) setTimeout(onSelect, 0);
 });
 
-/* ==========================================================================
-   11. CARGA
-   ========================================================================== */
-const normalizeText = t => String(t)
-  .replace(/\u00AD/g,'')
-  .replace(/(\p{L})-\s*\n\s*(\p{L})/gu,'$1$2')
-  .replace(/[\u2018\u2019\u02BC]/g,'\u2019')
-  .replace(/[\u201C\u201D]/g,'"')
-  .replace(/\u00A0/g,' ')
-  .replace(/[\t ]+/g,' ').trim();
+/* =========================================================================
+   CARGA
+   ========================================================================= */
+const normalizeText = x => String(x)
+  .replace(/\u00AD/g,'').replace(/(\p{L})-\s*\n\s*(\p{L})/gu,'$1$2')
+  .replace(/[\u2018\u2019\u02BC]/g,'\u2019').replace(/[\u201C\u201D]/g,'"')
+  .replace(/\u00A0/g,' ').replace(/[\t ]+/g,' ').trim();
 
 function loadParas(paras){
   S.paras = paras.filter(p => p.text.trim().length);
   S.hits = detect(S.paras);
-  S.refOverride.clear(); S.normOverride.clear(); S.cands.clear();
-  S.tab='citas'; syncTabs(); $('qCitas').value=''; $('qBiblio').value='';
+  buildVocab();
+  S.refOverride.clear(); S.normOverride.clear(); S.origin.clear(); S.cands.clear();
+  S.tab='list'; S.findI=0; syncTabs(); $('qList').value='';
   renderPanel(); $('scroller').scrollTop = 0;
-  const sug = S.hits.filter(h=>h.status==='sug').length;
-  const ley = S.hits.filter(h=>h.kind==='ley').length;
-  toast(`${S.hits.filter(h=>h.status==='ok'&&h.kind!=='ley').length} citas` + (ley?` · ${ley} normas`:'') + (sug?` · ${sug} a revisar`:''));
+  const sug = S.hits.filter(h=>h.status==='sug').length, ley = S.hits.filter(h=>h.kind==='ley').length;
+  toast(t('t_cites', S.hits.filter(h=>h.status==='ok'&&h.kind!=='ley').length)
+    + (ley ? ' · '+t('t_norms', ley) : '') + (sug ? ' · '+t('t_review', sug) : ''));
   if (window.innerWidth <= 900) $('togglePanel').classList.remove('hidden');
 }
 async function loadDocx(file){
-  if (!window.mammoth){ toast('No cargó el lector de .docx — revisá la conexión'); return; }
+  if (!window.mammoth){ toast(t('t_docx_err')); return; }
   try {
     const res = await window.mammoth.convertToHtml({arrayBuffer: await file.arrayBuffer()});
     const box = document.createElement('div'); box.innerHTML = res.value;
     const paras = [...box.querySelectorAll('p,h1,h2,h3,h4,li,blockquote')].map(el => ({
       tag: /^H[1-3]$/.test(el.tagName) ? el.tagName.toLowerCase() : 'p',
-      text: normalizeText(el.textContent||'')
-    }));
-    if (!paras.length){ toast('El documento no tiene texto legible'); return; }
+      text: normalizeText(el.textContent||'') }));
+    if (!paras.length){ toast(t('t_no_text')); return; }
     loadParas(paras);
-  } catch(e){ console.error(e); toast('No se pudo leer el .docx'); }
+  } catch(e){ console.error(e); toast(t('t_docx_err')); }
 }
 function loadBib(text){
   try {
     const e = parseBib(text);
-    if (!e.length){ toast('No se encontraron entradas en el .bib'); return; }
-    S.bib = e; S.bibIndex = buildBibIndex(e);
-    toast(`${e.length} entradas leídas del .bib`); renderPanel();
-  } catch(err){ console.error(err); toast('El .bib no se pudo interpretar'); }
+    if (!e.length){ toast(t('t_bib_none')); return; }
+    S.bib = e; S.bibIndex = buildBibIndex(e); indexBibProfile();
+    toast(t('t_bib_read', e.length)); renderPanel();
+  } catch(err){ console.error(err); toast(t('t_bib_err')); }
+}
+function wipeAll(){
+  DB.del(KEY);
+  S.paras=[]; S.hits=[]; S.works=[]; S.norms=[]; S.bib=[]; S.bibIndex=new Map();
+  S.cands.clear(); S.refOverride.clear(); S.normOverride.clear(); S.origin.clear();
+  S.vocab=new Map(); S.bibVenues=new Set(); S.bibSurnames=new Set(); S.findI=0; S.tab='list';
+  $('doc').innerHTML=''; $('empty').classList.remove('hidden'); $('qList').value='';
+  [...$('ruler').querySelectorAll('.tick')].forEach(x=>x.remove());
+  syncTabs(); renderPanel(); toast(t('t_deleted'));
 }
 
-/* ------------------------------------------------------------- eventos */
+/* =========================================================================
+   i18n APLICADO AL DOM
+   ========================================================================= */
+function applyI18n(){
+  document.documentElement.lang = CFG.uiLang;
+  document.querySelectorAll('[data-i18n]').forEach(el => el.textContent = t(el.dataset.i18n));
+  $('tabList').textContent = t('tab_list');
+  $('tabExp').textContent = t('tab_exp');
+  $('qList').placeholder = t('search_ph');
+  $('pasteBox').placeholder = t('paste_ph');
+  $('btnClear').innerHTML = ICON.trash + esc(t('clear'));
+  $('btnCfg').innerHTML = ICON.gear + esc(t('cfg'));
+  $('resizer').title = t('resize');
+  $('togglePanel').textContent = t('show_panel');
+}
+
+/* ---------------------------------------------------------------- eventos */
 $('btnPick').onclick = () => $('fileDoc').click();
 $('fileDoc').onchange = e => { if (e.target.files[0]) loadDocx(e.target.files[0]); e.target.value=''; };
 $('btnBib').onclick = () => $('fileBib').click();
-$('fileBib').onchange = async e => { const f=e.target.files[0]; if (f) loadBib(await f.text()); e.target.value=''; };
+$('fileBib').onchange = async e => { const f = e.target.files[0]; if (f) loadBib(await f.text()); e.target.value=''; };
 $('btnPaste').onclick = () => {
-  const t = $('pasteBox').value;
-  if (!t.trim()){ toast('Pegá algo de texto primero'); return; }
-  loadParas(t.split(/\n+/).map(l => ({tag:'p', text:normalizeText(l)})));
+  const x = $('pasteBox').value;
+  if (!x.trim()){ toast(t('t_paste_first')); return; }
+  loadParas(x.split(/\n+/).map(l => ({tag:'p', text:normalizeText(l)})));
 };
-$('btnNew').onclick = () => {
-  S.paras=[]; S.hits=[]; S.works=[]; S.norms=[]; S.cands.clear();
-  S.refOverride.clear(); S.normOverride.clear();
-  $('doc').innerHTML=''; $('empty').classList.remove('hidden');
-  [...$('ruler').querySelectorAll('.tick')].forEach(t=>t.remove());
-  renderPanel();
-};
+$('btnClear').onclick = () => { if (confirm(t('clear_confirm'))) wipeAll(); };
 $('btnCfg').onclick = openConfig;
-$('tabCitas').onclick = () => { S.tab='citas'; syncTabs(); renderPanel(); };
-$('tabBiblio').onclick = () => { S.tab='biblio'; syncTabs(); renderPanel(); };
-$('qCitas').addEventListener('input', () => renderCitas($('panelBody'), $('panelFoot')) || bindPanel());
-$('qBiblio').addEventListener('input', () => renderBiblio($('panelBody'), $('panelFoot')) || bindPanel());
-$('rsClose').onclick = closeResolve;
-
-/* ancho de la columna lateral, arrastrable */
-(function initResizer(){
-  const r = $('resizer'), p = $('panel');
-  let dragging = false;
-  const clamp = px => Math.max(320, Math.min(720, window.innerWidth * 0.6, px));
-  const apply = px => { p.style.width = clamp(px) + 'px'; drawRuler(); };
-  const at = e => (e.touches ? e.touches[0].clientX : e.clientX);
-  const move = e => { if (dragging) apply(window.innerWidth - at(e)); };
-  const stop = () => {
-    if (!dragging) return;
-    dragging = false; r.classList.remove('is-dragging');
-    document.body.style.userSelect = ''; document.body.style.cursor = '';
-    saveSoon();
-  };
-  const start = e => {
-    if (window.innerWidth <= 900) return;
-    dragging = true; r.classList.add('is-dragging');
-    document.body.style.userSelect = 'none'; document.body.style.cursor = 'col-resize';
-    if (e.cancelable) e.preventDefault();
-  };
-  r.addEventListener('mousedown', start);
-  r.addEventListener('touchstart', start, {passive:false});
-  document.addEventListener('mousemove', move);
-  document.addEventListener('touchmove', move, {passive:true});
-  document.addEventListener('mouseup', stop);
-  document.addEventListener('touchend', stop);
-  r.addEventListener('dblclick', () => apply(400));
-})();
+$('tabList').onclick = () => { S.tab='list'; syncTabs(); renderPanel(); };
+$('tabFind').onclick = () => { S.tab='find'; syncTabs(); renderPanel(); };
+$('tabExp').onclick  = () => { S.tab='exp';  syncTabs(); renderPanel(); };
+$('qList').addEventListener('input', renderList);
 $('togglePanel').onclick = () => {
   const p = $('panel'); p.classList.toggle('is-hidden');
-  $('togglePanel').textContent = p.classList.contains('is-hidden') ? 'Ver citas' : 'Ver texto';
+  $('togglePanel').textContent = p.classList.contains('is-hidden') ? t('show_panel') : t('show_text');
 };
 const drop = $('drop');
 ['dragenter','dragover'].forEach(ev => drop.addEventListener(ev, e => { e.preventDefault(); drop.classList.add('is-over'); }));
@@ -1812,21 +1838,50 @@ drop.addEventListener('drop', e => {
   const f = e.dataTransfer.files[0]; if (!f) return;
   if (/\.bib(tex)?$/i.test(f.name)) f.text().then(loadBib); else loadDocx(f);
 });
-window.addEventListener('resize', drawRuler);
 $('scroller').addEventListener('scroll', () => $('pop').classList.add('hidden'));
+window.addEventListener('resize', drawRuler);
+document.addEventListener('keydown', e => {
+  if (S.tab !== 'find' || e.target.matches('input, textarea, [contenteditable]')) return;
+  const q = findQueue();
+  if (e.key === 'ArrowRight' && S.findI < q.length-1){ S.findI++; S.manualOpen=false; renderPanel(); }
+  if (e.key === 'ArrowLeft' && S.findI > 0){ S.findI--; S.manualOpen=false; renderPanel(); }
+  if (/^[1-9]$/.test(e.key)){
+    const w = q[S.findI], c = w && S.cands.get(w.key);
+    if (c && c[+e.key-1]){ S.refOverride.set(w.key, fmt(c[+e.key-1], w.year)); S.origin.set(w.key,'auto'); advance(); }
+  }
+});
 
-/* ------------------------------------------------------------- arranque */
+/* divisor arrastrable */
+(function initResizer(){
+  const r = $('resizer'), p = $('panel');
+  let dragging = false;
+  const clamp = px => Math.max(340, Math.min(760, window.innerWidth*0.6, px));
+  const apply = px => { p.style.width = clamp(px)+'px'; drawRuler(); };
+  const at = e => (e.touches ? e.touches[0].clientX : e.clientX);
+  const move = e => { if (dragging) apply(window.innerWidth - at(e)); };
+  const stop = () => { if (!dragging) return; dragging=false; r.classList.remove('is-dragging');
+    document.body.style.userSelect=''; document.body.style.cursor=''; saveSoon(); };
+  const start = e => { if (window.innerWidth <= 900) return; dragging=true; r.classList.add('is-dragging');
+    document.body.style.userSelect='none'; document.body.style.cursor='col-resize'; if (e.cancelable) e.preventDefault(); };
+  r.addEventListener('mousedown', start);
+  r.addEventListener('touchstart', start, {passive:false});
+  document.addEventListener('mousemove', move);
+  document.addEventListener('touchmove', move, {passive:true});
+  document.addEventListener('mouseup', stop);
+  document.addEventListener('touchend', stop);
+  r.addEventListener('dblclick', () => apply(410));
+})();
+
+/* ---------------------------------------------------------------- arranque */
 const hadSession = restore();
+applyI18n();
 syncTabs();
 renderPanel();
 if (hadSession){
   $('empty').classList.add('hidden');
-  const falta = S.works.filter(w => !refOf(w)).length;
-  setTimeout(() => toast(`Sesión recuperada · ${S.works.length} obras` + (falta ? ` · ${falta} sin referencia` : '')), 500);
+  setTimeout(() => toast(t('t_session', S.works.length)), 500);
   if (window.innerWidth <= 900) $('togglePanel').classList.remove('hidden');
-} else if (!DB.ok){
-  setTimeout(() => flashSaved(''), 800);
-}
+} else if (!DB.ok){ setTimeout(() => flashSaved(''), 800); }
 window.addEventListener('beforeunload', () => { clearTimeout(saveTimer); try { saveNow(); } catch(e){} });
 </script>
 </body>
