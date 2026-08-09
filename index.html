@@ -140,9 +140,6 @@ mark.cit.is-active{box-shadow:0 0 0 2px var(--ink)}
 .nav .who span{font-family:var(--mono);font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-faint)}
 .navbar{height:3px;background:var(--rule);margin-top:9px;border-radius:2px;overflow:hidden}
 .navbar>div{height:100%;background:var(--mimeo);transition:width .25s}
-.ctx{font-family:var(--serif);font-size:14px;line-height:1.6;background:var(--sheet);border-left:3px solid var(--mimeo-line);
-  padding:8px 11px;margin-bottom:7px;color:#2C2C33}
-.ctx mark{background:var(--mimeo-wash);border-bottom:1.5px solid var(--mimeo-line)}
 .opt{background:var(--sheet);border:1px solid var(--rule);border-radius:2px;padding:10px 11px;margin-bottom:8px;position:relative}
 .opt.is-bib{border-left:3px solid var(--verde)}
 .opt.is-picked{border-color:var(--verde);box-shadow:0 0 0 1px var(--verde)}
@@ -150,11 +147,12 @@ mark.cit.is-active{box-shadow:0 0 0 2px var(--ink)}
   display:flex;gap:7px;align-items:center;margin-bottom:6px}
 .opt-tag .k{background:var(--ink);color:var(--sheet);border-radius:8px;padding:1px 6px}
 .opt-tag .ok{color:var(--verde)} .opt-tag .warn{color:var(--rust)}
-.f{display:grid;grid-template-columns:64px 1fr;gap:8px;font-size:12.8px;line-height:1.4;margin-bottom:3px}
-.f>b{font-family:var(--mono);font-size:8.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-faint);font-weight:400;padding-top:2px}
-.f>span{word-break:break-word}
-.opt-prev{font-family:var(--serif);font-size:12.5px;color:var(--ink-soft);line-height:1.45;border-top:1px dotted var(--rule);margin-top:7px;padding-top:7px}
-.opt-prev em{font-style:italic}
+.occ{display:flex;align-items:center;gap:6px;background:var(--sheet);border:1px solid var(--rule);border-radius:2px;
+  padding:5px 7px 5px 10px;margin-bottom:12px}
+.occ>span{flex:1;font-family:var(--mono);font-size:10px;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-faint)}
+.opt-ref{font-family:var(--serif);font-size:13.5px;line-height:1.5;color:var(--ink)}
+.opt-ref em{font-style:italic}
+a.ico{text-decoration:none}
 .busy{font-size:13px;color:var(--mimeo);background:var(--sheet);border:1px dashed var(--mimeo-line);padding:14px;border-radius:2px}
 .nores{font-size:13px;color:var(--ink-soft);background:var(--sheet);border:1px dashed var(--rule);padding:14px;border-radius:2px;line-height:1.5}
 .manualbox{width:100%;min-height:70px;font-family:var(--serif);font-size:14px;padding:9px;border:1px solid var(--mimeo);
@@ -289,7 +287,8 @@ const ICON = {
   right: SV('<path d="M6 3.2L10.8 8 6 12.8"/>'),
   down:  SV('<path d="M8 2.4v8.2M4.6 7.4L8 10.8l3.4-3.4M2.6 13.4h10.8"/>'),
   copy:  SV('<rect x="5.4" y="5.4" width="8.2" height="8.2" rx="1"/><path d="M10.6 5.4V3.4a1 1 0 00-1-1H3.4a1 1 0 00-1 1v6.2a1 1 0 001 1h2"/>'),
-  gear:  SV('<circle cx="8" cy="8" r="2.2"/><path d="M8 1.6v1.6M8 12.8v1.6M14.4 8h-1.6M3.2 8H1.6M12.5 3.5l-1.1 1.1M4.6 11.4l-1.1 1.1M12.5 12.5l-1.1-1.1M4.6 4.6L3.5 3.5"/>')
+  gear:  SV('<circle cx="8" cy="8" r="2.2"/><path d="M8 1.6v1.6M8 12.8v1.6M14.4 8h-1.6M3.2 8H1.6M12.5 3.5l-1.1 1.1M4.6 11.4l-1.1 1.1M12.5 12.5l-1.1-1.1M4.6 4.6L3.5 3.5"/>'),
+  ext:   SV('<path d="M9.4 2.4h4.2v4.2M13.6 2.4L7.4 8.6M11.6 9.4v3.2a1 1 0 01-1 1H3.4a1 1 0 01-1-1V5.4a1 1 0 011-1h3.2"/>')
 };
 
 /* ------------------------------------------------------------------- i18n */
@@ -309,7 +308,8 @@ es:{
  search_ph:'Buscar entre las citas…',
  sec_doubtful:'Dudosas — confirmá o descartá', sec_works:'Obras citadas', sec_norms:'Normativa citada',
  sec_refs:'Referencias', sec_pending:'Sin resolver', sec_norm_refs:'Fuentes normativas',
- a_view:'Ver en el texto', a_edit:'Editar', a_remove:'Quitar', a_keep:'Conservar cita', a_drop:'Quitar cita',
+ a_view:'Ver en el texto',
+ occ_one:'1 aparición', occ_n:'{0} de {1} apariciones', occ_next:'Ver la siguiente aparición', occ_prev:'Ver la anterior', e_link:'Abrir la publicación', a_edit:'Editar', a_remove:'Quitar', a_keep:'Conservar cita', a_drop:'Quitar cita',
  merged:'Unificada con la forma “et al.”.',
  dup:'Posible duplicado: otra obra del mismo autor y año con distinta lista de autores.',
  copy_list:'Copiar lista autor-año', copied:'Copiado', copied_n:'{0} copiadas',
@@ -355,7 +355,6 @@ es:{
  t_reanalyzed:'Texto reanalizado', t_deleted:'Datos borrados', t_paste_first:'Pegá algo de texto primero',
  t_saved:'guardado', t_saved_p:'guardado (parcial)', t_saved_no:'sin espacio', t_nostore:'sin guardado en este entorno',
  t_downloaded:'Archivo descargado',
- lb_title:'Título', lb_authors:'Autores', lb_pub:'Publicado en', lb_year:'Año', lb_type:'Tipo',
  ty_article:'Artículo', ty_book:'Libro', ty_chapter:'Capítulo', ty_paper:'Ponencia', ty_thesis:'Tesis',
  ty_report:'Informe', ty_other:'Otro',
  ar_none:'Todas las áreas', ar_soc:'Ciencias sociales', ar_hum:'Humanidades', ar_psy:'Psicología y educación',
@@ -379,7 +378,8 @@ en:{
  search_ph:'Search the citations…',
  sec_doubtful:'Uncertain — confirm or discard', sec_works:'Works cited', sec_norms:'Statutes cited',
  sec_refs:'References', sec_pending:'Unresolved', sec_norm_refs:'Legal sources',
- a_view:'Show in text', a_edit:'Edit', a_remove:'Remove', a_keep:'Keep citation', a_drop:'Remove citation',
+ a_view:'Show in text',
+ occ_one:'1 occurrence', occ_n:'{0} of {1} occurrences', occ_next:'Show next occurrence', occ_prev:'Show previous', e_link:'Open the publication', a_edit:'Edit', a_remove:'Remove', a_keep:'Keep citation', a_drop:'Remove citation',
  merged:'Merged with the “et al.” form.',
  dup:'Possible duplicate: another work by the same author and year with a different author list.',
  copy_list:'Copy author-year list', copied:'Copied', copied_n:'{0} copied',
@@ -425,7 +425,6 @@ en:{
  t_reanalyzed:'Text re-analysed', t_deleted:'Data deleted', t_paste_first:'Paste some text first',
  t_saved:'saved', t_saved_p:'saved (partial)', t_saved_no:'no space', t_nostore:'no storage here',
  t_downloaded:'File downloaded',
- lb_title:'Title', lb_authors:'Authors', lb_pub:'Published in', lb_year:'Year', lb_type:'Type',
  ty_article:'Article', ty_book:'Book', ty_chapter:'Chapter', ty_paper:'Conference paper', ty_thesis:'Thesis',
  ty_report:'Report', ty_other:'Other',
  ar_none:'All fields', ar_soc:'Social sciences', ar_hum:'Humanities', ar_psy:'Psychology and education',
@@ -449,7 +448,8 @@ pt:{
  search_ph:'Buscar entre as citações…',
  sec_doubtful:'Duvidosas — confirme ou descarte', sec_works:'Obras citadas', sec_norms:'Normas citadas',
  sec_refs:'Referências', sec_pending:'Sem resolver', sec_norm_refs:'Fontes normativas',
- a_view:'Ver no texto', a_edit:'Editar', a_remove:'Remover', a_keep:'Manter citação', a_drop:'Remover citação',
+ a_view:'Ver no texto',
+ occ_one:'1 ocorrência', occ_n:'{0} de {1} ocorrências', occ_next:'Ver a próxima ocorrência', occ_prev:'Ver a anterior', e_link:'Abrir a publicação', a_edit:'Editar', a_remove:'Remover', a_keep:'Manter citação', a_drop:'Remover citação',
  merged:'Unificada com a forma “et al.”.',
  dup:'Possível duplicata: outra obra do mesmo autor e ano com lista de autores diferente.',
  copy_list:'Copiar lista autor-ano', copied:'Copiado', copied_n:'{0} copiadas',
@@ -495,7 +495,6 @@ pt:{
  t_reanalyzed:'Texto reanalisado', t_deleted:'Dados apagados', t_paste_first:'Cole algum texto primeiro',
  t_saved:'salvo', t_saved_p:'salvo (parcial)', t_saved_no:'sem espaço', t_nostore:'sem salvamento aqui',
  t_downloaded:'Arquivo baixado',
- lb_title:'Título', lb_authors:'Autores', lb_pub:'Publicado em', lb_year:'Ano', lb_type:'Tipo',
  ty_article:'Artigo', ty_book:'Livro', ty_chapter:'Capítulo', ty_paper:'Trabalho', ty_thesis:'Tese',
  ty_report:'Relatório', ty_other:'Outro',
  ar_none:'Todas as áreas', ar_soc:'Ciências sociais', ar_hum:'Humanidades', ar_psy:'Psicologia e educação',
@@ -540,8 +539,9 @@ const SOURCES = {
 /* ------------------------------------------------------------------ estado */
 const S = {
   paras:[], hits:[], works:[], norms:[], bib:[], bibIndex:new Map(),
-  refOverride:new Map(), normOverride:new Map(), origin:new Map(), cands:new Map(),
+  refOverride:new Map(), normOverride:new Map(), origin:new Map(), cands:new Map(), link:new Map(),
   vocab:new Map(), bibVenues:new Set(), bibSurnames:new Set(),
+  cycle:new Map(), occ:new Map(), lastJumped:null,
   tab:'list', seq:0, findI:0, busyKey:null, manualOpen:false
 };
 
@@ -595,7 +595,7 @@ let saveTimer = null;
 const saveSoon = () => { clearTimeout(saveTimer); saveTimer = setTimeout(saveNow, 700); };
 function snapshot(){
   return { v:3, cfg:CFG, paras:S.paras, hits:S.hits, seq:S.seq, bib:S.bib, tab:S.tab, findI:S.findI,
-    refOverride:[...S.refOverride], normOverride:[...S.normOverride], origin:[...S.origin], cands:[...S.cands],
+    refOverride:[...S.refOverride], normOverride:[...S.normOverride], origin:[...S.origin], cands:[...S.cands], link:[...S.link],
     width:($('panel')||{style:{}}).style.width || '' };
 }
 function saveNow(){
@@ -621,7 +621,7 @@ function restore(){
     S.paras = d.paras||[]; S.hits = d.hits||[]; S.seq = d.seq||0;
     S.bib = d.bib||[]; S.bibIndex = buildBibIndex(S.bib); indexBibProfile();
     S.refOverride = new Map(d.refOverride||[]); S.normOverride = new Map(d.normOverride||[]);
-    S.origin = new Map(d.origin||[]); S.cands = new Map(d.cands||[]);
+    S.origin = new Map(d.origin||[]); S.cands = new Map(d.cands||[]); S.link = new Map(d.link||[]);
     S.tab = ['list','find','exp'].includes(d.tab) ? d.tab : 'list';
     S.findI = d.findI||0;
     if (d.width) $('panel').style.width = d.width;
@@ -1199,24 +1199,38 @@ function drawRuler(){
     ruler.appendChild(el);
   });
 }
-function jumpTo(id){
+function jumpTo(id, hidePanel = true){
   const el = document.querySelector(`mark[data-hit="${id}"]`); if (!el) return;
   el.scrollIntoView({behavior:'smooth', block:'center'});
   document.querySelectorAll('mark.is-active').forEach(m => m.classList.remove('is-active'));
   el.classList.add('is-active'); setTimeout(() => el.classList.remove('is-active'), 2400);
-  if (window.innerWidth <= 900) $('panel').classList.add('is-hidden');
+  if (hidePanel && window.innerWidth <= 900) $('panel').classList.add('is-hidden');
 }
-function contextOf(h){
-  const txt = S.paras[h.para] ? S.paras[h.para].text : ''; if (!txt) return '';
-  let a = h.start, b = h.end;
-  const back = txt.slice(Math.max(0, a-300), a), mb = back.lastIndexOf('. ');
-  a = mb === -1 ? Math.max(0, a-300) : Math.max(0, a-300) + mb + 2;
-  const fwd = txt.slice(b, b+300), mf = fwd.indexOf('. ');
-  b = mf === -1 ? Math.min(txt.length, b+300) : b + mf + 1;
-  return (a>0?'… ':'') + esc(txt.slice(a, h.start)) + `<mark>${esc(txt.slice(h.start,h.end))}</mark>`
-       + esc(txt.slice(h.end, b)) + (b < txt.length ? ' …' : '');
+/* el ojo recorre las apariciones una tras otra, no siempre la primera */
+function cycleTo(key, hits){
+  if (!hits || !hits.length) return;
+  const i = (S.cycle.get(key) || 0) % hits.length;
+  jumpTo(hits[i].id);
+  S.cycle.set(key, i + 1);
+  if (hits.length > 1) toast(t('occ_n', i+1, hits.length));
 }
-
+/* enlace a la publicación, si lo hay */
+function linkOf(w){
+  const saved = S.link.get(w.key);
+  if (saved) return saved;
+  if (w.bib){
+    const f = w.bib.fields || {};
+    if (f.doi) return String(f.doi).startsWith('http') ? f.doi : 'https://doi.org/'+f.doi;
+    if (f.url && /^https?:/.test(f.url)) return f.url;
+  }
+  const m = stripTags(refOf(w) || '').match(/https?:\/\/[^\s<>"')]+/);
+  return m ? m[0] : null;
+}
+const entryLink = e => {
+  const f = e.fields || {};
+  if (f.doi) return String(f.doi).startsWith('http') ? f.doi : 'https://doi.org/'+f.doi;
+  return (f.url && /^https?:/.test(f.url)) ? f.url : '';
+};
 /* =========================================================================
    PANEL
    ========================================================================= */
@@ -1295,7 +1309,7 @@ function renderList(){
       <span class="fk">${esc(w.authors)}, ${esc(w.year)}</span>
       <span class="fn">${w.hits.length}×</span>
       <span class="fa">
-        ${iconBtn('data-jump', h0.id, {i:'eye', k:'a_view'})}
+        ${iconBtn('data-cycle', w.key, {i:'eye', k:'a_view'})}
         ${iconBtn('data-editfrag', h0.id, {i:'pencil', k:'a_edit'})}
         ${iconBtn('data-killwork', w.key, {i:'trash', k:'a_remove'}, 'i-drop')}
       </span></div>
@@ -1310,7 +1324,7 @@ function renderList(){
       html += `<div class="ficha is-ley"><div class="fr">
         <span class="fk">${esc(n.label)}</span><span class="fn">${n.hits.length}×</span>
         <span class="fa">
-          ${iconBtn('data-jump', n.hits[0].id, {i:'eye', k:'a_view'})}
+          ${iconBtn('data-cyclenorm', n.key, {i:'eye', k:'a_view'})}
           ${iconBtn('data-killnorm', n.key, {i:'trash', k:'a_remove'}, 'i-drop')}
         </span></div></div>`;
     });
@@ -1345,19 +1359,31 @@ function renderFind(){
   $('fPrev').onclick = () => { S.findI--; S.manualOpen = false; renderPanel(); };
   $('fNext').onclick = () => { S.findI++; S.manualOpen = false; renderPanel(); };
 
-  const ctxs = w.hits.slice(0,2).map(contextOf).filter(Boolean);
+  /* en vez de repetir el contexto acá, llevamos el manuscrito de la izquierda
+     a la aparición correspondiente */
+  if (S.lastJumped !== w.key){
+    S.occ.set(w.key, 0);
+    S.lastJumped = w.key;
+    setTimeout(() => jumpTo(w.hits[0].id, false), 30);
+  }
+  const oi = S.occ.get(w.key) || 0;
   const cands = S.cands.get(w.key);
   const cur = refOf(w);
-  let html = ctxs.map(c => `<div class="ctx">${c}</div>`).join('');
-  html += `<div class="section-head gap"><span>${esc(t('f_options'))}</span><span></span></div>`;
+  let html = `<div class="occ">
+      <span>${esc(w.hits.length > 1 ? t('occ_n', oi+1, w.hits.length) : t('occ_one'))}</span>
+      ${w.hits.length > 1 ? `
+        <button class="ico" id="occPrev" title="${esc(t('occ_prev'))}" aria-label="${esc(t('occ_prev'))}">${ICON.left}</button>
+        <button class="ico" id="occNext" title="${esc(t('occ_next'))}" aria-label="${esc(t('occ_next'))}">${ICON.right}</button>`
+      : `<button class="ico" id="occNext" title="${esc(t('a_view'))}" aria-label="${esc(t('a_view'))}">${ICON.eye}</button>`}
+    </div>`;
+  html += `<div class="section-head"><span>${esc(t('f_options'))}</span><span></span></div>`;
 
   /* opción 1: lo que ya está en tu .bib */
   if (w.bib){
-    const ref = fmt(w.bib, w.year);
     const picked = !w.manual;
     html += `<div class="opt is-bib ${picked?'is-picked':''}">
       <div class="opt-tag"><span class="ok">${esc(t('f_bib_opt'))}</span>${picked?`<span class="k">${esc(t('f_used'))}</span>`:''}</div>
-      <div class="opt-prev" style="border:0;margin:0;padding:0">${ref}</div>
+      <div class="opt-ref">${fmt(w.bib, w.year)}</div>
       ${!picked ? `<div style="margin-top:8px"><button class="btn btn--mini btn--keep" id="useBib">${esc(t('f_use'))}</button></div>`:''}
     </div>`;
   }
@@ -1365,11 +1391,11 @@ function renderFind(){
   if (w.manual){
     html += `<div class="opt is-picked">
       <div class="opt-tag"><span class="ok">${esc(t(S.origin.get(w.key)==='auto'?'bd_auto':'bd_mano'))}</span><span class="k">${esc(t('f_used'))}</span></div>
-      <div class="opt-prev" style="border:0;margin:0;padding:0">${w.manual}</div>
+      <div class="opt-ref">${w.manual}</div>
       <div style="margin-top:8px">${iconBtn('data-editref', w.key, {i:'pencil', k:'a_edit'})}</div>
     </div>`;
   }
-  /* opción 3+: candidatas de las fuentes */
+  /* opción 3+: candidatas de las fuentes, solo la referencia armada */
   if (S.busyKey === w.key){
     html += `<div class="busy">${esc(t('f_searching', Object.keys(CFG.sources).filter(k=>CFG.sources[k]).map(k=>SOURCES[k].label).join(', ')))}</div>`;
   } else if (cands && !cands.length){
@@ -1377,19 +1403,14 @@ function renderFind(){
   } else if (cands){
     const yN = String(w.year).replace(/[a-h]$/,'');
     html += cands.map((e,n) => {
-      const au = e.authors.slice(0,3).map(a => a.last).join(', ') + (e.authors.length>3 ? ' et al.' : '');
       const okAuthor = e.authors.some(a => slug(a.last) === slug(w.surname));
       const badYear = e.year && String(e.year) !== yN;
       return `<div class="opt">
-        <div class="opt-tag"><span class="k">${n+1}</span><span>${esc(e._src)}</span>
+        <div class="opt-tag"><span>${esc(e._src)}</span>
           ${okAuthor?`<span class="ok">${esc(t('f_author_ok'))}</span>`:''}
           ${badYear?`<span class="warn">${esc(t('f_year_warn'))}</span>`:''}</div>
-        <div class="f"><b>${esc(t('lb_title'))}</b><span>${esc(e.fields.title||'—')}</span></div>
-        <div class="f"><b>${esc(t('lb_authors'))}</b><span>${esc(au||'—')}</span></div>
-        <div class="f"><b>${esc(t('lb_pub'))}</b><span>${esc(e.fields.journal||e.fields.booktitle||e.fields.publisher||'—')}</span></div>
-        <div class="f"><b>${esc(t('lb_year'))}</b><span>${esc(e.year||'—')}</span></div>
-        <div class="opt-prev">${fmt(e, w.year)}</div>
-        <div style="margin-top:8px"><button class="btn btn--mini btn--keep" data-pick="${n}">${esc(t('f_use'))} (${n+1})</button></div>
+        <div class="opt-ref">${fmt(e, w.year)}</div>
+        <div style="margin-top:8px"><button class="btn btn--mini btn--keep" data-pick="${n}">${esc(t('f_use'))}</button></div>
       </div>`;
     }).join('');
   }
@@ -1405,14 +1426,25 @@ function renderFind(){
   $('fAgain').onclick = () => { S.cands.delete(w.key); renderPanel(); };
   $('fMan').onclick = () => { S.manualOpen = !S.manualOpen; renderPanel(); };
   $('fSkip').onclick = () => { S.findI = Math.min(S.findI+1, q.length-1); S.manualOpen=false; renderPanel(); };
-  if ($('useBib')) $('useBib').onclick = () => { S.refOverride.delete(w.key); S.origin.delete(w.key); renderPanel(); };
+  if ($('useBib')) $('useBib').onclick = () => { S.refOverride.delete(w.key); S.origin.delete(w.key); S.link.delete(w.key); renderPanel(); };
+  if ($('occNext')) $('occNext').onclick = () => {
+    const i = ((S.occ.get(w.key)||0) + (w.hits.length>1?1:0)) % w.hits.length;
+    S.occ.set(w.key, i); jumpTo(w.hits[i].id, false); renderFind();
+  };
+  if ($('occPrev')) $('occPrev').onclick = () => {
+    const i = ((S.occ.get(w.key)||0) - 1 + w.hits.length) % w.hits.length;
+    S.occ.set(w.key, i); jumpTo(w.hits[i].id, false); renderFind();
+  };
   if ($('manSave')) $('manSave').onclick = () => {
     const v = $('manBox').value.trim(); if (!v){ toast(t('t_missing')); return; }
     S.refOverride.set(w.key, esc(v).replace(/_([^_]+)_/g,'<em>$1</em>'));
     S.origin.set(w.key, 'mano'); S.manualOpen = false; advance(); };
   body.querySelectorAll('[data-pick]').forEach(b => b.onclick = () => {
-    S.refOverride.set(w.key, fmt(cands[+b.dataset.pick], w.year));
-    S.origin.set(w.key, 'auto'); advance(); });
+    const e = cands[+b.dataset.pick];
+    S.refOverride.set(w.key, fmt(e, w.year));
+    S.origin.set(w.key, 'auto');
+    const url = entryLink(e); if (url) S.link.set(w.key, url); else S.link.delete(w.key);
+    advance(); });
   bindCommon(body);
 
   if (!cands && S.busyKey !== w.key && Object.values(CFG.sources).some(Boolean)) autoLookup(w);
@@ -1455,11 +1487,13 @@ function renderExport(){
   } else {
     html += `<div class="section-head"><span>${esc(t('sec_refs'))}</span><span>${done.length}</span></div><div class="bib-doc">`;
     done.forEach(w => {
-      const o = originOf(w);
+      const o = originOf(w), link = linkOf(w);
       html += `<div class="bib-item">
         <div class="bib-ref" contenteditable="true" spellcheck="false" data-ref="${w.key}">${refOf(w)}</div>
         <div class="bib-meta"><span class="badge b-${o}">${esc(t('bd_'+o))}</span><span class="badge">${w.hits.length}×</span>
-          ${iconBtn('data-jump', w.hits[0].id, {i:'eye', k:'a_view'})}
+          ${iconBtn('data-cycle', w.key, {i:'eye', k:'a_view'})}
+          ${link ? `<a class="ico" href="${esc(link)}" target="_blank" rel="noopener"
+             title="${esc(t('e_link'))}" aria-label="${esc(t('e_link'))}">${ICON.ext}</a>` : ''}
           ${iconBtn('data-killwork', w.key, {i:'trash', k:'a_remove'}, 'i-drop')}
         </div></div>`;
     });
@@ -1471,7 +1505,7 @@ function renderExport(){
       html += `<div class="bib-item">
         <div class="bib-ref" contenteditable="true" spellcheck="false" data-norm="${n.key}">${n.manual || esc(normTemplate(n.label))}</div>
         <div class="bib-meta"><span class="badge">${n.hits.length}×</span>
-          ${iconBtn('data-jump', n.hits[0].id, {i:'eye', k:'a_view'})}
+          ${iconBtn('data-cyclenorm', n.key, {i:'eye', k:'a_view'})}
           ${iconBtn('data-killnorm', n.key, {i:'trash', k:'a_remove'}, 'i-drop')}
         </div></div>`;
     });
@@ -1549,6 +1583,10 @@ function cleanRef(html){
 }
 function bindCommon(b){
   b.querySelectorAll('[data-jump]').forEach(x => x.onclick = () => jumpTo(x.dataset.jump));
+  b.querySelectorAll('[data-cycle]').forEach(x => x.onclick = () => {
+    const w = S.works.find(y => y.key===x.dataset.cycle); if (w) cycleTo(w.key, w.hits); });
+  b.querySelectorAll('[data-cyclenorm]').forEach(x => x.onclick = () => {
+    const n = S.norms.find(y => y.key===x.dataset.cyclenorm); if (n) cycleTo(n.key, n.hits); });
   b.querySelectorAll('[data-confirm]').forEach(x => x.onclick = () => {
     const h = S.hits.find(y => y.id===x.dataset.confirm); if (h) h.status='ok'; renderPanel(); });
   b.querySelectorAll('[data-drop]').forEach(x => x.onclick = () => {
@@ -1757,7 +1795,8 @@ function loadParas(paras){
   S.paras = paras.filter(p => p.text.trim().length);
   S.hits = detect(S.paras);
   buildVocab();
-  S.refOverride.clear(); S.normOverride.clear(); S.origin.clear(); S.cands.clear();
+  S.refOverride.clear(); S.normOverride.clear(); S.origin.clear(); S.cands.clear(); S.link.clear();
+  S.cycle.clear(); S.occ.clear(); S.lastJumped=null;
   S.tab='list'; S.findI=0; syncTabs(); $('qList').value='';
   renderPanel(); $('scroller').scrollTop = 0;
   const sug = S.hits.filter(h=>h.status==='sug').length, ley = S.hits.filter(h=>h.kind==='ley').length;
@@ -1788,7 +1827,7 @@ function loadBib(text){
 function wipeAll(){
   DB.del(KEY);
   S.paras=[]; S.hits=[]; S.works=[]; S.norms=[]; S.bib=[]; S.bibIndex=new Map();
-  S.cands.clear(); S.refOverride.clear(); S.normOverride.clear(); S.origin.clear();
+  S.cands.clear(); S.refOverride.clear(); S.normOverride.clear(); S.origin.clear(); S.link.clear();
   S.vocab=new Map(); S.bibVenues=new Set(); S.bibSurnames=new Set(); S.findI=0; S.tab='list';
   $('doc').innerHTML=''; $('empty').classList.remove('hidden'); $('qList').value='';
   [...$('ruler').querySelectorAll('.tick')].forEach(x=>x.remove());
@@ -1847,7 +1886,9 @@ document.addEventListener('keydown', e => {
   if (e.key === 'ArrowLeft' && S.findI > 0){ S.findI--; S.manualOpen=false; renderPanel(); }
   if (/^[1-9]$/.test(e.key)){
     const w = q[S.findI], c = w && S.cands.get(w.key);
-    if (c && c[+e.key-1]){ S.refOverride.set(w.key, fmt(c[+e.key-1], w.year)); S.origin.set(w.key,'auto'); advance(); }
+    if (c && c[+e.key-1]){ const en2=c[+e.key-1];
+      S.refOverride.set(w.key, fmt(en2, w.year)); S.origin.set(w.key,'auto');
+      const u=entryLink(en2); if (u) S.link.set(w.key,u); advance(); }
   }
 });
 
