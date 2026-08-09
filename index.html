@@ -147,16 +147,25 @@ mark.cit.is-active{box-shadow:0 0 0 2px var(--ink)}
   display:flex;gap:7px;align-items:center;margin-bottom:6px}
 .opt-tag .k{background:var(--ink);color:var(--sheet);border-radius:8px;padding:1px 6px}
 .opt-tag .ok{color:var(--verde)} .opt-tag .warn{color:var(--rust)}
-.occ{display:flex;align-items:center;gap:6px;background:var(--sheet);border:1px solid var(--rule);border-radius:2px;
-  padding:5px 7px 5px 10px;margin-bottom:12px}
-.occ>span{flex:1;font-family:var(--mono);font-size:10px;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-faint)}
+.occ-b{border:0;background:transparent;color:var(--ink-faint);padding:0 1px;vertical-align:-3px;border-radius:2px}
+.occ-b svg{width:13px;height:13px}
+.occ-b:hover{background:var(--rule);color:var(--mimeo)}
+.manual-open{width:100%;justify-content:center;margin-bottom:14px}
+.manual{background:var(--sheet);border:1px solid var(--mimeo-line);border-radius:2px;padding:11px 12px;margin-bottom:14px}
+.manual label{display:block;font-family:var(--mono);font-size:9px;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--ink-faint);margin:0 0 4px}
+.manual label + *{margin-bottom:10px}
+.manual-row{display:flex;gap:6px;margin-bottom:10px}
+.manual-row input{flex:1;min-width:0;padding:7px 8px;border:1px solid var(--rule);border-radius:2px;
+  font-family:var(--mono);font-size:12px;background:var(--panel);color:var(--ink)}
+.manual textarea{width:100%;min-height:76px;font-family:var(--serif);font-size:14px;padding:8px;
+  border:1px solid var(--rule);border-radius:2px;background:var(--panel);color:var(--ink);resize:vertical}
+.manual-acts{display:flex;gap:6px;justify-content:flex-end}
 .opt-ref{font-family:var(--serif);font-size:13.5px;line-height:1.5;color:var(--ink)}
 .opt-ref em{font-style:italic}
 a.ico{text-decoration:none}
 .busy{font-size:13px;color:var(--mimeo);background:var(--sheet);border:1px dashed var(--mimeo-line);padding:14px;border-radius:2px}
 .nores{font-size:13px;color:var(--ink-soft);background:var(--sheet);border:1px dashed var(--rule);padding:14px;border-radius:2px;line-height:1.5}
-.manualbox{width:100%;min-height:70px;font-family:var(--serif);font-size:14px;padding:9px;border:1px solid var(--mimeo);
-  border-radius:2px;background:var(--sheet);color:var(--ink);resize:vertical;margin-top:8px}
 .alldone{text-align:center;padding:40px 10px}
 .alldone h3{font-family:var(--mono);font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:var(--verde);margin:0 0 8px}
 
@@ -309,6 +318,7 @@ es:{
  sec_doubtful:'Dudosas — confirmá o descartá', sec_works:'Obras citadas', sec_norms:'Normativa citada',
  sec_refs:'Referencias', sec_pending:'Sin resolver', sec_norm_refs:'Fuentes normativas',
  a_view:'Ver en el texto',
+ m_open:'Ingresar URL/DOI o completar manualmente', m_ident:'URL, DOI o ISBN', m_fetch:'Traer datos', m_ref:'Referencia completa', m_fetching:'Recuperando…', m_notfound:'No se pudo recuperar nada con eso. Completá la referencia a mano.', m_filled:'Referencia recuperada', m_linkonly:'Guardé el enlace, pero la referencia hay que escribirla.',
  occ_one:'1 aparición', occ_n:'{0} de {1} apariciones', occ_next:'Ver la siguiente aparición', occ_prev:'Ver la anterior', e_link:'Abrir la publicación', a_edit:'Editar', a_remove:'Quitar', a_keep:'Conservar cita', a_drop:'Quitar cita',
  merged:'Unificada con la forma “et al.”.',
  dup:'Posible duplicado: otra obra del mismo autor y año con distinta lista de autores.',
@@ -317,8 +327,8 @@ es:{
  f_bib_opt:'de tu .bib', f_use:'Usar esta', f_used:'En uso',
  f_searching:'Buscando en {0}…',
  f_nores:'Ninguna fuente devolvió resultados para {0}. Escribila a mano o buscala vos y pegá la referencia.',
- f_options:'Opciones', f_manual:'Escribir a mano', f_manual_ph:'Apellido, N. (Año). Título. Editorial.',
- f_save_next:'Guardar y seguir', f_again:'Buscar de nuevo', f_skip:'Saltear', f_prev:'Anterior', f_next:'Siguiente',
+ f_options:'Opciones', f_manual_ph:'Apellido, N. (Año). Título. Editorial.',
+ f_save_next:'Guardar y seguir', f_again:'Buscar de nuevo', f_prev:'Anterior', f_next:'Siguiente',
  f_alldone_h:'No queda nada por resolver', f_alldone_p:'Todas las obras citadas tienen su referencia completa.',
  f_none_h:'Todavía no hay citas', f_none_p:'Cargá un documento en la pestaña anterior.',
  f_year_warn:'año distinto', f_author_ok:'autor coincide',
@@ -379,6 +389,7 @@ en:{
  sec_doubtful:'Uncertain — confirm or discard', sec_works:'Works cited', sec_norms:'Statutes cited',
  sec_refs:'References', sec_pending:'Unresolved', sec_norm_refs:'Legal sources',
  a_view:'Show in text',
+ m_open:'Enter a URL/DOI or fill in manually', m_ident:'URL, DOI or ISBN', m_fetch:'Fetch data', m_ref:'Full reference', m_fetching:'Fetching…', m_notfound:'Nothing could be retrieved from that. Write the reference by hand.', m_filled:'Reference retrieved', m_linkonly:'Link saved, but the reference has to be written.',
  occ_one:'1 occurrence', occ_n:'{0} of {1} occurrences', occ_next:'Show next occurrence', occ_prev:'Show previous', e_link:'Open the publication', a_edit:'Edit', a_remove:'Remove', a_keep:'Keep citation', a_drop:'Remove citation',
  merged:'Merged with the “et al.” form.',
  dup:'Possible duplicate: another work by the same author and year with a different author list.',
@@ -387,8 +398,8 @@ en:{
  f_bib_opt:'from your .bib', f_use:'Use this', f_used:'In use',
  f_searching:'Searching {0}…',
  f_nores:'No source returned results for {0}. Write it by hand or look it up and paste the reference.',
- f_options:'Options', f_manual:'Write by hand', f_manual_ph:'Surname, N. (Year). Title. Publisher.',
- f_save_next:'Save and continue', f_again:'Search again', f_skip:'Skip', f_prev:'Previous', f_next:'Next',
+ f_options:'Options', f_manual_ph:'Surname, N. (Year). Title. Publisher.',
+ f_save_next:'Save and continue', f_again:'Search again', f_prev:'Previous', f_next:'Next',
  f_alldone_h:'Nothing left to resolve', f_alldone_p:'Every cited work has its full reference.',
  f_none_h:'No citations yet', f_none_p:'Load a document in the previous tab.',
  f_year_warn:'different year', f_author_ok:'author matches',
@@ -449,6 +460,7 @@ pt:{
  sec_doubtful:'Duvidosas — confirme ou descarte', sec_works:'Obras citadas', sec_norms:'Normas citadas',
  sec_refs:'Referências', sec_pending:'Sem resolver', sec_norm_refs:'Fontes normativas',
  a_view:'Ver no texto',
+ m_open:'Inserir URL/DOI ou preencher manualmente', m_ident:'URL, DOI ou ISBN', m_fetch:'Buscar dados', m_ref:'Referência completa', m_fetching:'Recuperando…', m_notfound:'Não foi possível recuperar nada com isso. Escreva a referência à mão.', m_filled:'Referência recuperada', m_linkonly:'Guardei o link, mas a referência precisa ser escrita.',
  occ_one:'1 ocorrência', occ_n:'{0} de {1} ocorrências', occ_next:'Ver a próxima ocorrência', occ_prev:'Ver a anterior', e_link:'Abrir a publicação', a_edit:'Editar', a_remove:'Remover', a_keep:'Manter citação', a_drop:'Remover citação',
  merged:'Unificada com a forma “et al.”.',
  dup:'Possível duplicata: outra obra do mesmo autor e ano com lista de autores diferente.',
@@ -457,8 +469,8 @@ pt:{
  f_bib_opt:'do seu .bib', f_use:'Usar esta', f_used:'Em uso',
  f_searching:'Buscando em {0}…',
  f_nores:'Nenhuma fonte devolveu resultados para {0}. Escreva à mão ou busque e cole a referência.',
- f_options:'Opções', f_manual:'Escrever à mão', f_manual_ph:'Sobrenome, N. (Ano). Título. Editora.',
- f_save_next:'Salvar e seguir', f_again:'Buscar de novo', f_skip:'Pular', f_prev:'Anterior', f_next:'Próxima',
+ f_options:'Opções', f_manual_ph:'Sobrenome, N. (Ano). Título. Editora.',
+ f_save_next:'Salvar e seguir', f_again:'Buscar de novo', f_prev:'Anterior', f_next:'Próxima',
  f_alldone_h:'Não há mais nada a resolver', f_alldone_p:'Todas as obras citadas têm sua referência completa.',
  f_none_h:'Ainda não há citações', f_none_p:'Carregue um documento na aba anterior.',
  f_year_warn:'ano diferente', f_author_ok:'autor confere',
@@ -542,7 +554,7 @@ const S = {
   refOverride:new Map(), normOverride:new Map(), origin:new Map(), cands:new Map(), link:new Map(),
   vocab:new Map(), bibVenues:new Set(), bibSurnames:new Set(),
   cycle:new Map(), occ:new Map(), lastJumped:null,
-  tab:'list', seq:0, findI:0, busyKey:null, manualOpen:false
+  tab:'list', seq:0, findI:0, busyKey:null, manualKey:null
 };
 
 /* --------------------------------------------------------------- utilidades */
@@ -1052,19 +1064,65 @@ const splitDisplay = name => {
 };
 const jget = async u => { const r = await fetch(u); if (!r.ok) throw new Error(r.status); return r.json(); };
 
+const CR_TYPE = {'journal-article':'article','book':'book','book-chapter':'incollection','proceedings-article':'inproceedings','report':'techreport','dissertation':'phdthesis'};
+const OA_TYPE = {'article':'article','book-chapter':'incollection','book':'book','dissertation':'phdthesis','report':'techreport'};
+
+const crossrefItem = it => mkEntry(CR_TYPE[it.type]||'misc',
+  (it.author||[]).map(a => ({last:a.family||a.name||'', first:a.given||''})).filter(a=>a.last),
+  it.issued?.['date-parts']?.[0]?.[0] || '',
+  { title:[].concat(it.title||[])[0]||'', journal:[].concat(it['container-title']||[])[0]||'',
+    booktitle:[].concat(it['container-title']||[])[0]||'', volume:it.volume||'', number:it.issue||'',
+    pages:it.page||'', publisher:it.publisher||'', doi:it.DOI||'' }, 'Crossref', (it.language||'').slice(0,2));
+
+const openalexItem = it => {
+  const loc = it.primary_location?.source?.display_name || '';
+  return mkEntry(OA_TYPE[it.type]||'misc',
+    (it.authorships||[]).map(a => splitDisplay(a.author?.display_name || a.raw_author_name || '')).filter(a=>a.last),
+    it.publication_year||'',
+    { title:it.title||it.display_name||'', journal:loc, booktitle:loc,
+      volume:it.biblio?.volume||'', number:it.biblio?.issue||'',
+      pages:[it.biblio?.first_page,it.biblio?.last_page].filter(Boolean).join('–'),
+      publisher:it.primary_location?.source?.host_organization_name||'',
+      doi:(it.doi||'').replace('https://doi.org/','') }, 'OpenAlex', it.language||'');
+};
+
+/* recupera una referencia a partir de un DOI, un ISBN o una URL pegada */
+async function resolveIdent(raw){
+  const s0 = String(raw||'').trim(); if (!s0) return null;
+  const doi = (s0.match(/10\.\d{4,9}\/[^\s"'<>]+/)||[])[0];
+  if (doi){
+    const clean = doi.replace(/[.,;)\]]+$/,'');
+    try { const j = await jget('https://api.crossref.org/works/'+encodeURIComponent(clean));
+      if (j.message) return { entry:crossrefItem(j.message), link:'https://doi.org/'+clean }; } catch(e){}
+    try { const j = await jget('https://api.openalex.org/works/doi:'+encodeURIComponent(clean));
+      if (j && (j.title||j.display_name)) return { entry:openalexItem(j), link:'https://doi.org/'+clean }; } catch(e){}
+    return { entry:null, link:'https://doi.org/'+clean };
+  }
+  if (!/^https?:\/\//.test(s0)){
+    const isbn = (s0.replace(/[-\s]/g,'').match(/\b(?:97[89])?\d{9}[\dXx]\b/)||[])[0];
+    if (isbn){
+      try {
+        const j = await jget(`https://openlibrary.org/api/books?bibkeys=ISBN:${isbn}&format=json&jscmd=data`);
+        const d = j['ISBN:'+isbn];
+        if (d) return { entry: mkEntry('book',
+          (d.authors||[]).map(a => splitDisplay(a.name||'')).filter(a=>a.last),
+          (String(d.publish_date||'').match(/\d{4}/)||[''])[0],
+          { title:d.title||'', publisher:(d.publishers||[])[0]?.name||'' }, 'Open Library'),
+          link: d.url||'' };
+      } catch(e){}
+    }
+    return null;
+  }
+  return { entry:null, link:s0 };
+}
+
 async function qCrossref(sur, year, kw){
   const u = `https://api.crossref.org/works?query.author=${encodeURIComponent(sur)}`
     + (kw.length ? `&query.bibliographic=${encodeURIComponent(kw.join(' '))}` : '')
     + (/^\d{4}$/.test(year) ? `&filter=from-pub-date:${year}-01-01,until-pub-date:${year}-12-31` : '')
     + `&rows=6&select=title,author,issued,container-title,volume,issue,page,publisher,DOI,type,language`;
   const j = await jget(u);
-  const map = {'journal-article':'article','book':'book','book-chapter':'incollection','proceedings-article':'inproceedings','report':'techreport','dissertation':'phdthesis'};
-  return (j.message?.items||[]).map(it => mkEntry(map[it.type]||'misc',
-    (it.author||[]).map(a => ({last:a.family||a.name||'', first:a.given||''})).filter(a=>a.last),
-    it.issued?.['date-parts']?.[0]?.[0] || '',
-    { title:[].concat(it.title||[])[0]||'', journal:[].concat(it['container-title']||[])[0]||'',
-      booktitle:[].concat(it['container-title']||[])[0]||'', volume:it.volume||'', number:it.issue||'',
-      pages:it.page||'', publisher:it.publisher||'', doi:it.DOI||'' }, 'Crossref', (it.language||'').slice(0,2)));
+  return (j.message?.items||[]).map(crossrefItem);
 }
 async function qOpenAlex(sur, year, kw){
   const build = withArea => {
@@ -1079,18 +1137,7 @@ async function qOpenAlex(sur, year, kw){
   try { j = await jget(build(true)); }
   catch(e){ j = await jget(build(false)); }        // si el filtro de área falla, buscamos sin él
   if (!(j.results||[]).length && (AREAS[CFG.area]||[]).length) { try { j = await jget(build(false)); } catch(e){} }
-  const map = {'article':'article','book-chapter':'incollection','book':'book','dissertation':'phdthesis','report':'techreport'};
-  return (j.results||[]).map(it => {
-    const loc = it.primary_location?.source?.display_name || '';
-    return mkEntry(map[it.type]||'misc',
-      (it.authorships||[]).map(a => splitDisplay(a.author?.display_name || a.raw_author_name || '')).filter(a=>a.last),
-      it.publication_year||'',
-      { title:it.title||it.display_name||'', journal:loc, booktitle:loc,
-        volume:it.biblio?.volume||'', number:it.biblio?.issue||'',
-        pages:[it.biblio?.first_page,it.biblio?.last_page].filter(Boolean).join('–'),
-        publisher:it.primary_location?.source?.host_organization_name||'',
-        doi:(it.doi||'').replace('https://doi.org/','') }, 'OpenAlex', it.language||'');
-  });
+  return (j.results||[]).map(openalexItem);
 }
 async function qDoaj(sur, year, kw){
   let q = `bibjson.author.name:"${sur}"` + (/^\d{4}$/.test(year) ? ` AND bibjson.year:${year}` : '');
@@ -1350,32 +1397,35 @@ function renderFind(){
   if (S.findI < 0) S.findI = 0;
   const w = q[S.findI];
 
-  sub.innerHTML = `<div class="nav">
-      <button class="arrow" id="fPrev" ${S.findI===0?'disabled':''} title="${esc(t('f_prev'))}">${ICON.left}</button>
-      <div class="who"><b>${esc(w.authors)}, ${esc(w.year)}</b>
-        <span>${esc(t('f_of', S.findI+1, q.length))} · ${esc(t('f_mentions', w.hits.length))}</span></div>
-      <button class="arrow" id="fNext" ${S.findI>=q.length-1?'disabled':''} title="${esc(t('f_next'))}">${ICON.right}</button>
-    </div><div class="navbar"><div style="width:${Math.round((S.findI+1)/q.length*100)}%"></div></div>`;
-  $('fPrev').onclick = () => { S.findI--; S.manualOpen = false; renderPanel(); };
-  $('fNext').onclick = () => { S.findI++; S.manualOpen = false; renderPanel(); };
-
-  /* en vez de repetir el contexto acá, llevamos el manuscrito de la izquierda
-     a la aparición correspondiente */
+  /* el manuscrito de la izquierda salta a la aparición correspondiente */
   if (S.lastJumped !== w.key){
-    S.occ.set(w.key, 0);
-    S.lastJumped = w.key;
+    S.occ.set(w.key, 0); S.lastJumped = w.key;
     setTimeout(() => jumpTo(w.hits[0].id, false), 30);
   }
-  const oi = S.occ.get(w.key) || 0;
+  paintNav(w, q);
+
   const cands = S.cands.get(w.key);
   const cur = refOf(w);
-  let html = `<div class="occ">
-      <span>${esc(w.hits.length > 1 ? t('occ_n', oi+1, w.hits.length) : t('occ_one'))}</span>
-      ${w.hits.length > 1 ? `
-        <button class="ico" id="occPrev" title="${esc(t('occ_prev'))}" aria-label="${esc(t('occ_prev'))}">${ICON.left}</button>
-        <button class="ico" id="occNext" title="${esc(t('occ_next'))}" aria-label="${esc(t('occ_next'))}">${ICON.right}</button>`
-      : `<button class="ico" id="occNext" title="${esc(t('a_view'))}" aria-label="${esc(t('a_view'))}">${ICON.eye}</button>`}
-    </div>`;
+  let html = '';
+
+  /* ingreso manual: botón que se despliega en campos, sin modal */
+  if (S.manualKey === w.key){
+    html += `<div class="manual">
+      <label>${esc(t('m_ident'))}</label>
+      <div class="manual-row">
+        <input type="text" id="manId" placeholder="10.1234/abcd · https://… · 9789871234567">
+        <button class="btn btn--mini" id="manFetch">${esc(t('m_fetch'))}</button>
+      </div>
+      <label>${esc(t('m_ref'))}</label>
+      <textarea id="manBox" placeholder="${esc(t('f_manual_ph'))}">${esc(cur?stripTags(cur):'')}</textarea>
+      <div class="manual-acts">
+        <button class="btn btn--mini btn--ghost" id="manCancel">${esc(t('cancel'))}</button>
+        <button class="btn btn--mini btn--key" id="manSave">${esc(t('f_save_next'))}</button>
+      </div></div>`;
+  } else {
+    html += `<button class="btn btn--ghost manual-open" id="manOpen">${ICON.pencil}${esc(t('m_open'))}</button>`;
+  }
+
   html += `<div class="section-head"><span>${esc(t('f_options'))}</span><span></span></div>`;
 
   /* opción 1: lo que ya está en tu .bib */
@@ -1392,14 +1442,14 @@ function renderFind(){
     html += `<div class="opt is-picked">
       <div class="opt-tag"><span class="ok">${esc(t(S.origin.get(w.key)==='auto'?'bd_auto':'bd_mano'))}</span><span class="k">${esc(t('f_used'))}</span></div>
       <div class="opt-ref">${w.manual}</div>
-      <div style="margin-top:8px">${iconBtn('data-editref', w.key, {i:'pencil', k:'a_edit'})}</div>
     </div>`;
   }
-  /* opción 3+: candidatas de las fuentes, solo la referencia armada */
+  /* opción 3+: candidatas de las fuentes */
   if (S.busyKey === w.key){
     html += `<div class="busy">${esc(t('f_searching', Object.keys(CFG.sources).filter(k=>CFG.sources[k]).map(k=>SOURCES[k].label).join(', ')))}</div>`;
   } else if (cands && !cands.length){
-    html += `<div class="nores">${esc(t('f_nores', w.surname + ' ' + w.year))}</div>`;
+    html += `<div class="nores">${esc(t('f_nores', w.surname + ' ' + w.year))}
+      <div style="margin-top:8px"><button class="btn btn--mini btn--ghost" id="fAgain">${esc(t('f_again'))}</button></div></div>`;
   } else if (cands){
     const yN = String(w.year).replace(/[a-h]$/,'');
     html += cands.map((e,n) => {
@@ -1414,31 +1464,31 @@ function renderFind(){
       </div>`;
     }).join('');
   }
-  if (S.manualOpen){
-    html += `<textarea class="manualbox" id="manBox" placeholder="${esc(t('f_manual_ph'))}">${esc(cur?stripTags(cur):'')}</textarea>
-      <div style="margin-top:8px"><button class="btn btn--mini btn--key" id="manSave">${esc(t('f_save_next'))}</button></div>`;
-  }
   body.innerHTML = html;
+  foot.innerHTML = '';
 
-  foot.innerHTML = `<button class="btn btn--mini" id="fAgain">${esc(t('f_again'))}</button>
-    <button class="btn btn--mini btn--ghost" id="fMan">${esc(t('f_manual'))}</button>
-    <button class="btn btn--mini btn--ghost" id="fSkip">${esc(t('f_skip'))}</button>`;
-  $('fAgain').onclick = () => { S.cands.delete(w.key); renderPanel(); };
-  $('fMan').onclick = () => { S.manualOpen = !S.manualOpen; renderPanel(); };
-  $('fSkip').onclick = () => { S.findI = Math.min(S.findI+1, q.length-1); S.manualOpen=false; renderPanel(); };
-  if ($('useBib')) $('useBib').onclick = () => { S.refOverride.delete(w.key); S.origin.delete(w.key); S.link.delete(w.key); renderPanel(); };
-  if ($('occNext')) $('occNext').onclick = () => {
-    const i = ((S.occ.get(w.key)||0) + (w.hits.length>1?1:0)) % w.hits.length;
-    S.occ.set(w.key, i); jumpTo(w.hits[i].id, false); renderFind();
-  };
-  if ($('occPrev')) $('occPrev').onclick = () => {
-    const i = ((S.occ.get(w.key)||0) - 1 + w.hits.length) % w.hits.length;
-    S.occ.set(w.key, i); jumpTo(w.hits[i].id, false); renderFind();
+  if ($('fAgain')) $('fAgain').onclick = () => { S.cands.delete(w.key); renderPanel(); };
+  if ($('manOpen')) $('manOpen').onclick = () => { S.manualKey = w.key; renderFind(); setTimeout(() => $('manBox')?.focus(), 20); };
+  if ($('manCancel')) $('manCancel').onclick = () => { S.manualKey = null; renderFind(); };
+  if ($('manFetch')) $('manFetch').onclick = async () => {
+    const btn = $('manFetch'), raw = $('manId').value.trim();
+    if (!raw) return;
+    btn.disabled = true; btn.textContent = t('m_fetching');
+    let r = null;
+    try { r = await resolveIdent(raw); } catch(e){}
+    btn.disabled = false; btn.textContent = t('m_fetch');
+    if (!r){ toast(t('m_notfound')); return; }
+    if (r.link) S.link.set(w.key, r.link);
+    if (r.entry && r.entry.fields.title){
+      if ($('manBox')) $('manBox').value = stripTags(fmt(r.entry, w.year));
+      toast(t('m_filled'));
+    } else toast(t('m_linkonly'));
   };
   if ($('manSave')) $('manSave').onclick = () => {
     const v = $('manBox').value.trim(); if (!v){ toast(t('t_missing')); return; }
     S.refOverride.set(w.key, esc(v).replace(/_([^_]+)_/g,'<em>$1</em>'));
-    S.origin.set(w.key, 'mano'); S.manualOpen = false; advance(); };
+    S.origin.set(w.key, 'mano'); S.manualKey = null; advance(); };
+  if ($('useBib')) $('useBib').onclick = () => { S.refOverride.delete(w.key); S.origin.delete(w.key); S.link.delete(w.key); renderPanel(); };
   body.querySelectorAll('[data-pick]').forEach(b => b.onclick = () => {
     const e = cands[+b.dataset.pick];
     S.refOverride.set(w.key, fmt(e, w.year));
@@ -1449,12 +1499,38 @@ function renderFind(){
 
   if (!cands && S.busyKey !== w.key && Object.values(CFG.sources).some(Boolean)) autoLookup(w);
 }
+
+/* la barra de arriba: obra anterior/siguiente y, en la misma línea,
+   el recorrido por las apariciones de esta cita en el texto */
+function paintNav(w, q){
+  const oi = S.occ.get(w.key) || 0, many = w.hits.length > 1;
+  $('subFind').innerHTML = `<div class="nav">
+      <button class="arrow" id="fPrev" ${S.findI===0?'disabled':''} title="${esc(t('f_prev'))}">${ICON.left}</button>
+      <div class="who"><b>${esc(w.authors)}, ${esc(w.year)}</b>
+        <span>${esc(t('f_of', S.findI+1, q.length))} · ${many
+          ? `<button class="occ-b" id="occPrev" title="${esc(t('occ_prev'))}" aria-label="${esc(t('occ_prev'))}">${ICON.left}</button>
+             <span id="occLbl">${esc(t('occ_n', oi+1, w.hits.length))}</span>
+             <button class="occ-b" id="occNext" title="${esc(t('occ_next'))}" aria-label="${esc(t('occ_next'))}">${ICON.right}</button>`
+          : `<span id="occLbl">${esc(t('occ_one'))}</span>
+             <button class="occ-b" id="occNext" title="${esc(t('a_view'))}" aria-label="${esc(t('a_view'))}">${ICON.eye}</button>`}</span></div>
+      <button class="arrow" id="fNext" ${S.findI>=q.length-1?'disabled':''} title="${esc(t('f_next'))}">${ICON.right}</button>
+    </div><div class="navbar"><div style="width:${Math.round((S.findI+1)/q.length*100)}%"></div></div>`;
+  $('fPrev').onclick = () => { S.findI--; S.manualKey = null; renderPanel(); };
+  $('fNext').onclick = () => { S.findI++; S.manualKey = null; renderPanel(); };
+  const go = d => {
+    const i = many ? (((S.occ.get(w.key)||0) + d) % w.hits.length + w.hits.length) % w.hits.length : 0;
+    S.occ.set(w.key, i); jumpTo(w.hits[i].id, false);
+    if ($('occLbl')) $('occLbl').textContent = many ? t('occ_n', i+1, w.hits.length) : t('occ_one');
+  };
+  if ($('occNext')) $('occNext').onclick = () => go(many ? 1 : 0);
+  if ($('occPrev')) $('occPrev').onclick = () => go(-1);
+}
 function advance(){
   const q = findQueue();
   let i = S.findI + 1;
   while (i < q.length && refOf(q[i])) i++;
   S.findI = Math.min(i, q.length - 1);
-  S.manualOpen = false; renderPanel();
+  S.manualKey = null; renderPanel();
 }
 async function autoLookup(w){
   S.busyKey = w.key;
@@ -1492,6 +1568,7 @@ function renderExport(){
         <div class="bib-ref" contenteditable="true" spellcheck="false" data-ref="${w.key}">${refOf(w)}</div>
         <div class="bib-meta"><span class="badge b-${o}">${esc(t('bd_'+o))}</span><span class="badge">${w.hits.length}×</span>
           ${iconBtn('data-cycle', w.key, {i:'eye', k:'a_view'})}
+          ${iconBtn('data-tofind', w.key, {i:'pencil', k:'a_edit'})}
           ${link ? `<a class="ico" href="${esc(link)}" target="_blank" rel="noopener"
              title="${esc(t('e_link'))}" aria-label="${esc(t('e_link'))}">${ICON.ext}</a>` : ''}
           ${iconBtn('data-killwork', w.key, {i:'trash', k:'a_remove'}, 'i-drop')}
@@ -1600,7 +1677,12 @@ function bindCommon(b){
     const ids = new Set(n.hits.map(h=>h.id));
     S.hits = S.hits.filter(h => !ids.has(h.id)); renderPanel(); });
   b.querySelectorAll('[data-editfrag]').forEach(x => x.onclick = () => openFragEditor(x.dataset.editfrag));
-  b.querySelectorAll('[data-editref]').forEach(x => x.onclick = () => { S.manualOpen = true; renderPanel(); });
+  b.querySelectorAll('[data-tofind]').forEach(x => x.onclick = () => {
+    const i = S.works.findIndex(y => y.key === x.dataset.tofind);
+    if (i < 0) return;
+    S.findI = i; S.manualKey = x.dataset.tofind; S.lastJumped = null;
+    S.tab = 'find'; syncTabs(); renderPanel();
+  });
   b.querySelectorAll('[data-ref]').forEach(el => el.addEventListener('blur', () => {
     const w = S.works.find(y => y.key===el.dataset.ref); if (!w) return;
     const clean = cleanRef(el.innerHTML);
@@ -1882,8 +1964,8 @@ window.addEventListener('resize', drawRuler);
 document.addEventListener('keydown', e => {
   if (S.tab !== 'find' || e.target.matches('input, textarea, [contenteditable]')) return;
   const q = findQueue();
-  if (e.key === 'ArrowRight' && S.findI < q.length-1){ S.findI++; S.manualOpen=false; renderPanel(); }
-  if (e.key === 'ArrowLeft' && S.findI > 0){ S.findI--; S.manualOpen=false; renderPanel(); }
+  if (e.key === 'ArrowRight' && S.findI < q.length-1){ S.findI++; S.manualKey=null; renderPanel(); }
+  if (e.key === 'ArrowLeft' && S.findI > 0){ S.findI--; S.manualKey=null; renderPanel(); }
   if (/^[1-9]$/.test(e.key)){
     const w = q[S.findI], c = w && S.cands.get(w.key);
     if (c && c[+e.key-1]){ const en2=c[+e.key-1];
