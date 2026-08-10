@@ -27,8 +27,8 @@ button{font:inherit;cursor:pointer}
 svg{display:block}
 
 .shell{display:flex;flex-direction:column;height:100vh;height:100dvh}
-.topbar{display:flex;align-items:center;gap:14px;flex-wrap:wrap;padding:10px 18px;background:var(--sheet);border-bottom:1px solid var(--rule)}
-.brand{display:flex;align-items:baseline;gap:10px;margin-right:auto}
+.topbar{display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:9px 16px;background:var(--sheet);border-bottom:1px solid var(--rule)}
+.brand{display:flex;align-items:baseline;gap:9px;margin-right:auto}
 .brand .name{font-family:var(--mono);font-size:15px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--mimeo)}
 .brand .tag{font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;color:var(--ink-faint);text-transform:uppercase}
 
@@ -48,28 +48,34 @@ svg{display:block}
 .btn[disabled]{opacity:.35;pointer-events:none}
 .btn svg{width:13px;height:13px}
 
-.counters{display:flex;gap:14px;align-items:center}
+.counters{display:flex;gap:13px;align-items:center}
 .count{display:flex;flex-direction:column;line-height:1.1}
-.count b{font-family:var(--mono);font-size:17px;font-weight:600}
-.count span{font-family:var(--mono);font-size:9.5px;letter-spacing:.11em;text-transform:uppercase;color:var(--ink-faint)}
+.count b{font-family:var(--mono);font-size:16px;font-weight:600}
+.count span{font-family:var(--mono);font-size:9px;letter-spacing:.11em;text-transform:uppercase;color:var(--ink-faint)}
 .count--ok b{color:var(--verde)} .count--gap b{color:var(--rust)} .count--ley b{color:var(--ley)}
 .saved{font-family:var(--mono);font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-faint);opacity:0;transition:opacity .3s}
 .saved.on{opacity:1}
 
+/* ---------------- tres columnas ---------------- */
 .main{flex:1;display:flex;min-height:0}
-.reading{flex:1;display:flex;min-width:0;background:var(--sheet)}
-.ruler{width:30px;flex:none;border-right:1px solid var(--rule);position:relative;background:var(--panel)}
-.ruler .lbl{position:absolute;top:8px;left:50%;transform:translateX(-50%) rotate(180deg);writing-mode:vertical-rl;
-  font-family:var(--mono);font-size:8.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-faint);pointer-events:none}
+.col-text{flex:1;display:flex;min-width:0;background:var(--sheet)}
+.rail{width:30px;flex:none;display:flex;flex-direction:column;background:var(--panel);border-right:1px solid var(--rule)}
+.rail-r{border-right:0;border-left:1px solid var(--rule)}
+.rail-btn{width:30px;height:32px;flex:none;border:0;border-bottom:1px solid var(--rule);background:transparent;
+  color:var(--ink-faint);display:flex;align-items:center;justify-content:center;padding:0}
+.rail-btn:hover{background:var(--mimeo-wash);color:var(--mimeo)}
+.rail-btn svg{width:16px;height:16px}
+.ruler{flex:1;position:relative;cursor:pointer;min-height:0}
+.main.fold-text .col-text,.main.fold-text #rz1{display:none}
+.main.fold-detail .col-detail,.main.fold-detail #rz2{display:none}
 .tick{position:absolute;left:6px;width:18px;height:2px;background:var(--mimeo);cursor:pointer;border-radius:1px}
 .tick:hover{left:3px;width:24px;height:3px}
 .tick.is-open{background:var(--rust)} .tick.is-done{background:var(--verde)}
 .tick.is-sug{background:var(--rust-soft);height:1px} .tick.is-ley{background:var(--ley-line)}
-
-.scroller{flex:1;overflow-y:auto;padding:40px 6vw 200px;min-width:0}
-.doc{max-width:660px;margin:0 auto;font-family:var(--serif);font-size:17.5px;line-height:1.72;color:#232329}
+.scroller{flex:1;overflow-y:auto;padding:36px 5vw 200px;min-width:0}
+.doc{max-width:640px;margin:0 auto;font-family:var(--serif);font-size:17px;line-height:1.72;color:#232329}
 .doc p{margin:0 0 1.05em}
-.doc h1,.doc h2,.doc h3{font-family:var(--mono);font-weight:600;font-size:14px;text-transform:uppercase;margin:2.2em 0 .9em;color:var(--mimeo)}
+.doc h1,.doc h2,.doc h3{font-family:var(--mono);font-weight:600;font-size:13.5px;text-transform:uppercase;margin:2.2em 0 .9em;color:var(--mimeo)}
 mark.cit{background:var(--mimeo-wash);color:inherit;padding:.05em .1em;border-radius:1px;cursor:pointer;
   box-decoration-break:clone;-webkit-box-decoration-break:clone;border-bottom:1.5px solid var(--mimeo-line)}
 mark.cit:hover{background:var(--mimeo-line)}
@@ -78,100 +84,132 @@ mark.cit.is-sug:hover{background:var(--rust-wash)}
 mark.cit.is-done{background:var(--verde-wash);border-bottom-color:var(--verde)}
 mark.cit.is-ley{background:var(--ley-wash);border-bottom:1.5px solid var(--ley-line)}
 mark.cit.is-active{box-shadow:0 0 0 2px var(--ink)}
-
-.empty{max-width:520px;margin:6vh auto 0}
-.empty h2{font-family:var(--mono);font-size:15px;letter-spacing:.12em;text-transform:uppercase;color:var(--mimeo);margin:0 0 14px}
-.empty p{color:var(--ink-soft);margin:0 0 14px;font-size:14.5px;line-height:1.6}
-.drop{border:1.5px dashed var(--mimeo-line);border-radius:3px;padding:34px 24px;text-align:center;background:var(--panel);margin:22px 0 14px}
-.drop.is-over{background:var(--mimeo-wash);border-color:var(--mimeo)}
-.paste{width:100%;min-height:120px;border:1px solid var(--rule);border-radius:3px;padding:12px;font-family:var(--serif);
-  font-size:15px;background:var(--sheet);color:var(--ink);resize:vertical}
-.mini-note{font-size:12.5px;color:var(--ink-faint);line-height:1.55}
+mark.cit.is-sel{box-shadow:0 0 0 2px var(--mimeo)}
 
 .resizer{width:7px;flex:none;cursor:col-resize;background:var(--rule);position:relative;transition:background .12s}
 .resizer::after{content:'';position:absolute;top:50%;left:2px;width:3px;height:38px;transform:translateY(-50%);
   border-left:1px solid var(--ink-faint);border-right:1px solid var(--ink-faint);opacity:.45}
 .resizer:hover,.resizer.is-dragging{background:var(--mimeo-line)}
 
-.panel{width:410px;flex:none;border-left:1px solid var(--rule);background:var(--panel);display:flex;flex-direction:column;min-height:0}
-.tabs{display:flex;border-bottom:1px solid var(--rule);background:var(--sheet)}
-.tab{flex:1;border:0;background:transparent;padding:12px 4px;font-family:var(--mono);font-size:11px;letter-spacing:.1em;
-  text-transform:uppercase;color:var(--ink-faint);border-bottom:2px solid transparent}
-.tab[aria-selected="true"]{color:var(--mimeo);border-bottom-color:var(--mimeo);background:var(--panel)}
-.tab .dot{display:inline-block;min-width:16px;margin-left:4px;font-size:9px;background:var(--rust);color:#fff;border-radius:8px;padding:1px 4px}
-.panel-sub{padding:10px 14px;border-bottom:1px solid var(--rule);background:var(--sheet)}
-.search{width:100%;padding:7px 9px;border:1px solid var(--rule);border-radius:2px;font-family:var(--mono);font-size:12px;background:var(--panel);color:var(--ink)}
-.panel-body{flex:1;overflow-y:auto;padding:14px}
-.panel-foot{border-top:1px solid var(--rule);padding:10px 14px;display:flex;gap:8px;flex-wrap:wrap;background:var(--sheet)}
+.col{flex:none;display:flex;flex-direction:column;min-height:0;background:var(--panel);border-left:1px solid var(--rule)}
+.col-list{width:320px}
+.col-detail{width:400px;background:var(--sheet)}
+.col-sub{padding:9px 12px;border-bottom:1px solid var(--rule);background:var(--sheet)}
+.col-list .col-sub{background:var(--panel)}
+.col-body{flex:1;overflow-y:auto;padding:12px}
 
-.section-head{display:flex;align-items:baseline;justify-content:space-between;gap:8px;font-family:var(--mono);font-size:10px;
-  letter-spacing:.13em;text-transform:uppercase;color:var(--ink-faint);margin:2px 0 9px}
-.gap{margin-top:20px}
-.blank{color:var(--ink-faint);font-size:13.5px;line-height:1.6;padding:8px 0}
+.chips{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:8px}
+.chip{border:1px solid var(--rule);background:var(--sheet);color:var(--ink-soft);font-family:var(--mono);
+  font-size:9px;letter-spacing:.07em;text-transform:uppercase;padding:4px 7px;border-radius:10px}
+.chip:hover{border-color:var(--ink-faint)}
+.chip[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:var(--sheet)}
+.chip b{font-weight:600;margin-left:4px;opacity:.7}
+.chip.c-gap[aria-pressed="false"]{color:var(--rust);border-color:var(--rust-soft)}
+.search{width:100%;padding:6px 8px;border:1px solid var(--rule);border-radius:2px;font-family:var(--mono);font-size:12px;background:var(--sheet);color:var(--ink)}
 
-/* tarjetas compactas */
-.ficha{background:var(--sheet);border:1px solid var(--rule);border-left:3px solid var(--mimeo);border-radius:2px;padding:7px 9px;margin-bottom:6px}
+.section-head{display:flex;align-items:baseline;justify-content:space-between;gap:8px;font-family:var(--mono);font-size:9.5px;
+  letter-spacing:.13em;text-transform:uppercase;color:var(--ink-faint);margin:2px 0 8px}
+.gap{margin-top:18px}
+.blank{color:var(--ink-faint);font-size:13px;line-height:1.6;padding:8px 2px}
+
+.ficha{background:var(--sheet);border:1px solid var(--rule);border-left:3px solid var(--mimeo);border-radius:2px;
+  padding:6px 8px;margin-bottom:5px;cursor:pointer}
+.ficha:hover{border-color:var(--ink-faint)}
 .ficha.is-done{border-left-color:var(--verde)}
 .ficha.is-open{border-left-color:var(--rust)}
 .ficha.is-sug{border-left-style:dashed;border-left-color:var(--rust)}
 .ficha.is-ley{border-left-color:var(--ley)}
-.fr{display:flex;align-items:center;gap:7px}
-.fk{flex:1;min-width:0;font-family:var(--mono);font-size:12.5px;font-weight:600;line-height:1.3;word-break:break-word}
-.fn{flex:none;font-family:var(--mono);font-size:9px;color:var(--ink-faint);border:1px solid var(--rule);border-radius:8px;padding:0 5px}
-.fa{flex:none;display:flex;gap:1px}
-.ico{display:flex;align-items:center;justify-content:center;width:24px;height:24px;border:0;background:transparent;
-  color:var(--ink-faint);border-radius:3px;padding:0}
-.ico svg{width:15px;height:15px}
+.ficha.is-sel{background:var(--mimeo-wash);border-color:var(--mimeo);box-shadow:inset 0 0 0 1px var(--mimeo)}
+.fr{display:flex;align-items:center;gap:6px}
+.fk{flex:1;min-width:0;font-family:var(--mono);font-size:12px;font-weight:600;line-height:1.3;word-break:break-word}
+.fn{flex:none;font-family:var(--mono);font-size:8.5px;color:var(--ink-faint);border:1px solid var(--rule);border-radius:8px;padding:0 5px}
+.fa{flex:none;display:flex;gap:0}
+.ico{display:flex;align-items:center;justify-content:center;width:22px;height:22px;border:0;background:transparent;
+  color:var(--ink-faint);border-radius:3px;padding:0;text-decoration:none}
+.ico svg{width:14px;height:14px}
 .ico:hover{background:var(--rule);color:var(--ink)}
 .ico.i-drop:hover{background:var(--rust-wash);color:var(--rust)}
 .ico.i-keep:hover{background:var(--verde-wash);color:var(--verde)}
-.ffrag{font-family:var(--serif);font-size:12.5px;color:var(--ink-faint);font-style:italic;margin-top:3px;line-height:1.4}
-.fwarn{font-size:11px;color:var(--rust);margin-top:4px;line-height:1.4}
-.fnote{font-size:11px;color:var(--ink-faint);margin-top:4px;line-height:1.4}
+.ffrag{font-family:var(--serif);font-size:12px;color:var(--ink-faint);font-style:italic;margin-top:3px;line-height:1.4}
+.fwarn{font-size:10.5px;color:var(--rust);margin-top:3px;line-height:1.4}
+.fnote{font-size:10.5px;color:var(--ink-faint);margin-top:3px;line-height:1.4}
 
-/* pestaña buscar */
-.nav{display:flex;align-items:center;gap:8px}
-.nav .arrow{flex:none;width:30px;height:30px;border:1px solid var(--rule);background:var(--panel);border-radius:2px;
+/* ------------- columna de detalle ------------- */
+.nav{display:flex;align-items:center;gap:7px}
+.nav .arrow{flex:none;width:28px;height:28px;border:1px solid var(--rule);background:var(--panel);border-radius:2px;
   display:flex;align-items:center;justify-content:center;color:var(--ink-soft)}
 .nav .arrow:hover{background:var(--ink);color:var(--sheet);border-color:var(--ink)}
 .nav .arrow[disabled]{opacity:.3;pointer-events:none}
 .nav .who{flex:1;min-width:0;text-align:center}
-.nav .who b{display:block;font-family:var(--mono);font-size:14px;font-weight:600;line-height:1.25;word-break:break-word}
+.nav .who b{display:block;font-family:var(--mono);font-size:13.5px;font-weight:600;line-height:1.25;word-break:break-word}
 .nav .who span{font-family:var(--mono);font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-faint)}
-.navbar{height:3px;background:var(--rule);margin-top:9px;border-radius:2px;overflow:hidden}
-.navbar>div{height:100%;background:var(--mimeo);transition:width .25s}
-.opt{background:var(--sheet);border:1px solid var(--rule);border-radius:2px;padding:10px 11px;margin-bottom:8px;position:relative}
-.opt.is-bib{border-left:3px solid var(--verde)}
-.opt.is-picked{border-color:var(--verde);box-shadow:0 0 0 1px var(--verde)}
-.opt-tag{font-family:var(--mono);font-size:8.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-faint);
-  display:flex;gap:7px;align-items:center;margin-bottom:6px}
-.opt-tag .k{background:var(--ink);color:var(--sheet);border-radius:8px;padding:1px 6px}
-.opt-tag .ok{color:var(--verde)} .opt-tag .warn{color:var(--rust)}
 .occ-b{border:0;background:transparent;color:var(--ink-faint);padding:0 1px;vertical-align:-3px;border-radius:2px}
-.occ-b svg{width:13px;height:13px}
+.occ-b svg{width:12px;height:12px}
 .occ-b:hover{background:var(--rule);color:var(--mimeo)}
-.manual-open{width:100%;justify-content:center;margin-bottom:14px}
-.manual{background:var(--sheet);border:1px solid var(--mimeo-line);border-radius:2px;padding:11px 12px;margin-bottom:14px}
-.manual label{display:block;font-family:var(--mono);font-size:9px;letter-spacing:.1em;text-transform:uppercase;
-  color:var(--ink-faint);margin:0 0 4px}
-.manual label + *{margin-bottom:10px}
-.manual-row{display:flex;gap:6px;margin-bottom:10px}
-.manual-row input{flex:1;min-width:0;padding:7px 8px;border:1px solid var(--rule);border-radius:2px;
-  font-family:var(--mono);font-size:12px;background:var(--panel);color:var(--ink)}
-.manual textarea{width:100%;min-height:76px;font-family:var(--serif);font-size:14px;padding:8px;
-  border:1px solid var(--rule);border-radius:2px;background:var(--panel);color:var(--ink);resize:vertical}
+.navbar{height:3px;background:var(--rule);margin-top:8px;border-radius:2px;overflow:hidden}
+.navbar>div{height:100%;background:var(--mimeo);transition:width .25s}
+
+.ident{display:flex;gap:6px;margin-bottom:8px}
+.ident input{flex:1;min-width:0;padding:7px 8px;border:1px solid var(--rule);border-radius:2px;
+  font-family:var(--mono);font-size:11.5px;background:var(--panel);color:var(--ink)}
+.lbl{font-family:var(--mono);font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-faint);margin:0 0 4px}
+.manual textarea{width:100%;min-height:76px;font-family:var(--serif);font-size:14px;padding:8px;border:1px solid var(--rule);
+  border-radius:2px;background:var(--panel);color:var(--ink);resize:vertical;margin-bottom:8px}
 .manual-acts{display:flex;gap:6px;justify-content:flex-end}
+.toggle-man{width:100%;justify-content:center;margin-bottom:12px}
+
+.opt{background:var(--sheet);border:1px solid var(--rule);border-radius:2px;padding:9px 10px;margin-bottom:7px}
+.opt.is-bib{border-left:3px solid var(--verde)}
+.opt.is-chosen{border-color:var(--verde);box-shadow:0 0 0 1px var(--verde);background:var(--verde-wash)}
+.opt-tag{font-family:var(--mono);font-size:8.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-faint);
+  display:flex;gap:7px;align-items:center;flex-wrap:wrap;margin-bottom:5px}
+.opt-tag .ok{color:var(--verde)} .opt-tag .warn{color:var(--rust)}
 .opt-ref{font-family:var(--serif);font-size:13.5px;line-height:1.5;color:var(--ink)}
 .opt-ref em{font-style:italic}
-a.ico{text-decoration:none}
-.busy{font-size:13px;color:var(--mimeo);background:var(--sheet);border:1px dashed var(--mimeo-line);padding:14px;border-radius:2px}
-.nores{font-size:13px;color:var(--ink-soft);background:var(--sheet);border:1px dashed var(--rule);padding:14px;border-radius:2px;line-height:1.5}
-.alldone{text-align:center;padding:40px 10px}
-.alldone h3{font-family:var(--mono);font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:var(--verde);margin:0 0 8px}
+.opt-acts{display:flex;gap:5px;flex-wrap:wrap;margin-top:8px;align-items:center}
+.busy{font-size:12.5px;color:var(--mimeo);background:var(--panel);border:1px dashed var(--mimeo-line);padding:12px;border-radius:2px}
+.nores{font-size:12.5px;color:var(--ink-soft);background:var(--panel);border:1px dashed var(--rule);padding:12px;border-radius:2px;line-height:1.5}
+.hint{font-family:var(--mono);font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-faint);
+  border-top:1px dotted var(--rule);margin-top:16px;padding-top:8px;text-align:center}
+.pick-none{padding:34px 16px;text-align:center;color:var(--ink-faint);font-size:13.5px;line-height:1.6}
+.sug-box{background:var(--rust-wash);border:1px solid var(--rust-soft);border-radius:2px;padding:12px}
+.sug-box h4{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--rust);margin:0 0 6px}
+.sug-box p{font-size:12.5px;color:var(--rust);margin:0 0 10px;line-height:1.45}
 
-/* pestaña exportar */
-.bib-doc{font-family:var(--serif);font-size:14.5px;line-height:1.62}
-.bib-item{position:relative;padding:4px 0 4px 1.7em;text-indent:-1.7em;border-radius:2px;margin-bottom:.45em}
+.empty{max-width:520px;margin:6vh auto 0}
+.empty h2{font-family:var(--mono);font-size:15px;letter-spacing:.12em;text-transform:uppercase;color:var(--mimeo);margin:0 0 14px}
+.empty p{color:var(--ink-soft);margin:0 0 14px;font-size:14.5px;line-height:1.6}
+.drop{border:1.5px dashed var(--mimeo-line);border-radius:3px;padding:32px 22px;text-align:center;background:var(--panel);margin:20px 0 14px}
+.drop.is-over{background:var(--mimeo-wash);border-color:var(--mimeo)}
+.paste{width:100%;min-height:120px;border:1px solid var(--rule);border-radius:3px;padding:12px;font-family:var(--serif);
+  font-size:15px;background:var(--sheet);color:var(--ink);resize:vertical}
+.mini-note{font-size:12.5px;color:var(--ink-faint);line-height:1.55}
+.privacy{font-family:var(--mono);font-size:9.5px;letter-spacing:.06em;color:var(--ink-faint);border-top:1px dotted var(--rule);
+  padding-top:8px;margin-top:14px;line-height:1.6}
+
+/* botón flotante de exportar */
+.fab{position:fixed;right:18px;bottom:18px;z-index:45;box-shadow:0 3px 12px rgba(23,23,27,.22)}
+
+/* modales */
+.veil{position:fixed;inset:0;background:rgba(23,23,27,.45);display:flex;align-items:center;justify-content:center;z-index:60;padding:20px;overflow-y:auto}
+.modal{background:var(--sheet);border-radius:3px;padding:20px;max-width:480px;width:100%;border:1px solid var(--ink);margin:auto}
+.modal.wide{max-width:760px}
+.modal h3{font-family:var(--mono);font-size:12px;letter-spacing:.12em;text-transform:uppercase;margin:0 0 12px;color:var(--mimeo)}
+.modal label{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-faint);margin:12px 0 4px}
+.modal input[type=text],.modal textarea,.modal select{width:100%;padding:8px;border:1px solid var(--rule);border-radius:2px;font:inherit;background:var(--panel);color:var(--ink)}
+.modal textarea{min-height:80px;font-family:var(--serif);resize:vertical}
+.modal .row{display:flex;gap:8px;margin-top:16px;justify-content:flex-end;flex-wrap:wrap}
+.modal .two{display:flex;gap:10px}
+.modal .two>div{flex:1}
+.check{display:flex;align-items:flex-start;gap:8px;margin:9px 0;font-size:13.5px;line-height:1.4}
+.check input{margin-top:3px}
+.check span small{display:block;color:var(--ink-faint);font-size:11.5px}
+.cfg-group{border-top:1px solid var(--rule);padding-top:12px;margin-top:16px}
+.cfg-group>h4{font-family:var(--mono);font-size:10px;letter-spacing:.11em;text-transform:uppercase;color:var(--ink-faint);margin:0 0 6px}
+
+.bib-doc{font-family:var(--serif);font-size:14.5px;line-height:1.62;max-height:46vh;overflow-y:auto;
+  border:1px solid var(--rule);border-radius:2px;background:var(--panel);padding:12px 14px;margin-top:6px}
+.bib-item{position:relative;padding:3px 0 3px 1.7em;text-indent:-1.7em;border-radius:2px;margin-bottom:.4em}
 .bib-item:hover{background:var(--sheet)}
 .bib-ref{outline:0;border-radius:2px}
 .bib-ref em{font-style:italic}
@@ -182,44 +220,33 @@ a.ico{text-decoration:none}
   border-radius:8px;padding:1px 6px;color:var(--ink-faint)}
 .badge.b-bib{color:var(--verde);border-color:var(--verde-soft)}
 .badge.b-auto{color:var(--mimeo);border-color:var(--mimeo-line)}
-.pend-strip{display:flex;align-items:center;gap:10px;flex-wrap:wrap;background:var(--rust-wash);border:1px solid var(--rust-soft);
-  border-radius:2px;padding:9px 11px;margin-bottom:14px}
-.pend-strip .n{font-family:var(--mono);font-size:19px;font-weight:600;color:var(--rust);line-height:1}
-.pend-strip .t{flex:1;font-size:12.5px;color:var(--rust);line-height:1.35;min-width:120px}
-
-/* modales */
-.veil{position:fixed;inset:0;background:rgba(23,23,27,.45);display:flex;align-items:center;justify-content:center;z-index:60;padding:20px;overflow-y:auto}
-.modal{background:var(--sheet);border-radius:3px;padding:20px;max-width:480px;width:100%;border:1px solid var(--ink);margin:auto}
-.modal h3{font-family:var(--mono);font-size:12px;letter-spacing:.12em;text-transform:uppercase;margin:0 0 12px;color:var(--mimeo)}
-.modal label{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-faint);margin:12px 0 4px}
-.modal input[type=text],.modal textarea,.modal select{width:100%;padding:8px;border:1px solid var(--rule);border-radius:2px;font:inherit;background:var(--panel);color:var(--ink)}
-.modal textarea{min-height:80px;font-family:var(--serif);resize:vertical}
-.modal .row{display:flex;gap:8px;margin-top:18px;justify-content:flex-end;flex-wrap:wrap}
-.modal .two{display:flex;gap:10px}
-.modal .two>div{flex:1}
-.check{display:flex;align-items:flex-start;gap:8px;margin:9px 0;font-size:13.5px;line-height:1.4}
-.check input{margin-top:3px}
-.check span small{display:block;color:var(--ink-faint);font-size:11.5px}
-.cfg-group{border-top:1px solid var(--rule);padding-top:12px;margin-top:16px}
-.cfg-group>h4{font-family:var(--mono);font-size:10px;letter-spacing:.11em;text-transform:uppercase;color:var(--ink-faint);margin:0 0 6px}
-.preview{font-family:var(--serif);font-size:13.5px;line-height:1.55;background:var(--panel);border:1px solid var(--rule);
-  border-radius:2px;padding:10px;max-height:150px;overflow-y:auto;margin-top:10px}
-.preview em{font-style:italic}
-.preview div{padding-left:1.6em;text-indent:-1.6em;margin-bottom:.5em}
 
 .pop{position:absolute;z-index:40;background:var(--sheet);border:1px solid var(--ink);border-radius:3px;padding:4px;display:flex;gap:4px;box-shadow:0 4px 14px rgba(0,0,0,.2)}
-.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--ink);color:var(--sheet);font-family:var(--mono);
+.toast{position:fixed;bottom:70px;left:50%;transform:translateX(-50%);background:var(--ink);color:var(--sheet);font-family:var(--mono);
   font-size:11px;letter-spacing:.08em;text-transform:uppercase;padding:9px 16px;border-radius:2px;z-index:80;max-width:80vw;text-align:center}
-.privacy{font-family:var(--mono);font-size:9.5px;letter-spacing:.06em;color:var(--ink-faint);border-top:1px dotted var(--rule);
-  padding-top:8px;margin-top:14px;line-height:1.6}
 
-@media (max-width:900px){
-  .resizer{display:none}
-  .panel{position:fixed;inset:auto 0 0 0;height:66vh;width:100% !important;border-left:0;border-top:1px solid var(--ink);z-index:30;box-shadow:0 -6px 20px rgba(0,0,0,.12)}
-  .panel.is-hidden{display:none}
-  .scroller{padding:24px 18px 70vh}
-  .doc{font-size:16.5px}
-  .toggle-panel{position:fixed;right:14px;bottom:14px;z-index:55}
+/* ---------------- pantallas angostas ---------------- */
+.ptabs{display:none;border-bottom:1px solid var(--rule);background:var(--sheet)}
+.ptab{flex:1;border:0;background:transparent;padding:10px 4px;font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--ink-faint);border-bottom:2px solid transparent}
+.ptab[aria-selected="true"]{color:var(--mimeo);border-bottom-color:var(--mimeo)}
+.ptab .dot{display:inline-block;min-width:15px;margin-left:4px;font-size:9px;background:var(--rust);color:#fff;border-radius:8px;padding:1px 4px}
+
+@media (max-width:1150px){
+  .main.narrow #rz2{display:none}
+  .main.narrow .col-list,.main.narrow .col-detail{width:var(--sidew,360px)}
+  .main.narrow .ptabs{display:flex}
+  .main.narrow.show-list .col-detail{display:none}
+  .main.narrow.show-detail .col-list{display:none}
+}
+@media (max-width:820px){
+  .main #rz1,.main #rz2{display:none}
+  .main .col-list,.main .col-detail{position:fixed;inset:auto 0 0 0;height:64vh;width:100% !important;
+    border-left:0;border-top:1px solid var(--ink);z-index:30;box-shadow:0 -6px 20px rgba(0,0,0,.12)}
+  .main.hide-panel .col-list,.main.hide-panel .col-detail{display:none}
+  .scroller{padding:22px 16px 68vh}
+  .fab{bottom:auto;top:auto;right:14px;bottom:calc(64vh + 12px)}
+  .main.hide-panel .fab{bottom:14px}
 }
 @media (prefers-reduced-motion:reduce){*{transition:none !important}}
 </style>
@@ -227,17 +254,21 @@ a.ico{text-decoration:none}
 <body>
 <div class="shell">
   <header class="topbar">
-    <div class="brand"><span class="name">Fichero</span><span class="tag" data-i18n="brand_tag"></span></div>
+    <div class="brand"><span class="name">Fichero</span></div>
     <div class="counters" id="counters"></div>
     <span class="saved" id="saved"></span>
-    <button class="btn btn--ghost" id="btnCfg" data-i18n="cfg"></button>
+    <button class="btn btn--ghost" id="btnCfg"></button>
     <button class="btn btn--ghost" id="btnBib" data-i18n="load_bib"></button>
     <button class="btn btn--ghost" id="btnClear"></button>
   </header>
 
-  <div class="main">
-    <div class="reading">
-      <div class="ruler" id="ruler"><span class="lbl" data-i18n="ruler_lbl"></span></div>
+  <div class="main" id="main">
+    <div class="rail" id="railLeft">
+      <button class="rail-btn" id="btnFold"></button>
+      <div class="ruler" id="ruler"></div>
+    </div>
+
+    <div class="col-text" id="colText">
       <div class="scroller" id="scroller">
         <div class="empty" id="empty">
           <h2 data-i18n="empty_h"></h2>
@@ -255,35 +286,49 @@ a.ico{text-decoration:none}
       </div>
     </div>
 
-    <div class="resizer" id="resizer"></div>
+    <div class="resizer" id="rz1"></div>
 
-    <aside class="panel" id="panel">
-      <div class="tabs" role="tablist">
-        <button class="tab" id="tabList" role="tab" aria-selected="true"></button>
-        <button class="tab" id="tabFind" role="tab" aria-selected="false"></button>
-        <button class="tab" id="tabExp" role="tab" aria-selected="false"></button>
+    <aside class="col col-list" id="colList">
+      <div class="ptabs" role="tablist">
+        <button class="ptab" id="ptabList" role="tab" aria-selected="true"></button>
+        <button class="ptab" id="ptabDetail" role="tab" aria-selected="false"></button>
       </div>
-      <div class="panel-sub" id="subList"><input class="search" id="qList" type="search" autocomplete="off"></div>
-      <div class="panel-sub hidden" id="subFind"></div>
-      <div class="panel-sub hidden" id="subExp"></div>
-      <div class="panel-body" id="panelBody"></div>
-      <div class="panel-foot" id="panelFoot"></div>
+      <div class="col-sub">
+        <div class="chips" id="chips"></div>
+        <input class="search" id="qList" type="search" autocomplete="off">
+      </div>
+      <div class="col-body" id="listBody"></div>
     </aside>
+
+    <div class="resizer" id="rz2"></div>
+
+    <aside class="col col-detail" id="colDetail">
+      <div class="ptabs" role="tablist">
+        <button class="ptab" id="ptabList2" role="tab" aria-selected="false"></button>
+        <button class="ptab" id="ptabDetail2" role="tab" aria-selected="true"></button>
+      </div>
+      <div class="col-sub" id="detailSub"></div>
+      <div class="col-body" id="detailBody"></div>
+    </aside>
+
+    <div class="rail rail-r" id="railRight">
+      <button class="rail-btn" id="btnFoldR"></button>
+    </div>
   </div>
 </div>
 
-<button class="btn btn--key toggle-panel hidden" id="togglePanel"></button>
+<button class="btn btn--key fab" id="btnExport"></button>
+<button class="btn btn--ghost fab hidden" id="btnPanel" style="right:150px"></button>
 <div class="pop hidden" id="pop"></div>
 <input type="file" id="fileDoc" accept=".docx" class="hidden">
 <input type="file" id="fileBib" accept=".bib,.bibtex,.txt" class="hidden">
 
 <script>
 /* ==========================================================================
-   FICHERO v3 · un solo archivo, sin backend.
+   FICHERO v4 · tres columnas. Un solo archivo, sin backend.
    Publicalo como index.html en Vercel, Netlify o GitHub Pages.
    ========================================================================== */
 
-/* ------------------------------------------------------------------ íconos */
 const SV = (d, extra='') => `<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"
   stroke-linecap="round" stroke-linejoin="round" ${extra}>${d}</svg>`;
 const ICON = {
@@ -297,13 +342,14 @@ const ICON = {
   down:  SV('<path d="M8 2.4v8.2M4.6 7.4L8 10.8l3.4-3.4M2.6 13.4h10.8"/>'),
   copy:  SV('<rect x="5.4" y="5.4" width="8.2" height="8.2" rx="1"/><path d="M10.6 5.4V3.4a1 1 0 00-1-1H3.4a1 1 0 00-1 1v6.2a1 1 0 001 1h2"/>'),
   gear:  SV('<circle cx="8" cy="8" r="2.2"/><path d="M8 1.6v1.6M8 12.8v1.6M14.4 8h-1.6M3.2 8H1.6M12.5 3.5l-1.1 1.1M4.6 11.4l-1.1 1.1M12.5 12.5l-1.1-1.1M4.6 4.6L3.5 3.5"/>'),
-  ext:   SV('<path d="M9.4 2.4h4.2v4.2M13.6 2.4L7.4 8.6M11.6 9.4v3.2a1 1 0 01-1 1H3.4a1 1 0 01-1-1V5.4a1 1 0 011-1h3.2"/>')
+  ext:   SV('<path d="M9.4 2.4h4.2v4.2M13.6 2.4L7.4 8.6M11.6 9.4v3.2a1 1 0 01-1 1H3.4a1 1 0 01-1-1V5.4a1 1 0 011-1h3.2"/>'),
+  panelL:SV('<rect x="1.9" y="2.9" width="12.2" height="10.2" rx="1.6"/><path d="M6.1 2.9v10.2"/>'),
+  panelR:SV('<rect x="1.9" y="2.9" width="12.2" height="10.2" rx="1.6"/><path d="M9.9 2.9v10.2"/>'),
+  redo:  SV('<path d="M13.4 8a5.4 5.4 0 11-1.9-4.1M13.6 2.4v3.4h-3.4"/>')
 };
 
-/* ------------------------------------------------------------------- i18n */
 const I18N = {
-es:{
- brand_tag:'citas → bibliografía', cfg:'Configuración', load_bib:'Cargar .bib', clear:'Limpiar',
+es:{ cfg:'Configuración', load_bib:'Cargar .bib', clear:'Limpiar',
  clear_confirm:'Se borra el documento cargado, tus correcciones y las referencias. ¿Seguir?',
  tab_list:'Lista', tab_find:'Buscar', tab_exp:'Exportar',
  c_works:'obras citadas', c_mentions:'menciones', c_norms:'normas', c_review:'a revisar', c_withref:'con referencia',
@@ -318,7 +364,10 @@ es:{
  sec_doubtful:'Dudosas — confirmá o descartá', sec_works:'Obras citadas', sec_norms:'Normativa citada',
  sec_refs:'Referencias', sec_pending:'Sin resolver', sec_norm_refs:'Fuentes normativas',
  a_view:'Ver en el texto',
- m_open:'Ingresar URL/DOI o completar manualmente', m_ident:'URL, DOI o ISBN', m_fetch:'Traer datos', m_ref:'Referencia completa', m_fetching:'Recuperando…', m_notfound:'No se pudo recuperar nada con eso. Completá la referencia a mano.', m_filled:'Referencia recuperada', m_linkonly:'Guardé el enlace, pero la referencia hay que escribirla.',
+ bulk_p1:'“{0}” aparece también con otro año. ¿Qué hacés con esa?', bulk_kp1:'“{0}” aparece en otra cita dudosa. ¿La confirmás también?',
+ bulk_h:'Hay más citas con este nombre', bulk_p:'“{0}” aparece también con otros {1} años distintos. ¿Qué hacés con esas?', bulk_one:'Solo esta', bulk_all:'Todas las de este nombre', bulk_kh:'Confirmar las demás', bulk_kp:'“{0}” aparece en otras {1} citas dudosas. ¿Las confirmás también?',
+ sel_none:'Seleccioná una cita de la lista para buscar su referencia completa.', fl_all:'Todas', fl_pend:'Sin resolver', fl_sug:'Dudosas', fl_norm:'Normativa', f_change:'Cambiar', f_clear:'Quitar referencia', f_chosen:'Referencia elegida', collapse:'Plegar el texto',collapse_r:'Plegar las referencias', expand:'Mostrar el texto',expand_r:'Mostrar las referencias', exp_list:'Copiar lista autor-año', exp_refs:'Copiar referencias completas', kb_hint:'↑↓ recorrer la lista · ←→ apariciones en el texto', sug_h:'Cita dudosa', sug_p:'Fijate en el manuscrito, a la izquierda, si esto es realmente una cita.', norm_edit:'Referencia de esta norma', tab_detail:'Referencia',
+ m_open:'Ingresar manualmente', m_ident:'Ingresar DOI o ISBN', m_fetch:'Traer datos', m_ref:'Referencia completa', m_fetching:'Recuperando…', m_notfound:'No se pudo recuperar nada con eso. Completá la referencia a mano.', m_filled:'Referencia recuperada', m_linkonly:'Guardé el enlace, pero la referencia hay que escribirla.',
  occ_one:'1 aparición', occ_n:'{0} de {1} apariciones', occ_next:'Ver la siguiente aparición', occ_prev:'Ver la anterior', e_link:'Abrir la publicación', a_edit:'Editar', a_remove:'Quitar', a_keep:'Conservar cita', a_drop:'Quitar cita',
  merged:'Unificada con la forma “et al.”.',
  dup:'Posible duplicado: otra obra del mismo autor y año con distinta lista de autores.',
@@ -373,8 +422,7 @@ es:{
  bd_bib:'de tu .bib', bd_auto:'encontrada', bd_mano:'a mano',
  show_panel:'Ver citas', show_text:'Ver texto', resize:'Arrastrá para cambiar el ancho'
 },
-en:{
- brand_tag:'citations → bibliography', cfg:'Settings', load_bib:'Load .bib', clear:'Clear',
+en:{ cfg:'Settings', load_bib:'Load .bib', clear:'Clear',
  clear_confirm:'This deletes the loaded document, your corrections and the references. Continue?',
  tab_list:'List', tab_find:'Find', tab_exp:'Export',
  c_works:'works cited', c_mentions:'mentions', c_norms:'statutes', c_review:'to review', c_withref:'with reference',
@@ -389,7 +437,10 @@ en:{
  sec_doubtful:'Uncertain — confirm or discard', sec_works:'Works cited', sec_norms:'Statutes cited',
  sec_refs:'References', sec_pending:'Unresolved', sec_norm_refs:'Legal sources',
  a_view:'Show in text',
- m_open:'Enter a URL/DOI or fill in manually', m_ident:'URL, DOI or ISBN', m_fetch:'Fetch data', m_ref:'Full reference', m_fetching:'Fetching…', m_notfound:'Nothing could be retrieved from that. Write the reference by hand.', m_filled:'Reference retrieved', m_linkonly:'Link saved, but the reference has to be written.',
+ bulk_p1:'“{0}” also appears with one other year. What about that one?', bulk_kp1:'“{0}” appears in one other uncertain citation. Confirm that one too?',
+ bulk_h:'More citations with this name', bulk_p:'“{0}” also appears with {1} other years. What do you want to do with those?', bulk_one:'Only this one', bulk_all:'All with this name', bulk_kh:'Confirm the others', bulk_kp:'“{0}” appears in {1} other uncertain citations. Confirm those too?',
+ sel_none:'Select a citation from the list to find its full reference.', fl_all:'All', fl_pend:'Unresolved', fl_sug:'Uncertain', fl_norm:'Statutes', f_change:'Change', f_clear:'Remove reference', f_chosen:'Chosen reference', collapse:'Collapse the text',collapse_r:'Collapse the references', expand:'Show the text',expand_r:'Show the references', exp_list:'Copy author-year list', exp_refs:'Copy full references', kb_hint:'↑↓ move through the list · ←→ occurrences in the text', sug_h:'Uncertain citation', sug_p:'Check the manuscript on the left to see whether this really is a citation.', norm_edit:'Reference for this statute', tab_detail:'Reference',
+ m_open:'Enter manually', m_ident:'Enter a DOI or ISBN', m_fetch:'Fetch data', m_ref:'Full reference', m_fetching:'Fetching…', m_notfound:'Nothing could be retrieved from that. Write the reference by hand.', m_filled:'Reference retrieved', m_linkonly:'Link saved, but the reference has to be written.',
  occ_one:'1 occurrence', occ_n:'{0} of {1} occurrences', occ_next:'Show next occurrence', occ_prev:'Show previous', e_link:'Open the publication', a_edit:'Edit', a_remove:'Remove', a_keep:'Keep citation', a_drop:'Remove citation',
  merged:'Merged with the “et al.” form.',
  dup:'Possible duplicate: another work by the same author and year with a different author list.',
@@ -444,8 +495,7 @@ en:{
  bd_bib:'from .bib', bd_auto:'found', bd_mano:'by hand',
  show_panel:'Show citations', show_text:'Show text', resize:'Drag to resize'
 },
-pt:{
- brand_tag:'citações → bibliografia', cfg:'Configurações', load_bib:'Carregar .bib', clear:'Limpar',
+pt:{ cfg:'Configurações', load_bib:'Carregar .bib', clear:'Limpar',
  clear_confirm:'Isto apaga o documento carregado, suas correções e as referências. Continuar?',
  tab_list:'Lista', tab_find:'Buscar', tab_exp:'Exportar',
  c_works:'obras citadas', c_mentions:'menções', c_norms:'normas', c_review:'a revisar', c_withref:'com referência',
@@ -460,7 +510,10 @@ pt:{
  sec_doubtful:'Duvidosas — confirme ou descarte', sec_works:'Obras citadas', sec_norms:'Normas citadas',
  sec_refs:'Referências', sec_pending:'Sem resolver', sec_norm_refs:'Fontes normativas',
  a_view:'Ver no texto',
- m_open:'Inserir URL/DOI ou preencher manualmente', m_ident:'URL, DOI ou ISBN', m_fetch:'Buscar dados', m_ref:'Referência completa', m_fetching:'Recuperando…', m_notfound:'Não foi possível recuperar nada com isso. Escreva a referência à mão.', m_filled:'Referência recuperada', m_linkonly:'Guardei o link, mas a referência precisa ser escrita.',
+ bulk_p1:'“{0}” aparece também com outro ano. O que fazer com ela?', bulk_kp1:'“{0}” aparece em outra citação duvidosa. Confirmar também?',
+ bulk_h:'Há mais citações com este nome', bulk_p:'“{0}” aparece também com outros {1} anos. O que fazer com elas?', bulk_one:'Só esta', bulk_all:'Todas deste nome', bulk_kh:'Confirmar as demais', bulk_kp:'“{0}” aparece em outras {1} citações duvidosas. Confirmar também?',
+ sel_none:'Selecione uma citação da lista para buscar sua referência completa.', fl_all:'Todas', fl_pend:'Sem resolver', fl_sug:'Duvidosas', fl_norm:'Normas', f_change:'Trocar', f_clear:'Remover referência', f_chosen:'Referência escolhida', collapse:'Recolher o texto',collapse_r:'Recolher as referências', expand:'Mostrar o texto',expand_r:'Mostrar as referências', exp_list:'Copiar lista autor-ano', exp_refs:'Copiar referências completas', kb_hint:'↑↓ percorrer a lista · ←→ ocorrências no texto', sug_h:'Citação duvidosa', sug_p:'Veja no manuscrito, à esquerda, se isto é mesmo uma citação.', norm_edit:'Referência desta norma', tab_detail:'Referência',
+ m_open:'Inserir manualmente', m_ident:'Inserir DOI ou ISBN', m_fetch:'Buscar dados', m_ref:'Referência completa', m_fetching:'Recuperando…', m_notfound:'Não foi possível recuperar nada com isso. Escreva a referência à mão.', m_filled:'Referência recuperada', m_linkonly:'Guardei o link, mas a referência precisa ser escrita.',
  occ_one:'1 ocorrência', occ_n:'{0} de {1} ocorrências', occ_next:'Ver a próxima ocorrência', occ_prev:'Ver a anterior', e_link:'Abrir a publicação', a_edit:'Editar', a_remove:'Remover', a_keep:'Manter citação', a_drop:'Remover citação',
  merged:'Unificada com a forma “et al.”.',
  dup:'Possível duplicata: outra obra do mesmo autor e ano com lista de autores diferente.',
@@ -521,49 +574,52 @@ function t(k, ...a){
   return s;
 }
 
+function t(k, ...a){
+  let s = (I18N[CFG.uiLang] && I18N[CFG.uiLang][k]) || I18N.es[k] || k;
+  a.forEach((v,i) => { s = s.split('{'+i+'}').join(v); });
+  return s;
+}
+
 /* palabras conectoras de la referencia, por idioma de salida */
 const REFL = {
   es:{ conj:'y', in:'En', ed:'Ed.', eds:'Eds.', pp:'pp.', phd:'Tesis doctoral', ms:'Tesis de maestría',
-       thesis:'Tesis', paper:'Ponencia', nd:'s.f.', edn:'ed.', retr:'Recuperado de' },
+       thesis:'Tesis', paper:'Ponencia', nd:'s.f.', edn:'ed.' },
   en:{ conj:'&', in:'In', ed:'Ed.', eds:'Eds.', pp:'pp.', phd:'Doctoral dissertation', ms:"Master's thesis",
-       thesis:'Thesis', paper:'Conference paper', nd:'n.d.', edn:'ed.', retr:'Retrieved from' },
+       thesis:'Thesis', paper:'Conference paper', nd:'n.d.', edn:'ed.' },
   pt:{ conj:'e', in:'Em', ed:'Org.', eds:'Orgs.', pp:'pp.', phd:'Tese de doutorado', ms:'Dissertação de mestrado',
-       thesis:'Tese', paper:'Trabalho apresentado', nd:'s.d.', edn:'ed.', retr:'Recuperado de' }
+       thesis:'Tese', paper:'Trabalho apresentado', nd:'s.d.', edn:'ed.' }
 };
-
-/* áreas → campos de OpenAlex (códigos ASJC de primer nivel) */
+/* áreas → campos de OpenAlex (códigos de primer nivel) */
 const AREAS = {
   none:[], soc:[33,20,14,18], hum:[12], psy:[32,33], med:[27,36,29,30,35],
   bio:[11,13,24,28,34], nat:[16,26,31,19,23,25], eng:[17,22,15,21]
 };
 
-/* ------------------------------------------------------------------ config */
 const CFG = {
   uiLang:'es', refLang:'es', style:'apa7', area:'none', pubLang:'',
   laws:true, mergeEtal:true, useCtx:true,
   sources:{ crossref:true, openalex:true, doaj:false, openlibrary:true }
 };
-const SOURCES = {
-  crossref:{ label:'Crossref' }, openalex:{ label:'OpenAlex' },
-  doaj:{ label:'DOAJ' }, openlibrary:{ label:'Open Library' }
-};
+const SOURCES = { crossref:{label:'Crossref'}, openalex:{label:'OpenAlex'},
+                  doaj:{label:'DOAJ'}, openlibrary:{label:'Open Library'} };
 
-/* ------------------------------------------------------------------ estado */
 const S = {
   paras:[], hits:[], works:[], norms:[], bib:[], bibIndex:new Map(),
   refOverride:new Map(), normOverride:new Map(), origin:new Map(), cands:new Map(), link:new Map(),
-  vocab:new Map(), bibVenues:new Set(), bibSurnames:new Set(),
+  doiCand:new Map(), nameStats:new Map(), vocab:new Map(), bibVenues:new Set(), bibSurnames:new Set(),
   cycle:new Map(), occ:new Map(), lastJumped:null,
-  tab:'list', seq:0, findI:0, busyKey:null, manualKey:null
+  sel:null,              // {kind:'work'|'sug'|'norm', key}
+  filter:'all', changing:new Set(), manualOpen:false,
+  foldText:false, foldDetail:false, narrowTab:'list', hidePanel:false,
+  seq:0, busyKey:null, lookupToken:0, selTimer:null,
+  w2:320, w3:400
 };
 
-/* --------------------------------------------------------------- utilidades */
 const $ = id => document.getElementById(id);
 const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const deacc = s => String(s||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'');
 const slug = s => deacc(s).toLowerCase().replace(/[^a-z0-9]/g,'');
 const stripTags = h => String(h).replace(/<[^>]+>/g,'');
-const sleep = ms => new Promise(r => setTimeout(r, ms));
 
 function toast(msg){
   const el = document.createElement('div');
@@ -575,12 +631,12 @@ async function copyText(txt, label){
   catch(e){ const ta = document.createElement('textarea'); ta.value = txt; document.body.appendChild(ta);
     ta.select(); document.execCommand('copy'); ta.remove(); toast(label || t('copied')); }
 }
-async function copyRich(html, plain){
+async function copyRich(html, plain, label){
   try {
     await navigator.clipboard.write([new ClipboardItem({
       'text/html': new Blob([html],{type:'text/html'}), 'text/plain': new Blob([plain],{type:'text/plain'}) })]);
-    toast(t('copied'));
-  } catch(e){ copyText(plain); }
+    toast(label || t('copied'));
+  } catch(e){ copyText(plain, label); }
 }
 function download(name, text){
   const a = document.createElement('a');
@@ -591,9 +647,9 @@ function download(name, text){
 }
 
 /* =========================================================================
-   PERSISTENCIA
+   PERSISTENCIA — localStorage con reserva en memoria
    ========================================================================= */
-const KEY = 'fichero.v3';
+const KEY = 'fichero.v4';
 const DB = (() => {
   let ok = false;
   try { localStorage.setItem('__f','1'); localStorage.removeItem('__f'); ok = true; } catch(e){}
@@ -605,17 +661,16 @@ const DB = (() => {
 })();
 let saveTimer = null;
 const saveSoon = () => { clearTimeout(saveTimer); saveTimer = setTimeout(saveNow, 700); };
-function snapshot(){
-  return { v:3, cfg:CFG, paras:S.paras, hits:S.hits, seq:S.seq, bib:S.bib, tab:S.tab, findI:S.findI,
-    refOverride:[...S.refOverride], normOverride:[...S.normOverride], origin:[...S.origin], cands:[...S.cands], link:[...S.link],
-    width:($('panel')||{style:{}}).style.width || '' };
-}
+const snapshot = () => ({ v:4, cfg:CFG, paras:S.paras, hits:S.hits, seq:S.seq, bib:S.bib,
+  refOverride:[...S.refOverride], normOverride:[...S.normOverride], origin:[...S.origin],
+  cands:[...S.cands], link:[...S.link], sel:S.sel, filter:S.filter,
+  foldText:S.foldText, foldDetail:S.foldDetail, w2:S.w2, w3:S.w3 });
 function saveNow(){
   const full = snapshot();
   const tries = [full, {...full, cands:[]}, {...full, cands:[], bib:[]}];
   for (let i = 0; i < tries.length; i++){
-    try { DB.set(KEY, JSON.stringify(tries[i])); flashSaved(i===0?t('t_saved'):(i===1?t('t_saved_p'):t('t_saved_no'))); return; }
-    catch(e){}
+    try { DB.set(KEY, JSON.stringify(tries[i]));
+      flashSaved(i===0?t('t_saved'):(i===1?t('t_saved_p'):t('t_saved_no'))); return; } catch(e){}
   }
   flashSaved(t('t_saved_no'));
 }
@@ -634,9 +689,8 @@ function restore(){
     S.bib = d.bib||[]; S.bibIndex = buildBibIndex(S.bib); indexBibProfile();
     S.refOverride = new Map(d.refOverride||[]); S.normOverride = new Map(d.normOverride||[]);
     S.origin = new Map(d.origin||[]); S.cands = new Map(d.cands||[]); S.link = new Map(d.link||[]);
-    S.tab = ['list','find','exp'].includes(d.tab) ? d.tab : 'list';
-    S.findI = d.findI||0;
-    if (d.width) $('panel').style.width = d.width;
+    S.sel = d.sel || null; S.filter = d.filter || 'all';
+    S.foldText = !!d.foldText; S.foldDetail = !!d.foldDetail; S.w2 = d.w2 || 320; S.w3 = d.w3 || 400;
     if (S.paras.length) buildVocab();
     return S.paras.length > 0;
   } catch(e){ console.error(e); return false; }
@@ -659,14 +713,22 @@ const SUR_NA = `(?:${PART}\\s+)?${NW}(?:\\s+(?:${PART}\\s+)?${NW}){0,1}`;
 const SEP = "(?:\\s*,\\s*|\\s+(?:y|e|and|&)\\s+)";
 const ETAL = "(?:\\s*,?\\s*et\\s*al\\.?)?";
 const SIGLA = "(?:\\s*\\[[^\\]]{1,60}\\])?";
-const YEAR = "(?:\\d{4}\\s*[a-h]?|s\\.\\s?[fd]\\.|s\\/f|n\\.\\s?d\\.|en prensa|in press|no prelo|forthcoming)";
+const YEAR = "(?:\\d{4}[a-h]?(?![\\p{L}\\d])|s\\.\\s?[fd]\\.|s\\/f|n\\.\\s?d\\.|en prensa|in press|no prelo|forthcoming)";
 const ORIG = "(?:\\s*\\[\\d{4}[a-z]?\\])?";
 const LOCNUM = "(?:\\d+(?:\\s*[-–—]\\s*\\d+)?|[IVXLCivxlc]{1,7}(?![\\p{L}]))";
-const LOC = `(?:\\s*[:,]\\s*(?:pp?\\.|p[áa]gs?\\.|cap\\.)?\\s*${LOCNUM})?`;
+/* sin marcador de página explícito el localizador no puede ser un número de
+   cuatro cifras: si no, ", 2020b" se lee como página y se come el año siguiente */
+const LOCSAFE = "(?:\\d{1,3}(?!\\d)(?:\\s*[-–—]\\s*\\d{1,4})?|[IVXLCivxlc]{1,7}(?![\\p{L}]))";
+const LOC = `(?:\\s*[:,]\\s*(?:(?:pp?\\.|p[áa]gs?\\.|cap\\.)\\s*${LOCNUM}|${LOCSAFE}))?`;
 const AUTHORS_IN = `${SUR_IN}(?:${SEP}${SUR_IN})*${ETAL}`;
 const AUTHORS_NA = `${SUR_NA}(?:${SEP}${SUR_NA})*${ETAL}`;
-const RE_UNIT = new RegExp(`(${AUTHORS_IN})${SIGLA}\\s*,?\\s*\\(?\\s*(${YEAR})\\s*\\)?${ORIG}${LOC}`, 'giu');
-const RE_NARR = new RegExp(`(${AUTHORS_NA})${SIGLA}\\s*\\(\\s*(${YEAR})${ORIG}${LOC}\\s*\\)`, 'gu');
+const RE_UNIT = new RegExp(`(${AUTHORS_IN})${SIGLA}\\s*,?\\s*\\(?\\s*(${YEAR})\\s*\\)?${ORIG}${LOC}`, 'gu');
+const YSERIE = `${YEAR}${ORIG}${LOC}(?:\\s*,\\s*${YEAR}${ORIG}${LOC})*`;
+const RE_NARR = new RegExp(`(${AUTHORS_NA})${SIGLA}\\s*\\(\\s*(${YSERIE})\\s*\\)`, 'gu');
+const RE_YTOK = new RegExp(`${YEAR}`, 'gu');
+/* en castellano, inglés y portugués una cita con varios autores siempre lleva
+   conjunción antes del último. "Rosario, Argentina" no la tiene: no es cita. */
+const multiOk = a => !/,/.test(a) || /(?:\s(?:y|e|and)\s|&|et\s*al\.)/i.test(a);
 const RE_ANAPH = /\b(ib[ií]d\.?(?:em)?|[ií]dem|op\.\s?cit\.|art\.\s?cit\.|loc\.\s?cit\.)/gi;
 const RE_LOOSE = new RegExp(`^(${AUTHORS_IN})\\s*,?\\s*\\(?\\s*(${YEAR})`, 'iu');
 const RE_NORMA = new RegExp(
@@ -724,8 +786,55 @@ const mkHit = (para,start,end,authors,year,kind,status) =>
   ({ id:'h'+(S.seq++), para, start, end, authors, year, kind, status });
 const fragOf = h => S.paras[h.para] ? S.paras[h.para].text.slice(h.start, h.end) : '';
 
+/* Un apellido de autor aparece casi siempre pegado a un año; un topónimo
+   aparece todo el tiempo en prosa corrida sin año. Medimos esa proporción
+   sobre el propio documento, así no hace falta ninguna lista de lugares. */
+const SOFT_PLACES = new Set(['argentina','brasil','brazil','chile','uruguay','paraguay','bolivia','peru','ecuador',
+'colombia','venezuela','mexico','cuba','panama','honduras','guatemala','nicaragua','salvador','espana','portugal',
+'francia','italia','alemania','inglaterra','escocia','irlanda','china','japon','india','rusia','canada','australia',
+'europa','africa','asia','america','latinoamerica','iberoamerica','caracas','bogota','quito','lima','montevideo',
+'asuncion','habana','managua','rosario','mendoza','tucuman','salta','neuquen','bariloche','ushuaia','moron','avellaneda',
+'recife','salvador','fortaleza','curitiba','brasilia','manaus','belem','niteroi','campinas','valparaiso','concepcion',
+'medellin','cali','cartagena','cusco','arequipa','guadalajara','monterrey','puebla','tijuana','barcelona','madrid',
+'sevilla','bilbao','lisboa','oporto','paris','lyon','marsella','roma','milan','napoles','turin','berlin','munich',
+'hamburgo','viena','praga','varsovia','moscu','estambul','atenas','londres','manchester','dublin','nueva']);
+
+function buildNameStats(paras){
+  const st = new Map();
+  const get = w => { const k = slug(w); if (!st.has(k)) st.set(k, {total:0, withYear:0, paren:0}); return st.get(k); };
+  const RE_W = /\p{Lu}[\p{L}'\u2019-]{2,}/gu;
+  paras.forEach(p => {
+    const txt = p.text; let m;
+    RE_W.lastIndex = 0;
+    while ((m = RE_W.exec(txt)) !== null){
+      const rec = get(m[0]); rec.total++;
+      const after = txt.slice(m.index + m[0].length, m.index + m[0].length + 14);
+      if (/^\s*[,(]?\s*\(?\s*\d{4}/.test(after)) rec.withYear++;
+      /* forma inequívoca (Autor, año) o ; Autor, año: nadie escribe (Argentina, 2006) */
+      const before = txt.slice(Math.max(0, m.index-2), m.index);
+      if (/[(;]\s*$/.test(before) && /^\s*,\s*\d{4}[a-h]?\s*[):;,]/.test(after)) rec.paren++;
+    }
+  });
+  return st;
+}
+/* devuelve true si el candidato parece un lugar y conviene mandarlo a dudosas */
+function looksLikePlace(name){
+  if (!S.nameStats || !S.nameStats.size) return false;
+  if (/[\s\-]/.test(name)) return false;                 // compuesto o con partícula: no es un topónimo suelto
+  const k = slug(name);
+  if (S.bibSurnames.has(k)) return false;                  // está en tu bibliografía
+  const rec = S.nameStats.get(k);
+  if (!rec) return false;
+  if (rec.paren > 0) return false;                         // en algún lado se cita como (Autor, año)
+  const soft = SOFT_PLACES.has(k);
+  const ratio = rec.withYear / Math.max(1, rec.total);
+  if (soft) return ratio < 0.75;
+  return rec.total >= 4 && ratio < 0.34;
+}
+
 function detect(paras){
   const hits = []; let last = null;
+  S.nameStats = buildNameStats(paras);
   paras.forEach((p, pi) => {
     const text = p.text, taken = [];
     const busy = (s,e) => taken.some(r => s < r[1] && e > r[0]);
@@ -764,11 +873,27 @@ function detect(paras){
         const firstTok = (authors.split(' ')[0] || u[1].trim().split(' ')[0]);
         const shift = u[0].indexOf(firstTok);
         const st = base + u.index + (shift > 0 ? shift : 0);
+        let end = u.index + u[0].length;
+        /* serie de años del mismo autor: (Marins 2020, 2020b, 2025) */
+        const extra = [];
+        const tail = new RegExp(`^\\s*,\\s*(${YEAR})${ORIG}${LOC}`, 'u');
+        let rest = inner.slice(end), m2;
+        while ((m2 = rest.match(tail)) !== null){
+          extra.push({ year: normYear(m2[1]), st: base + end, en: base + end + m2[0].length });
+          end += m2[0].length; rest = inner.slice(end);
+        }
+        covered.push([u.index, end]);
         const en = base + u.index + u[0].length;
-        covered.push([u.index, u.index + u[0].length]);
         if (!authors || authors.length < 2 || busy(st,en)) continue;
-        const h = mkHit(pi, st, en, authors, normYear(u[2]), 'paren', 'ok');
-        hits.push(h); claim(st,en); last = h;
+        const status = multiOk(authors) ? 'ok' : 'sug';
+        const h = mkHit(pi, st, en, authors, normYear(u[2]), 'paren', status);
+        hits.push(h); claim(st,en); if (status === 'ok') last = h;
+        extra.forEach(x => {
+          if (busy(x.st, x.en)) return;
+          const e2 = mkHit(pi, x.st, x.en, authors, x.year, 'paren', status);
+          hits.push(e2); claim(x.st, x.en); if (status === 'ok') last = e2;
+        });
+        RE_UNIT.lastIndex = end;
       }
       let cursor = 0; const left = [];
       covered.sort((a,b) => a[0]-b[0]).forEach(([a,b]) => { if (a > cursor) left.push([cursor,a]); cursor = Math.max(cursor,b); });
@@ -796,8 +921,25 @@ function detect(paras){
       const cleaned = trimStop(nm[1]); if (!cleaned) continue;
       const shift = nm[0].indexOf(cleaned);
       const st = st0 + (shift > 0 ? shift : 0);
-      const h = mkHit(pi, st, en0, tidyAuthors(cleaned), normYear(nm[2]), 'narr', 'ok');
-      hits.push(h); claim(st,en0); last = h;
+      const authors = tidyAuthors(cleaned);
+      const status = (multiOk(authors) && !looksLikePlace(authors)) ? 'ok' : 'sug';
+      /* Marins (2020, 2025) → una cita por año */
+      const yearsAt = nm.index + nm[0].indexOf(nm[2]);
+      const years = []; RE_YTOK.lastIndex = 0;
+      let ym2;
+      while ((ym2 = RE_YTOK.exec(nm[2])) !== null)
+        years.push({ y: normYear(ym2[0]), st: yearsAt + ym2.index, en: yearsAt + ym2.index + ym2[0].length });
+      if (!years.length) continue;
+      const solo = years.length === 1;
+      years.forEach((yy, i) => {
+        /* con varios años, cada uno reclama solo su tramo: si el primero se
+           quedara con todo el paréntesis, los demás quedarían bloqueados */
+        const a = i === 0 ? st : yy.st;
+        const b = i === 0 ? (solo ? en0 : yy.en) : yy.en;
+        if (busy(a,b)) return;
+        const h = mkHit(pi, a, b, authors, yy.y, 'narr', status);
+        hits.push(h); claim(a,b); if (status === 'ok') last = h;
+      });
     }
 
     RE_ANAPH.lastIndex = 0;
@@ -810,6 +952,71 @@ function detect(paras){
     }
   });
   hits.sort((a,b) => a.para - b.para || a.start - b.start);
+  return vetPlaces(hits);
+}
+
+/* =========================================================================
+   VETO DE TOPÓNIMOS
+   No hay lista que alcance, así que usamos el documento como evidencia:
+   un apellido aparece casi siempre pegado a un año; un lugar aparece
+   constantemente en prosa corrida y solo de vez en cuando con año.
+   Nada se descarta: lo sospechoso baja a "dudosas" y se confirma con un click.
+   ========================================================================= */
+const PLACES = new Set(['argentina','brasil','brazil','chile','uruguay','paraguay','bolivia','peru','ecuador',
+'venezuela','colombia','mexico','cuba','nicaragua','honduras','guatemala','panama','haiti','jamaica','dominicana',
+'espana','portugal','francia','italia','alemania','inglaterra','escocia','irlanda','suiza','austria','belgica',
+'holanda','suecia','noruega','dinamarca','finlandia','islandia','polonia','hungria','rumania','bulgaria','grecia',
+'turquia','rusia','ucrania','china','japon','india','corea','vietnam','tailandia','indonesia','filipinas',
+'australia','egipto','marruecos','argelia','tunez','nigeria','kenia','sudafrica','etiopia','senegal','canada',
+'europa','asia','africa','oceania','latinoamerica','sudamerica','norteamerica','centroamerica','caribe','mercosur',
+'montevideo','brasilia','bogota','caracas','quito','asuncion','managua','tegucigalpa','habana','nairobi','bangkok',
+'estambul','moscu','praga','varsovia','amsterdam','bruselas','copenhague','estocolmo','helsinki','dublin',
+'edimburgo','lisboa','atenas','beirut','teheran','jerusalen','viena','ginebra','zurich','recife','fortaleza',
+'curitiba','montreal','vancouver','chicago','boston','seattle','houston','johannesburgo','singapur','shanghai',
+'beijing','pekin','tokio','osaka','seul','manila','yakarta','alegre','janeiro','horizonte','paulo']);
+
+function buildNameFreq(){
+  const f = new Map(), re = /\p{Lu}[\p{L}'\u2019-]*/gu;
+  S.paras.forEach(p => { let m; re.lastIndex = 0;
+    while ((m = re.exec(p.text)) !== null){ const k = slug(m[0]); f.set(k, (f.get(k)||0) + 1); } });
+  return f;
+}
+function phraseCount(name, cache){
+  if (cache.has(name)) return cache.get(name);
+  const pat = name.replace(/[.*+?^${}()|[\]\\]/g,'\\$&').replace(/\s+/g,'\\s+');
+  let n = 0;
+  try {
+    const re = new RegExp('(?<![\\p{L}])' + pat + '(?![\\p{L}])', 'gu');
+    S.paras.forEach(p => { const m = p.text.match(re); if (m) n += m.length; });
+  } catch(e){ n = 0; }
+  cache.set(name, n); return n;
+}
+function vetPlaces(hits){
+  if (!hits.length) return hits;
+  const freq = buildNameFreq(), cache = new Map();
+  const parenSur = new Set();
+  hits.forEach(h => { if (h.kind === 'paren' && h.status === 'ok' && h.year)
+    parenSur.add(slug(firstSurname(h.authors))); });
+  const withYear = new Map();
+  hits.forEach(h => { if (h.kind === 'ley') return;
+    const k = slug(firstSurname(h.authors));
+    withYear.set(k, (withYear.get(k)||0) + 1); });
+  const partRe = new RegExp('^(?:' + PART + ')\\s', 'iu');
+
+  hits.forEach(h => {
+    if (h.kind !== 'narr' || h.status !== 'ok') return;
+    const name = h.authors.replace(/\s+et al\.?$/i,'').trim();
+    const sur = firstSurname(name), k = slug(sur);
+    if (S.bibSurnames.has(k)) return;        // figura en tu .bib
+    if (parenSur.has(k)) return;             // en otro lado se lo cita entre paréntesis
+    if (partRe.test(name)) return;           // De Certeau, van der Linden
+    const toks = name.split(/\s+/);
+    if (toks.some(x => PLACES.has(slug(x))) || PLACES.has(slug(name))){ h.status = 'sug'; return; }
+    if (toks.length > 2) return;
+    const total = toks.length === 1 ? (freq.get(k) || 0) : phraseCount(name, cache);
+    const wy = withYear.get(k) || 0;
+    if (total >= 8 && wy / total <= 0.25) h.status = 'sug';   // mucho en prosa, poco con año
+  });
   return hits;
 }
 
@@ -1209,22 +1416,25 @@ function renderDoc(){
   $('empty').classList.add('hidden');
   const byPara = new Map();
   S.hits.forEach(h => { if(!byPara.has(h.para)) byPara.set(h.para,[]); byPara.get(h.para).push(h); });
-  const resolved = new Set();
+  const resolved = new Set(), selHits = new Set();
   S.works.forEach(w => { if (refOf(w)) w.hits.forEach(h => resolved.add(h.id)); });
+  const cur = selItem();
+  if (cur && cur.hits) cur.hits.forEach(h => selHits.add(h.id));
   doc.innerHTML = S.paras.map((p,i) => {
     const marks = (byPara.get(i)||[]).slice().sort((a,b)=>a.start-b.start);
-    let out='', cur=0;
+    let out='', pos=0;
     marks.forEach(h => {
-      if (h.start < cur) return;
-      out += esc(p.text.slice(cur, h.start));
+      if (h.start < pos) return;
+      out += esc(p.text.slice(pos, h.start));
       const cls = ['cit'];
       if (h.kind === 'ley') cls.push('is-ley');
       else if (h.status === 'sug') cls.push('is-sug');
       else if (resolved.has(h.id)) cls.push('is-done');
+      if (selHits.has(h.id)) cls.push('is-sel');
       out += `<mark class="${cls.join(' ')}" data-hit="${h.id}">${esc(p.text.slice(h.start,h.end))}</mark>`;
-      cur = h.end;
+      pos = h.end;
     });
-    out += esc(p.text.slice(cur));
+    out += esc(p.text.slice(pos));
     return `<${p.tag||'p'} data-p="${i}">${out||'&nbsp;'}</${p.tag||'p'}>`;
   }).join('');
   requestAnimationFrame(drawRuler);
@@ -1242,18 +1452,18 @@ function drawRuler(){
       : m.classList.contains('is-done') ? ' is-done' : (S.bib.length ? ' is-open' : ''));
     el.style.top = (Math.round((top/total)*(H-12))+6)+'px';
     el.title = m.textContent;
-    el.onclick = () => jumpTo(m.dataset.hit);
+    el.onclick = ev => { ev.stopPropagation(); if (S.foldText) setFold(false); jumpTo(m.dataset.hit, false); };
     ruler.appendChild(el);
   });
 }
 function jumpTo(id, hidePanel = true){
+  if (S.foldText) setFold(false);
   const el = document.querySelector(`mark[data-hit="${id}"]`); if (!el) return;
-  el.scrollIntoView({behavior:'smooth', block:'center'});
+  el.scrollIntoView?.({behavior:'smooth', block:'center'});
   document.querySelectorAll('mark.is-active').forEach(m => m.classList.remove('is-active'));
   el.classList.add('is-active'); setTimeout(() => el.classList.remove('is-active'), 2400);
-  if (hidePanel && window.innerWidth <= 900) $('panel').classList.add('is-hidden');
+  if (hidePanel && window.innerWidth <= 820){ S.hidePanel = true; layout(); }
 }
-/* el ojo recorre las apariciones una tras otra, no siempre la primera */
 function cycleTo(key, hits){
   if (!hits || !hits.length) return;
   const i = (S.cycle.get(key) || 0) % hits.length;
@@ -1261,10 +1471,8 @@ function cycleTo(key, hits){
   S.cycle.set(key, i + 1);
   if (hits.length > 1) toast(t('occ_n', i+1, hits.length));
 }
-/* enlace a la publicación, si lo hay */
 function linkOf(w){
-  const saved = S.link.get(w.key);
-  if (saved) return saved;
+  const saved = S.link.get(w.key); if (saved) return saved;
   if (w.bib){
     const f = w.bib.fields || {};
     if (f.doi) return String(f.doi).startsWith('http') ? f.doi : 'https://doi.org/'+f.doi;
@@ -1278,8 +1486,9 @@ const entryLink = e => {
   if (f.doi) return String(f.doi).startsWith('http') ? f.doi : 'https://doi.org/'+f.doi;
   return (f.url && /^https?:/.test(f.url)) ? f.url : '';
 };
+
 /* =========================================================================
-   PANEL
+   DERIVADOS Y SELECCIÓN
    ========================================================================= */
 const refOf = w => w.manual || (w.bib ? fmt(w.bib, w.year) : null);
 const originOf = w => w.manual ? (S.origin.get(w.key)==='auto'?'auto':'mano') : (w.bib ? 'bib' : null);
@@ -1287,192 +1496,284 @@ const pendingWorks = () => S.works.filter(w => !refOf(w));
 const iconBtn = (act, key, icon, cls='') =>
   `<button class="ico ${cls}" ${act}="${key}" title="${esc(t(icon.k))}" aria-label="${esc(t(icon.k))}">${ICON[icon.i]}</button>`;
 
-function recount(){
-  S.works = groupWorks(S.hits);
-  S.norms = groupNorms(S.hits);
-  S.works.forEach(w => {
-    if (w.manual){ w.bib = (matchWork(w)||{}).entry || null; return; }
-    const m = matchWork(w);
-    w.bib = m ? m.entry : null; w.ambiguous = m ? m.ambiguous : false; w.alts = m ? m.alts : null;
-  });
-  const sug = S.hits.filter(h => h.status==='sug').length;
-  const ok = S.works.filter(w => refOf(w)).length;
-  $('counters').innerHTML =
-    `<div class="count"><b>${S.works.length}</b><span>${t('c_works')}</span></div>` +
-    `<div class="count"><b>${S.hits.filter(h=>h.status==='ok'&&h.kind!=='ley').length}</b><span>${t('c_mentions')}</span></div>` +
-    (S.norms.length ? `<div class="count count--ley"><b>${S.norms.length}</b><span>${t('c_norms')}</span></div>` : '') +
-    (sug ? `<div class="count count--gap"><b>${sug}</b><span>${t('c_review')}</span></div>` : '') +
-    ((S.bib.length||ok) ? `<div class="count count--ok"><b>${ok}/${S.works.length}</b><span>${t('c_withref')}</span></div>` : '');
-  const pend = pendingWorks().length;
-  $('tabFind').innerHTML = t('tab_find') + (pend ? `<span class="dot">${pend}</span>` : '');
+function selItem(){
+  if (!S.sel) return null;
+  if (S.sel.kind === 'work') return S.works.find(w => w.key === S.sel.key) || null;
+  if (S.sel.kind === 'norm') return S.norms.find(n => n.key === S.sel.key) || null;
+  return S.hits.find(h => h.id === S.sel.key && h.status === 'sug') || null;
 }
-
-function renderPanel(){
-  recount();
-  $('subList').classList.toggle('hidden', S.tab!=='list');
-  $('subFind').classList.toggle('hidden', S.tab!=='find');
-  $('subExp').classList.toggle('hidden', S.tab!=='exp');
-  if (S.tab === 'list') renderList();
-  else if (S.tab === 'find') renderFind();
-  else renderExport();
-  renderDoc();
-  saveSoon();
-}
-
-/* ------------------------------------------------------------ pestaña LISTA */
-function renderList(){
-  const body = $('panelBody'), foot = $('panelFoot');
-  const q = slug($('qList').value);
+/* lista visible según filtro y búsqueda; también gobierna el teclado y las flechas */
+function visibleItems(){
+  const q = slug($('qList').value || '');
   const hit = s => !q || slug(s).includes(q);
-  if (!S.hits.length){
-    body.innerHTML = `<p class="blank">${esc(t('f_none_p'))}</p>`; foot.innerHTML=''; return;
+  const out = [];
+  const wantSug = S.filter === 'all' || S.filter === 'sug';
+  const wantWork = S.filter === 'all' || S.filter === 'pend';
+  const wantNorm = S.filter === 'all' || S.filter === 'norm';
+  if (wantSug) S.hits.filter(h => h.status === 'sug' && hit(h.authors+h.year+fragOf(h)))
+    .forEach(h => out.push({kind:'sug', key:h.id, hits:[h], label:`${h.authors}, ${h.year}`, ref:h}));
+  if (wantWork) S.works.filter(w => hit(w.authors+w.year) && (S.filter !== 'pend' || !refOf(w)))
+    .forEach(w => out.push({kind:'work', key:w.key, hits:w.hits, label:`${w.authors}, ${w.year}`, ref:w}));
+  if (wantNorm) S.norms.filter(n => hit(n.label))
+    .forEach(n => out.push({kind:'norm', key:n.key, hits:n.hits, label:n.label, ref:n}));
+  return out;
+}
+function select(kind, key, jump = true){
+  if (S.sel && S.sel.kind === kind && S.sel.key === key) return;
+  S.sel = {kind, key};
+  S.changing.delete(key); S.manualOpen = false;
+  S.lastJumped = null;
+  clearTimeout(S.selTimer);
+  render();
+  if (jump){
+    const it = selItem();
+    const hits = it && (it.hits || [it]);
+    if (hits && hits[0]){ S.occ.set(key, 0); S.lastJumped = key; setTimeout(() => jumpTo(hits[0].id, false), 30); }
   }
-  const sugs = S.hits.filter(h => h.status==='sug' && hit(h.authors+h.year+fragOf(h)));
-  const works = S.works.filter(w => hit(w.authors+w.year));
-  const norms = S.norms.filter(n => hit(n.label));
-  let html = '';
-
-  if (sugs.length){
-    html += `<div class="section-head"><span>${esc(t('sec_doubtful'))}</span><span>${sugs.length}</span></div>`;
-    sugs.forEach(h => {
-      html += `<div class="ficha is-sug"><div class="fr">
-        <span class="fk">${esc(h.authors)}, ${esc(h.year)}</span>
-        <span class="fa">
-          ${iconBtn('data-jump', h.id, {i:'eye', k:'a_view'})}
-          ${iconBtn('data-confirm', h.id, {i:'check', k:'a_keep'}, 'i-keep')}
-          ${iconBtn('data-drop', h.id, {i:'cross', k:'a_drop'}, 'i-drop')}
-        </span></div>
-        <div class="ffrag">“${esc(fragOf(h))}”</div></div>`;
-    });
+  /* la búsqueda espera a que te quedes en una: evita disparar una consulta por click */
+  if (kind === 'work'){
+    S.selTimer = setTimeout(() => {
+      const w = S.works.find(x => x.key === key);
+      if (w && !refOf(w) && !S.cands.has(key)) autoLookup(w);
+    }, 400);
   }
-
-  html += `<div class="section-head${sugs.length?' gap':''}"><span>${esc(t('sec_works'))}</span><span>${works.length}</span></div>`;
-  if (!works.length) html += `<p class="blank">—</p>`;
-  works.forEach(w => {
-    const h0 = w.hits[0], frag = fragOf(h0);
-    /* el fragmento solo aporta cuando difiere de la cita interpretada */
-    const shows = slug(frag) !== slug(w.authors + w.year);
-    html += `<div class="ficha ${refOf(w)?'is-done':(S.bib.length?'is-open':'')}"><div class="fr">
-      <span class="fk">${esc(w.authors)}, ${esc(w.year)}</span>
-      <span class="fn">${w.hits.length}×</span>
-      <span class="fa">
-        ${iconBtn('data-cycle', w.key, {i:'eye', k:'a_view'})}
-        ${iconBtn('data-editfrag', h0.id, {i:'pencil', k:'a_edit'})}
-        ${iconBtn('data-killwork', w.key, {i:'trash', k:'a_remove'}, 'i-drop')}
-      </span></div>
-      ${shows ? `<div class="ffrag">“${esc(frag)}”</div>` : ''}
-      ${w.merged ? `<div class="fnote">${esc(t('merged'))}</div>` : ''}
-      ${w.dup ? `<div class="fwarn">${esc(t('dup'))}</div>` : ''}</div>`;
-  });
-
-  if (S.norms.length){
-    html += `<div class="section-head gap"><span>${esc(t('sec_norms'))}</span><span>${norms.length}</span></div>`;
-    norms.forEach(n => {
-      html += `<div class="ficha is-ley"><div class="fr">
-        <span class="fk">${esc(n.label)}</span><span class="fn">${n.hits.length}×</span>
-        <span class="fa">
-          ${iconBtn('data-cyclenorm', n.key, {i:'eye', k:'a_view'})}
-          ${iconBtn('data-killnorm', n.key, {i:'trash', k:'a_remove'}, 'i-drop')}
-        </span></div></div>`;
-    });
-  }
-  body.innerHTML = html;
-  foot.innerHTML = `<button class="btn btn--key" id="copyList">${ICON.copy}${esc(t('copy_list'))}</button>`;
-  $('copyList').onclick = () => copyText(S.works.map(w => `${w.authors}, ${w.year}`).join('\n'),
-    t('copied_n', S.works.length));
-  bindCommon(body);
+}
+function moveSel(d){
+  const items = visibleItems(); if (!items.length) return;
+  let i = items.findIndex(x => S.sel && x.kind === S.sel.kind && x.key === S.sel.key);
+  i = i < 0 ? (d > 0 ? 0 : items.length-1) : Math.min(items.length-1, Math.max(0, i + d));
+  select(items[i].kind, items[i].key);
+  const card = document.querySelector(`[data-card="${items[i].kind}:${items[i].key}"]`);
+  card?.scrollIntoView?.({block:'nearest'});
 }
 
-/* ----------------------------------------------------------- pestaña BUSCAR */
-function findQueue(){ return S.works; }
-function renderFind(){
-  const body = $('panelBody'), foot = $('panelFoot'), sub = $('subFind');
-  const q = findQueue();
-  foot.innerHTML = '';
-  if (!q.length){
-    sub.innerHTML = `<div class="nav"><div class="who"><b>${esc(t('f_none_h'))}</b></div></div>`;
-    body.innerHTML = `<p class="blank">${esc(t('f_none_p'))}</p>`; return;
-  }
-  if (S.findI >= q.length) S.findI = q.length - 1;
-  if (S.findI < 0) S.findI = 0;
-  const w = q[S.findI];
+/* =========================================================================
+   COLUMNA 2 — LISTA
+   ========================================================================= */
+function renderList(){
+  const body = $('listBody');
+  const sugN = S.hits.filter(h => h.status === 'sug').length;
+  const pendN = pendingWorks().length;
+  const CH = [['all','fl_all',S.works.length],['pend','fl_pend',pendN],['sug','fl_sug',sugN],['norm','fl_norm',S.norms.length]];
+  $('chips').innerHTML = CH.filter(([k,,n]) => k === 'all' || n)
+    .map(([k,l,n]) => `<button class="chip ${k==='pend'?'c-gap':''}" data-chip="${k}" aria-pressed="${S.filter===k}">${esc(t(l))}<b>${n}</b></button>`).join('');
+  $('chips').querySelectorAll('[data-chip]').forEach(c => c.onclick = () => { S.filter = c.dataset.chip; render(); });
 
-  /* el manuscrito de la izquierda salta a la aparición correspondiente */
-  if (S.lastJumped !== w.key){
-    S.occ.set(w.key, 0); S.lastJumped = w.key;
-    setTimeout(() => jumpTo(w.hits[0].id, false), 30);
-  }
-  paintNav(w, q);
+  if (!S.hits.length){ body.innerHTML = `<p class="blank">${esc(t('f_none_p'))}</p>`; return; }
+  const items = visibleItems();
+  if (!items.length){ body.innerHTML = `<p class="blank">—</p>`; return; }
 
-  const cands = S.cands.get(w.key);
-  const cur = refOf(w);
+  let html = '', lastKind = null;
+  items.forEach(it => {
+    if (it.kind !== lastKind && S.filter === 'all'){
+      const head = it.kind === 'sug' ? 'sec_doubtful' : it.kind === 'work' ? 'sec_works' : 'sec_norms';
+      const n = items.filter(x => x.kind === it.kind).length;
+      html += `<div class="section-head${lastKind?' gap':''}"><span>${esc(t(head))}</span><span>${n}</span></div>`;
+      lastKind = it.kind;
+    }
+    const isSel = S.sel && S.sel.kind === it.kind && S.sel.key === it.key;
+    if (it.kind === 'sug'){
+      const h = it.ref;
+      html += `<div class="ficha is-sug ${isSel?'is-sel':''}" data-card="sug:${h.id}" data-sel="sug:${h.id}"><div class="fr">
+        <span class="fk">${esc(h.authors)}, ${esc(h.year)}</span>
+        <span class="fa">${iconBtn('data-jump', h.id, {i:'eye', k:'a_view'})}
+          ${iconBtn('data-editfrag', h.id, {i:'pencil', k:'a_edit'})}</span></div>
+        <div class="ffrag">“${esc(fragOf(h))}”</div></div>`;
+    } else if (it.kind === 'work'){
+      const w = it.ref, h0 = w.hits[0], frag = fragOf(h0);
+      const shows = slug(frag) !== slug(w.authors + w.year);
+      html += `<div class="ficha ${refOf(w)?'is-done':(S.bib.length?'is-open':'')} ${isSel?'is-sel':''}"
+          data-card="work:${w.key}" data-sel="work:${w.key}"><div class="fr">
+        <span class="fk">${esc(w.authors)}, ${esc(w.year)}</span>
+        <span class="fn">${w.hits.length}×</span>
+        <span class="fa">${iconBtn('data-cycle', w.key, {i:'eye', k:'a_view'})}
+          ${iconBtn('data-editfrag', h0.id, {i:'pencil', k:'a_edit'})}
+          ${iconBtn('data-killwork', w.key, {i:'trash', k:'a_remove'}, 'i-drop')}</span></div>
+        ${shows ? `<div class="ffrag">“${esc(frag)}”</div>` : ''}
+        ${w.merged ? `<div class="fnote">${esc(t('merged'))}</div>` : ''}
+        ${w.dup ? `<div class="fwarn">${esc(t('dup'))}</div>` : ''}</div>`;
+    } else {
+      const n = it.ref;
+      html += `<div class="ficha is-ley ${isSel?'is-sel':''}" data-card="norm:${n.key}" data-sel="norm:${n.key}"><div class="fr">
+        <span class="fk">${esc(n.label)}</span><span class="fn">${n.hits.length}×</span>
+        <span class="fa">${iconBtn('data-cyclenorm', n.key, {i:'eye', k:'a_view'})}
+          ${iconBtn('data-killnorm', n.key, {i:'trash', k:'a_remove'}, 'i-drop')}</span></div></div>`;
+    }
+  });
+  body.innerHTML = html;
+  bindCommon(body);
+  body.querySelectorAll('[data-sel]').forEach(c => c.addEventListener('click', e => {
+    if (e.target.closest('.ico')) return;
+    const [kind, ...rest] = c.dataset.sel.split(':');
+    select(kind, rest.join(':'));
+    if (window.innerWidth <= 1150){ S.narrowTab = 'detail'; layout(); }
+  }));
+}
+
+/* =========================================================================
+   COLUMNA 3 — DETALLE
+   ========================================================================= */
+function renderDetail(){
+  const sub = $('detailSub'), body = $('detailBody');
+  const it = selItem();
+  if (!it){
+    sub.innerHTML = '';
+    body.innerHTML = `<div class="pick-none">${esc(t('sel_none'))}</div>`;
+    return;
+  }
+  const items = visibleItems();
+  const idx = items.findIndex(x => x.kind === S.sel.kind && x.key === S.sel.key);
+  const hits = it.hits || [it];
+  paintNav(it, hits, idx, items);
+
+  if (S.sel.kind === 'sug'){ renderSug(body, it); return; }
+  if (S.sel.kind === 'norm'){ renderNorm(body, it); return; }
+  renderWork(body, it);
+}
+
+function paintNav(it, hits, idx, items){
+  const key = S.sel.key, oi = S.occ.get(key) || 0, many = hits.length > 1;
+  const label = S.sel.kind === 'norm' ? it.label : `${it.authors}, ${it.year}`;
+  $('detailSub').innerHTML = `<div class="nav">
+      <button class="arrow" id="dPrev" ${idx<=0?'disabled':''} title="${esc(t('f_prev'))}">${ICON.left}</button>
+      <div class="who"><b>${esc(label)}</b>
+        <span>${esc(t('f_of', idx+1, items.length))} · ${many
+          ? `<button class="occ-b" id="occPrev" title="${esc(t('occ_prev'))}" aria-label="${esc(t('occ_prev'))}">${ICON.left}</button>
+             <span id="occLbl">${esc(t('occ_n', oi+1, hits.length))}</span>
+             <button class="occ-b" id="occNext" title="${esc(t('occ_next'))}" aria-label="${esc(t('occ_next'))}">${ICON.right}</button>`
+          : `<span id="occLbl">${esc(t('occ_one'))}</span>
+             <button class="occ-b" id="occNext" title="${esc(t('a_view'))}" aria-label="${esc(t('a_view'))}">${ICON.eye}</button>`}</span></div>
+      <button class="arrow" id="dNext" ${idx>=items.length-1?'disabled':''} title="${esc(t('f_next'))}">${ICON.right}</button>
+    </div><div class="navbar"><div style="width:${Math.round((idx+1)/items.length*100)}%"></div></div>`;
+  $('dPrev').onclick = () => moveSel(-1);
+  $('dNext').onclick = () => moveSel(1);
+  const go = d => {
+    const i = many ? (((S.occ.get(key)||0) + d) % hits.length + hits.length) % hits.length : 0;
+    S.occ.set(key, i); jumpTo(hits[i].id, false);
+    if ($('occLbl')) $('occLbl').textContent = many ? t('occ_n', i+1, hits.length) : t('occ_one');
+  };
+  if ($('occNext')) $('occNext').onclick = () => go(many ? 1 : 0);
+  if ($('occPrev')) $('occPrev').onclick = () => go(-1);
+  window._occGo = go;
+}
+
+function renderSug(body, h){
+  body.innerHTML = `<div class="sug-box">
+      <h4>${esc(t('sug_h'))}</h4>
+      <p>${esc(t('sug_p'))}</p>
+      <div class="opt-acts">
+        <button class="btn btn--mini btn--keep" id="sKeep">${ICON.check}${esc(t('a_keep'))}</button>
+        <button class="btn btn--mini btn--drop" id="sDrop">${ICON.cross}${esc(t('a_drop'))}</button>
+        <button class="btn btn--mini btn--ghost" id="sEdit">${ICON.pencil}${esc(t('a_edit'))}</button>
+      </div></div>
+    <div class="hint">${esc(t('kb_hint'))}</div>`;
+  $('sKeep').onclick = () => keepSug(h);
+  $('sDrop').onclick = () => dropSug(h);
+  $('sEdit').onclick = () => openFragEditor(h.id);
+}
+
+function renderNorm(body, n){
+  const cur = n.manual ? stripTags(n.manual) : normTemplate(n.label);
+  body.innerHTML = `<p class="lbl">${esc(t('norm_edit'))}</p>
+    <div class="manual"><textarea id="nBox">${esc(cur)}</textarea>
+    <div class="manual-acts"><button class="btn btn--mini btn--key" id="nSave">${esc(t('save'))}</button></div></div>
+    <p class="mini-note">${esc(t('norm_note'))}</p>
+    <div class="hint">${esc(t('kb_hint'))}</div>`;
+  $('nSave').onclick = () => {
+    const v = $('nBox').value.trim();
+    if (v) S.normOverride.set(n.key, esc(v).replace(/_([^_]+)_/g,'<em>$1</em>')); else S.normOverride.delete(n.key);
+    render(); toast(t('t_saved'));
+  };
+}
+
+function renderWork(body, w){
+  const chosen = refOf(w), changing = S.changing.has(w.key);
+  const cands = S.cands.get(w.key), doiC = S.doiCand.get(w.key);
   let html = '';
 
-  /* ingreso manual: botón que se despliega en campos, sin modal */
-  if (S.manualKey === w.key){
-    html += `<div class="manual">
-      <label>${esc(t('m_ident'))}</label>
-      <div class="manual-row">
-        <input type="text" id="manId" placeholder="10.1234/abcd · https://… · 9789871234567">
-        <button class="btn btn--mini" id="manFetch">${esc(t('m_fetch'))}</button>
-      </div>
-      <label>${esc(t('m_ref'))}</label>
-      <textarea id="manBox" placeholder="${esc(t('f_manual_ph'))}">${esc(cur?stripTags(cur):'')}</textarea>
+  /* identificador siempre a la vista: es el camino más rápido si ya lo tenés */
+  html += `<p class="lbl">${esc(t('m_ident'))}</p>
+    <div class="ident">
+      <input type="text" id="idBox" placeholder="10.1177/0950017019836140 · 9789871234567">
+      <button class="btn btn--mini" id="idFetch">${esc(t('m_fetch'))}</button>
+    </div>`;
+
+  if (S.manualOpen){
+    html += `<p class="lbl">${esc(t('m_ref'))}</p>
+      <div class="manual"><textarea id="manBox" placeholder="${esc(t('f_manual_ph'))}">${esc(chosen?stripTags(chosen):'')}</textarea>
       <div class="manual-acts">
         <button class="btn btn--mini btn--ghost" id="manCancel">${esc(t('cancel'))}</button>
         <button class="btn btn--mini btn--key" id="manSave">${esc(t('f_save_next'))}</button>
       </div></div>`;
   } else {
-    html += `<button class="btn btn--ghost manual-open" id="manOpen">${ICON.pencil}${esc(t('m_open'))}</button>`;
+    html += `<button class="btn btn--ghost btn--mini toggle-man" id="manOpen">${ICON.pencil}${esc(t('m_open'))}</button>`;
   }
 
-  html += `<div class="section-head"><span>${esc(t('f_options'))}</span><span></span></div>`;
-
-  /* opción 1: lo que ya está en tu .bib */
-  if (w.bib){
-    const picked = !w.manual;
-    html += `<div class="opt is-bib ${picked?'is-picked':''}">
-      <div class="opt-tag"><span class="ok">${esc(t('f_bib_opt'))}</span>${picked?`<span class="k">${esc(t('f_used'))}</span>`:''}</div>
-      <div class="opt-ref">${fmt(w.bib, w.year)}</div>
-      ${!picked ? `<div style="margin-top:8px"><button class="btn btn--mini btn--keep" id="useBib">${esc(t('f_use'))}</button></div>`:''}
-    </div>`;
+  if (chosen && !changing){
+    /* ya resuelta: se muestra sola, con cambiar / editar / quitar */
+    const o = originOf(w), link = linkOf(w);
+    html += `<div class="opt is-chosen">
+      <div class="opt-tag"><span class="ok">${esc(t('f_chosen'))}</span><span>${esc(t('bd_'+o))}</span></div>
+      <div class="opt-ref">${chosen}</div>
+      <div class="opt-acts">
+        <button class="btn btn--mini btn--ghost" id="wChange">${ICON.redo}${esc(t('f_change'))}</button>
+        <button class="btn btn--mini btn--ghost" id="wEdit">${ICON.pencil}${esc(t('a_edit'))}</button>
+        ${link ? `<a class="ico" href="${esc(link)}" target="_blank" rel="noopener" title="${esc(t('e_link'))}">${ICON.ext}</a>` : ''}
+        ${w.manual ? `<button class="btn btn--mini btn--drop" id="wClear">${esc(t('f_clear'))}</button>` : ''}
+      </div></div>`;
+  } else {
+    /* sin resolver, o pediste cambiar: van todas las opciones */
+    if (w.bib){
+      html += optBox('f_bib_opt', fmt(w.bib, w.year), 'is-bib', `<button class="btn btn--mini btn--keep" id="useBib">${esc(t('f_use'))}</button>`, true);
+    }
+    if (doiC){
+      html += optBox('m_ident', fmt(doiC, w.year), '', `<button class="btn btn--mini btn--keep" data-pickdoi="1">${esc(t('f_use'))}</button>`, true);
+    }
+    if (S.busyKey === w.key){
+      html += `<div class="busy">${esc(t('f_searching', Object.keys(CFG.sources).filter(k=>CFG.sources[k]).map(k=>SOURCES[k].label).join(', ')))}</div>`;
+    } else if (cands && !cands.length){
+      html += `<div class="nores">${esc(t('f_nores', w.surname + ' ' + w.year))}
+        <div style="margin-top:8px"><button class="btn btn--mini btn--ghost" id="wAgain">${esc(t('f_again'))}</button></div></div>`;
+    } else if (cands){
+      const yN = String(w.year).replace(/[a-h]$/,'');
+      html += cands.map((e,n) => {
+        const okA = e.authors.some(a => slug(a.last) === slug(w.surname));
+        const badY = e.year && String(e.year) !== yN;
+        const tags = `<span>${esc(e._src)}</span>${okA?`<span class="ok">${esc(t('f_author_ok'))}</span>`:''}${badY?`<span class="warn">${esc(t('f_year_warn'))}</span>`:''}`;
+        return `<div class="opt"><div class="opt-tag">${tags}</div>
+          <div class="opt-ref">${fmt(e, w.year)}</div>
+          <div class="opt-acts"><button class="btn btn--mini btn--keep" data-pick="${n}">${esc(t('f_use'))}</button></div></div>`;
+      }).join('');
+      if (changing) html += `<div style="margin-top:4px"><button class="btn btn--mini btn--ghost" id="wAgain">${esc(t('f_again'))}</button></div>`;
+    }
   }
-  /* opción 2: lo escrito a mano, si lo hay */
-  if (w.manual){
-    html += `<div class="opt is-picked">
-      <div class="opt-tag"><span class="ok">${esc(t(S.origin.get(w.key)==='auto'?'bd_auto':'bd_mano'))}</span><span class="k">${esc(t('f_used'))}</span></div>
-      <div class="opt-ref">${w.manual}</div>
-    </div>`;
-  }
-  /* opción 3+: candidatas de las fuentes */
-  if (S.busyKey === w.key){
-    html += `<div class="busy">${esc(t('f_searching', Object.keys(CFG.sources).filter(k=>CFG.sources[k]).map(k=>SOURCES[k].label).join(', ')))}</div>`;
-  } else if (cands && !cands.length){
-    html += `<div class="nores">${esc(t('f_nores', w.surname + ' ' + w.year))}
-      <div style="margin-top:8px"><button class="btn btn--mini btn--ghost" id="fAgain">${esc(t('f_again'))}</button></div></div>`;
-  } else if (cands){
-    const yN = String(w.year).replace(/[a-h]$/,'');
-    html += cands.map((e,n) => {
-      const okAuthor = e.authors.some(a => slug(a.last) === slug(w.surname));
-      const badYear = e.year && String(e.year) !== yN;
-      return `<div class="opt">
-        <div class="opt-tag"><span>${esc(e._src)}</span>
-          ${okAuthor?`<span class="ok">${esc(t('f_author_ok'))}</span>`:''}
-          ${badYear?`<span class="warn">${esc(t('f_year_warn'))}</span>`:''}</div>
-        <div class="opt-ref">${fmt(e, w.year)}</div>
-        <div style="margin-top:8px"><button class="btn btn--mini btn--keep" data-pick="${n}">${esc(t('f_use'))}</button></div>
-      </div>`;
-    }).join('');
-  }
+  html += `<div class="hint">${esc(t('kb_hint'))}</div>`;
   body.innerHTML = html;
-  foot.innerHTML = '';
 
-  if ($('fAgain')) $('fAgain').onclick = () => { S.cands.delete(w.key); renderPanel(); };
-  if ($('manOpen')) $('manOpen').onclick = () => { S.manualKey = w.key; renderFind(); setTimeout(() => $('manBox')?.focus(), 20); };
-  if ($('manCancel')) $('manCancel').onclick = () => { S.manualKey = null; renderFind(); };
-  if ($('manFetch')) $('manFetch').onclick = async () => {
-    const btn = $('manFetch'), raw = $('manId').value.trim();
-    if (!raw) return;
+  const pick = e => {
+    S.refOverride.set(w.key, fmt(e, w.year)); S.origin.set(w.key, 'auto');
+    const u = entryLink(e); if (u) S.link.set(w.key, u); else S.link.delete(w.key);
+    S.changing.delete(w.key); render();
+  };
+  body.querySelectorAll('[data-pick]').forEach(b => b.onclick = () => pick(cands[+b.dataset.pick]));
+  body.querySelectorAll('[data-pickdoi]').forEach(b => b.onclick = () => pick(doiC));
+  if ($('useBib')) $('useBib').onclick = () => {
+    S.refOverride.delete(w.key); S.origin.delete(w.key); S.link.delete(w.key);
+    S.changing.delete(w.key); render(); };
+  if ($('wChange')) $('wChange').onclick = () => { S.changing.add(w.key); render();
+    if (!S.cands.has(w.key)) autoLookup(w); };
+  if ($('wEdit')) $('wEdit').onclick = () => { S.manualOpen = true; render(); setTimeout(()=>$('manBox')?.focus(),20); };
+  if ($('wClear')) $('wClear').onclick = () => { S.refOverride.delete(w.key); S.origin.delete(w.key);
+    S.link.delete(w.key); render(); };
+  if ($('wAgain')) $('wAgain').onclick = () => { S.cands.delete(w.key); render(); autoLookup(w); };
+  if ($('manOpen')) $('manOpen').onclick = () => { S.manualOpen = true; render(); setTimeout(()=>$('manBox')?.focus(),20); };
+  if ($('manCancel')) $('manCancel').onclick = () => { S.manualOpen = false; render(); };
+  if ($('manSave')) $('manSave').onclick = () => {
+    const v = $('manBox').value.trim(); if (!v){ toast(t('t_missing')); return; }
+    S.refOverride.set(w.key, esc(v).replace(/_([^_]+)_/g,'<em>$1</em>'));
+    S.origin.set(w.key, 'mano'); S.manualOpen = false; S.changing.delete(w.key); render(); };
+  $('idFetch').onclick = async () => {
+    const btn = $('idFetch'), raw = $('idBox').value.trim(); if (!raw) return;
     btn.disabled = true; btn.textContent = t('m_fetching');
     let r = null;
     try { r = await resolveIdent(raw); } catch(e){}
@@ -1480,170 +1781,104 @@ function renderFind(){
     if (!r){ toast(t('m_notfound')); return; }
     if (r.link) S.link.set(w.key, r.link);
     if (r.entry && r.entry.fields.title){
-      if ($('manBox')) $('manBox').value = stripTags(fmt(r.entry, w.year));
-      toast(t('m_filled'));
+      S.doiCand.set(w.key, r.entry); S.changing.add(w.key); render(); toast(t('m_filled'));
     } else toast(t('m_linkonly'));
   };
-  if ($('manSave')) $('manSave').onclick = () => {
-    const v = $('manBox').value.trim(); if (!v){ toast(t('t_missing')); return; }
-    S.refOverride.set(w.key, esc(v).replace(/_([^_]+)_/g,'<em>$1</em>'));
-    S.origin.set(w.key, 'mano'); S.manualKey = null; advance(); };
-  if ($('useBib')) $('useBib').onclick = () => { S.refOverride.delete(w.key); S.origin.delete(w.key); S.link.delete(w.key); renderPanel(); };
-  body.querySelectorAll('[data-pick]').forEach(b => b.onclick = () => {
-    const e = cands[+b.dataset.pick];
-    S.refOverride.set(w.key, fmt(e, w.year));
-    S.origin.set(w.key, 'auto');
-    const url = entryLink(e); if (url) S.link.set(w.key, url); else S.link.delete(w.key);
-    advance(); });
-  bindCommon(body);
+  $('idBox').addEventListener('keydown', e => { if (e.key === 'Enter'){ e.preventDefault(); $('idFetch').click(); } });
+}
+const optBox = (tagKey, ref, cls, acts, ok) =>
+  `<div class="opt ${cls}"><div class="opt-tag"><span class="${ok?'ok':''}">${esc(t(tagKey))}</span></div>
+   <div class="opt-ref">${ref}</div><div class="opt-acts">${acts}</div></div>`;
 
-  if (!cands && S.busyKey !== w.key && Object.values(CFG.sources).some(Boolean)) autoLookup(w);
-}
-
-/* la barra de arriba: obra anterior/siguiente y, en la misma línea,
-   el recorrido por las apariciones de esta cita en el texto */
-function paintNav(w, q){
-  const oi = S.occ.get(w.key) || 0, many = w.hits.length > 1;
-  $('subFind').innerHTML = `<div class="nav">
-      <button class="arrow" id="fPrev" ${S.findI===0?'disabled':''} title="${esc(t('f_prev'))}">${ICON.left}</button>
-      <div class="who"><b>${esc(w.authors)}, ${esc(w.year)}</b>
-        <span>${esc(t('f_of', S.findI+1, q.length))} · ${many
-          ? `<button class="occ-b" id="occPrev" title="${esc(t('occ_prev'))}" aria-label="${esc(t('occ_prev'))}">${ICON.left}</button>
-             <span id="occLbl">${esc(t('occ_n', oi+1, w.hits.length))}</span>
-             <button class="occ-b" id="occNext" title="${esc(t('occ_next'))}" aria-label="${esc(t('occ_next'))}">${ICON.right}</button>`
-          : `<span id="occLbl">${esc(t('occ_one'))}</span>
-             <button class="occ-b" id="occNext" title="${esc(t('a_view'))}" aria-label="${esc(t('a_view'))}">${ICON.eye}</button>`}</span></div>
-      <button class="arrow" id="fNext" ${S.findI>=q.length-1?'disabled':''} title="${esc(t('f_next'))}">${ICON.right}</button>
-    </div><div class="navbar"><div style="width:${Math.round((S.findI+1)/q.length*100)}%"></div></div>`;
-  $('fPrev').onclick = () => { S.findI--; S.manualKey = null; renderPanel(); };
-  $('fNext').onclick = () => { S.findI++; S.manualKey = null; renderPanel(); };
-  const go = d => {
-    const i = many ? (((S.occ.get(w.key)||0) + d) % w.hits.length + w.hits.length) % w.hits.length : 0;
-    S.occ.set(w.key, i); jumpTo(w.hits[i].id, false);
-    if ($('occLbl')) $('occLbl').textContent = many ? t('occ_n', i+1, w.hits.length) : t('occ_one');
-  };
-  if ($('occNext')) $('occNext').onclick = () => go(many ? 1 : 0);
-  if ($('occPrev')) $('occPrev').onclick = () => go(-1);
-}
-function advance(){
-  const q = findQueue();
-  let i = S.findI + 1;
-  while (i < q.length && refOf(q[i])) i++;
-  S.findI = Math.min(i, q.length - 1);
-  S.manualKey = null; renderPanel();
-}
 async function autoLookup(w){
-  S.busyKey = w.key;
-  if (S.tab === 'find') renderFind();
+  if (!Object.values(CFG.sources).some(Boolean)) return;
+  const token = ++S.lookupToken;
+  S.busyKey = w.key; renderDetail();
   let items = [];
   try { items = await lookup(w); } catch(e){ items = []; }
-  S.cands.set(w.key, items);
-  S.busyKey = null;
-  if (S.tab === 'find') renderPanel();
+  if (token !== S.lookupToken) return;   // cambiaste de cita: el resultado viejo se descarta
+  S.cands.set(w.key, items); S.busyKey = null;
+  render();
 }
 
-/* -------------------------------------------------------- pestaña EXPORTAR */
-function renderExport(){
-  const body = $('panelBody'), foot = $('panelFoot'), sub = $('subExp');
-  const done = S.works.filter(w => refOf(w)).slice()
-    .sort((a,b) => stripTags(refOf(a)).localeCompare(stripTags(refOf(b)),'es'));
-  const pend = pendingWorks();
-
-  sub.innerHTML = `<button class="btn btn--key" id="expBtn" ${done.length?'':'disabled'}>${ICON.down}${esc(t('e_export'))}</button>`;
-  $('expBtn').onclick = openExport;
-
-  let html = '';
-  if (pend.length){
-    html += `<div class="pend-strip"><span class="n">${pend.length}</span>
-      <span class="t">${esc(t('e_pending', pend.length))}</span>
-      <button class="btn btn--mini btn--key" id="goFind">${esc(t('e_resolve'))}</button></div>`;
-  }
-  if (!done.length){
-    html += `<p class="blank">${esc(t('e_none'))}</p>`;
-  } else {
-    html += `<div class="section-head"><span>${esc(t('sec_refs'))}</span><span>${done.length}</span></div><div class="bib-doc">`;
-    done.forEach(w => {
-      const o = originOf(w), link = linkOf(w);
-      html += `<div class="bib-item">
-        <div class="bib-ref" contenteditable="true" spellcheck="false" data-ref="${w.key}">${refOf(w)}</div>
-        <div class="bib-meta"><span class="badge b-${o}">${esc(t('bd_'+o))}</span><span class="badge">${w.hits.length}×</span>
-          ${iconBtn('data-cycle', w.key, {i:'eye', k:'a_view'})}
-          ${iconBtn('data-tofind', w.key, {i:'pencil', k:'a_edit'})}
-          ${link ? `<a class="ico" href="${esc(link)}" target="_blank" rel="noopener"
-             title="${esc(t('e_link'))}" aria-label="${esc(t('e_link'))}">${ICON.ext}</a>` : ''}
-          ${iconBtn('data-killwork', w.key, {i:'trash', k:'a_remove'}, 'i-drop')}
-        </div></div>`;
-    });
-    html += `</div><p class="mini-note" style="margin-top:10px">${esc(t('e_hint'))}</p>`;
-  }
-  if (S.norms.length){
-    html += `<div class="section-head gap"><span>${esc(t('sec_norm_refs'))}</span><span>${S.norms.length}</span></div><div class="bib-doc">`;
-    S.norms.forEach(n => {
-      html += `<div class="bib-item">
-        <div class="bib-ref" contenteditable="true" spellcheck="false" data-norm="${n.key}">${n.manual || esc(normTemplate(n.label))}</div>
-        <div class="bib-meta"><span class="badge">${n.hits.length}×</span>
-          ${iconBtn('data-cyclenorm', n.key, {i:'eye', k:'a_view'})}
-          ${iconBtn('data-killnorm', n.key, {i:'trash', k:'a_remove'}, 'i-drop')}
-        </div></div>`;
-    });
-    html += `</div>`;
-  }
-  body.innerHTML = html;
-  foot.innerHTML = '';
-  if ($('goFind')) $('goFind').onclick = () => {
-    const q = findQueue(); const i = q.findIndex(w => !refOf(w));
-    S.findI = i < 0 ? 0 : i; S.tab = 'find'; syncTabs(); renderPanel();
-  };
-  bindCommon(body);
-}
-
+/* =========================================================================
+   EXPORTAR
+   ========================================================================= */
 function buildList(style, lang, inclNorms){
   const done = S.works.filter(w => refOf(w));
-  const refs = done.map(w => w.manual || fmt(w.bib, w.year))
-    .sort((a,b) => stripTags(a).localeCompare(stripTags(b),'es'));
-  /* al reformatear pedimos el estilo elegido en el modal, no el predeterminado */
-  const rebuilt = done.map(w => w.manual ? w.manual : formatRef(w.bib, w.year, style, lang))
-    .sort((a,b) => stripTags(a).localeCompare(stripTags(b),'es'));
-  const norms = inclNorms ? S.norms.map(n => n.manual || esc(normTemplate(n.label, style, lang))) : [];
-  return rebuilt.concat(norms.length ? [''].concat(norms) : []);
+  const refs = done.map(w => ({ w, html: w.manual ? w.manual : formatRef(w.bib, w.year, style, lang) }))
+    .sort((a,b) => stripTags(a.html).localeCompare(stripTags(b.html),'es'));
+  const norms = inclNorms ? S.norms.map(n => ({ n, html: n.manual || esc(normTemplate(n.label, style, lang)) })) : [];
+  return { refs, norms };
 }
 function openExport(){
   const v = modal(`<h3>${esc(t('e_modal'))}</h3>
-    <label>${esc(t('e_style'))}</label>
-    <select id="xStyle">
-      <option value="apa7"${CFG.style==='apa7'?' selected':''}>APA 7</option>
-      <option value="mla9"${CFG.style==='mla9'?' selected':''}>MLA 9</option>
-      <option value="chicago"${CFG.style==='chicago'?' selected':''}>Chicago (autor-fecha)</option>
-    </select>
-    <label>${esc(t('e_lang'))}</label>
-    <select id="xLang">
-      <option value="es"${CFG.refLang==='es'?' selected':''}>Español</option>
-      <option value="en"${CFG.refLang==='en'?' selected':''}>English</option>
-      <option value="pt"${CFG.refLang==='pt'?' selected':''}>Português</option>
-    </select>
-    ${S.norms.length ? `<label class="check" style="margin-top:14px"><input type="checkbox" id="xNorms" checked>
+    <div class="two">
+      <div><label>${esc(t('e_style'))}</label><select id="xStyle">
+        <option value="apa7"${CFG.style==='apa7'?' selected':''}>APA 7</option>
+        <option value="mla9"${CFG.style==='mla9'?' selected':''}>MLA 9</option>
+        <option value="chicago"${CFG.style==='chicago'?' selected':''}>Chicago</option></select></div>
+      <div><label>${esc(t('e_lang'))}</label><select id="xLang">
+        <option value="es"${CFG.refLang==='es'?' selected':''}>Español</option>
+        <option value="en"${CFG.refLang==='en'?' selected':''}>English</option>
+        <option value="pt"${CFG.refLang==='pt'?' selected':''}>Português</option></select></div>
+    </div>
+    ${S.norms.length ? `<label class="check" style="margin-top:12px"><input type="checkbox" id="xNorms" checked>
       <span>${esc(t('e_incl_norms'))}</span></label>` : ''}
     <label>${esc(t('e_preview'))}</label>
-    <div class="preview" id="xPrev"></div>
+    <div class="bib-doc" id="xList"></div>
+    <p class="mini-note" style="margin-top:8px">${esc(t('e_hint'))}</p>
     <div class="row">
       <button class="btn btn--ghost" id="xClose">${esc(t('cancel'))}</button>
-      <button class="btn btn--ghost" id="xDown">${esc(t('e_download'))}</button>
-      <button class="btn btn--ghost" id="xPlain">${esc(t('e_copy_plain'))}</button>
-      <button class="btn btn--key" id="xCopy">${esc(t('e_copy'))}</button>
-    </div>`);
+      <button class="btn btn--ghost" id="xDown">${ICON.down}${esc(t('e_download'))}</button>
+      <button class="btn btn--ghost" id="xList2">${ICON.copy}${esc(t('exp_list'))}</button>
+      <button class="btn btn--key" id="xRefs">${ICON.copy}${esc(t('exp_refs'))}</button>
+    </div>`, true, 'wide');
+
   const get = () => buildList($('xStyle').value, $('xLang').value, $('xNorms') ? $('xNorms').checked : false);
-  const paint = () => { $('xPrev').innerHTML = get().map(r => r ? `<div>${r}</div>` : '<div>&nbsp;</div>').join(''); };
+  function paint(){
+    const {refs, norms} = get();
+    $('xList').innerHTML = (refs.length ? refs.map(r => {
+      const o = originOf(r.w), link = linkOf(r.w);
+      return `<div class="bib-item">
+        <div class="bib-ref" contenteditable="true" spellcheck="false" data-xref="${r.w.key}">${r.html}</div>
+        <div class="bib-meta"><span class="badge b-${o}">${esc(t('bd_'+o))}</span><span class="badge">${r.w.hits.length}×</span>
+          ${link ? `<a class="ico" href="${esc(link)}" target="_blank" rel="noopener" title="${esc(t('e_link'))}">${ICON.ext}</a>` : ''}
+        </div></div>`;
+    }).join('') : `<p class="blank">${esc(t('e_none'))}</p>`)
+      + (norms.length ? `<div class="section-head gap"><span>${esc(t('sec_norm_refs'))}</span><span>${norms.length}</span></div>`
+        + norms.map(x => `<div class="bib-item"><div class="bib-ref" contenteditable="true" spellcheck="false"
+            data-xnorm="${x.n.key}">${x.html}</div></div>`).join('') : '');
+    /* edición en el lugar dentro del modal */
+    $('xList').querySelectorAll('[data-xref]').forEach(el => el.addEventListener('blur', () => {
+      const w = S.works.find(y => y.key === el.dataset.xref); if (!w) return;
+      const clean = cleanRef(el.innerHTML);
+      if (!clean || clean === (refOf(w)||'')) return;
+      S.refOverride.set(w.key, clean); S.origin.set(w.key, 'mano'); render();
+    }));
+    $('xList').querySelectorAll('[data-xnorm]').forEach(el => el.addEventListener('blur', () => {
+      const n = S.norms.find(y => y.key === el.dataset.xnorm); if (!n) return;
+      const clean = cleanRef(el.innerHTML);
+      if (!clean || clean === (n.manual || esc(normTemplate(n.label)))) return;
+      S.normOverride.set(n.key, clean); render();
+    }));
+  }
   ['xStyle','xLang','xNorms'].forEach(id => { if ($(id)) $(id).addEventListener('change', paint); });
   paint();
+  const flat = () => { const {refs, norms} = get();
+    return refs.map(r => r.html).concat(norms.length ? [''].concat(norms.map(x => x.html)) : []); };
   $('xClose').onclick = () => v.remove();
-  $('xCopy').onclick = () => copyRich(
-    `<div>${get().map(r => `<p style="text-indent:-2em;padding-left:2em">${r}</p>`).join('')}</div>`,
-    get().map(stripTags).join('\n\n'));
-  $('xPlain').onclick = () => copyText(get().map(stripTags).join('\n\n'));
-  $('xDown').onclick = () => download('bibliografia.txt', get().map(stripTags).join('\n\n'));
+  $('xRefs').onclick = () => copyRich(
+    `<div>${flat().map(r => `<p style="text-indent:-2em;padding-left:2em">${r}</p>`).join('')}</div>`,
+    flat().map(stripTags).join('\n\n'), t('copied_n', flat().filter(Boolean).length));
+  $('xList2').onclick = () => copyText(S.works.map(w => `${w.authors}, ${w.year}`).join('\n'),
+    t('copied_n', S.works.length));
+  $('xDown').onclick = () => download('bibliografia.txt', flat().map(stripTags).join('\n\n'));
 }
 
-/* ------------------------------------------------------------- comunes */
+/* =========================================================================
+   COMUNES
+   ========================================================================= */
 function cleanRef(html){
   const d = document.createElement('div'); d.innerHTML = html;
   (function walk(n){
@@ -1658,57 +1893,131 @@ function cleanRef(html){
   })(d);
   return d.innerHTML.replace(/\s+/g,' ').trim();
 }
+/* Los lugares con año no vienen solos: Rosario 2006, Porto Alegre 2007, Belém 2009.
+   Cuando quitás uno, ofrecemos limpiar de una todos los del mismo nombre. */
+const sameName = (name, exceptKey) =>
+  S.works.filter(w => w.key !== exceptKey && slug(w.authors) === slug(name));
+function askBulk(head, body, oneLabel, allLabel, onOne, onAll){
+  const v = modal(`<h3>${esc(head)}</h3><p class="mini-note">${esc(body)}</p>
+    <div class="row"><button class="btn btn--ghost" id="bkOne">${esc(oneLabel)}</button>
+    <button class="btn btn--key" id="bkAll">${esc(allLabel)}</button></div>`);
+  $('bkOne').onclick = () => { v.remove(); onOne(); };
+  $('bkAll').onclick = () => { v.remove(); onAll(); };
+}
+function dropWork(w){
+  const drop = list => {
+    const ids = new Set(list.flatMap(x => x.hits.map(h => h.id)));
+    S.hits = S.hits.filter(h => !ids.has(h.id));
+    list.forEach(x => { S.refOverride.delete(x.key); S.origin.delete(x.key); S.link.delete(x.key); });
+    if (S.sel && list.some(x => x.key === S.sel.key)) S.sel = null;
+    render();
+  };
+  const others = sameName(w.authors, w.key);
+  if (!others.length) return drop([w]);
+  askBulk(t('bulk_h'), t(others.length===1?'bulk_p1':'bulk_p', w.authors, others.length), t('bulk_one'), t('bulk_all'),
+    () => drop([w]), () => drop([w, ...others]));
+}
+function dropSug(h){
+  const others = S.hits.filter(x => x.status === 'sug' && x.id !== h.id && slug(x.authors) === slug(h.authors));
+  const drop = list => { const ids = new Set(list.map(x => x.id));
+    S.hits = S.hits.filter(x => !ids.has(x.id)); S.sel = null; render(); };
+  if (!others.length) return drop([h]);
+  askBulk(t('bulk_h'), t(others.length===1?'bulk_p1':'bulk_p', h.authors, others.length), t('bulk_one'), t('bulk_all'),
+    () => drop([h]), () => drop([h, ...others]));
+}
+function keepSug(h){
+  const others = S.hits.filter(x => x.status === 'sug' && x.id !== h.id && slug(x.authors) === slug(h.authors));
+  const keep = list => { list.forEach(x => x.status = 'ok');
+    S.sel = {kind:'work', key: slug(h.authors)+'|'+slug(h.year)}; render(); };
+  if (!others.length) return keep([h]);
+  askBulk(t('bulk_kh'), t(others.length===1?'bulk_kp1':'bulk_kp', h.authors, others.length), t('bulk_one'), t('bulk_all'),
+    () => keep([h]), () => keep([h, ...others]));
+}
+
 function bindCommon(b){
-  b.querySelectorAll('[data-jump]').forEach(x => x.onclick = () => jumpTo(x.dataset.jump));
-  b.querySelectorAll('[data-cycle]').forEach(x => x.onclick = () => {
+  b.querySelectorAll('[data-jump]').forEach(x => x.onclick = e => { e.stopPropagation(); jumpTo(x.dataset.jump); });
+  b.querySelectorAll('[data-cycle]').forEach(x => x.onclick = e => { e.stopPropagation();
     const w = S.works.find(y => y.key===x.dataset.cycle); if (w) cycleTo(w.key, w.hits); });
-  b.querySelectorAll('[data-cyclenorm]').forEach(x => x.onclick = () => {
+  b.querySelectorAll('[data-cyclenorm]').forEach(x => x.onclick = e => { e.stopPropagation();
     const n = S.norms.find(y => y.key===x.dataset.cyclenorm); if (n) cycleTo(n.key, n.hits); });
-  b.querySelectorAll('[data-confirm]').forEach(x => x.onclick = () => {
-    const h = S.hits.find(y => y.id===x.dataset.confirm); if (h) h.status='ok'; renderPanel(); });
-  b.querySelectorAll('[data-drop]').forEach(x => x.onclick = () => {
-    S.hits = S.hits.filter(y => y.id!==x.dataset.drop); renderPanel(); });
-  b.querySelectorAll('[data-killwork]').forEach(x => x.onclick = () => {
-    const w = S.works.find(y => y.key===x.dataset.killwork); if (!w) return;
-    const ids = new Set(w.hits.map(h=>h.id));
-    S.hits = S.hits.filter(h => !ids.has(h.id)); S.refOverride.delete(w.key); renderPanel(); });
-  b.querySelectorAll('[data-killnorm]').forEach(x => x.onclick = () => {
+  b.querySelectorAll('[data-killwork]').forEach(x => x.onclick = e => { e.stopPropagation();
+    const w = S.works.find(y => y.key===x.dataset.killwork); if (w) dropWork(w); });
+  b.querySelectorAll('[data-killnorm]').forEach(x => x.onclick = e => { e.stopPropagation();
     const n = S.norms.find(y => y.key===x.dataset.killnorm); if (!n) return;
     const ids = new Set(n.hits.map(h=>h.id));
-    S.hits = S.hits.filter(h => !ids.has(h.id)); renderPanel(); });
-  b.querySelectorAll('[data-editfrag]').forEach(x => x.onclick = () => openFragEditor(x.dataset.editfrag));
-  b.querySelectorAll('[data-tofind]').forEach(x => x.onclick = () => {
-    const i = S.works.findIndex(y => y.key === x.dataset.tofind);
-    if (i < 0) return;
-    S.findI = i; S.manualKey = x.dataset.tofind; S.lastJumped = null;
-    S.tab = 'find'; syncTabs(); renderPanel();
+    S.hits = S.hits.filter(h => !ids.has(h.id));
+    if (S.sel && S.sel.key === n.key) S.sel = null;
+    render(); });
+  b.querySelectorAll('[data-editfrag]').forEach(x => x.onclick = e => { e.stopPropagation(); openFragEditor(x.dataset.editfrag); });
+}
+
+function recount(){
+  S.works = groupWorks(S.hits);
+  S.norms = groupNorms(S.hits);
+  S.works.forEach(w => {
+    const m = matchWork(w);
+    w.bib = m ? m.entry : null; w.ambiguous = m ? m.ambiguous : false; w.alts = m ? m.alts : null;
   });
-  b.querySelectorAll('[data-ref]').forEach(el => el.addEventListener('blur', () => {
-    const w = S.works.find(y => y.key===el.dataset.ref); if (!w) return;
-    const clean = cleanRef(el.innerHTML);
-    if (!clean){ el.innerHTML = refOf(w)||''; return; }
-    if (clean === (refOf(w)||'')) return;
-    S.refOverride.set(w.key, clean); S.origin.set(w.key, 'mano'); renderPanel();
-  }));
-  b.querySelectorAll('[data-norm]').forEach(el => el.addEventListener('blur', () => {
-    const n = S.norms.find(y => y.key===el.dataset.norm); if (!n) return;
-    const clean = cleanRef(el.innerHTML);
-    if (!clean || clean === (n.manual || esc(normTemplate(n.label)))) return;
-    S.normOverride.set(n.key, clean); renderPanel();
-  }));
+  const sug = S.hits.filter(h => h.status==='sug').length;
+  const ok = S.works.filter(w => refOf(w)).length;
+  $('counters').innerHTML =
+    `<div class="count"><b>${S.works.length}</b><span>${t('c_works')}</span></div>` +
+    `<div class="count"><b>${S.hits.filter(h=>h.status==='ok'&&h.kind!=='ley').length}</b><span>${t('c_mentions')}</span></div>` +
+    (S.norms.length ? `<div class="count count--ley"><b>${S.norms.length}</b><span>${t('c_norms')}</span></div>` : '') +
+    (sug ? `<div class="count count--gap"><b>${sug}</b><span>${t('c_review')}</span></div>` : '') +
+    ((S.bib.length||ok) ? `<div class="count count--ok"><b>${ok}/${S.works.length}</b><span>${t('c_withref')}</span></div>` : '');
 }
-function syncTabs(){
-  $('tabList').setAttribute('aria-selected', S.tab==='list');
-  $('tabFind').setAttribute('aria-selected', S.tab==='find');
-  $('tabExp').setAttribute('aria-selected', S.tab==='exp');
+function render(){
+  recount();
+  /* si lo seleccionado desapareció, soltamos la selección */
+  if (S.sel && !selItem()) S.sel = null;
+  renderList();
+  renderDetail();
+  renderDoc();
+  layout();
+  saveSoon();
 }
+function layout(){
+  const m = $('main'), narrow = window.innerWidth <= 1150, mobile = window.innerWidth <= 820;
+  m.classList.toggle('narrow', narrow && !mobile);
+  m.classList.toggle('fold-text', S.foldText);
+  m.classList.toggle('fold-detail', S.foldDetail);
+  m.classList.toggle('show-list', S.narrowTab === 'list');
+  m.classList.toggle('show-detail', S.narrowTab === 'detail');
+  m.classList.toggle('hide-panel', mobile && S.hidePanel);
+  /* con el texto plegado, las columnas que quedan se reparten todo el ancho
+     manteniendo la proporción que tenían */
+  const L = $('colList'), D = $('colDetail');
+  const grow = (el, g) => { el.style.flexGrow = g; el.style.flexShrink = '1';
+    el.style.flexBasis = '0'; el.style.width = 'auto'; };
+  const fixed = (el, px) => { el.style.flexGrow = '0'; el.style.flexShrink = '0';
+    el.style.flexBasis = 'auto'; el.style.width = px + 'px'; };
+  if (narrow){ [L,D].forEach(el => el.removeAttribute('style'));
+    m.style.setProperty('--sidew', Math.max(S.w2, S.w3) + 'px'); }
+  else if (S.foldText){ grow(L, S.w2); if (S.foldDetail) fixed(D, S.w3); else grow(D, S.w3); }
+  else { fixed(L, S.w2); fixed(D, S.w3); }
+  const pend = pendingWorks().length;
+  [['ptabList','tab_list'],['ptabList2','tab_list']].forEach(([id,k]) => { if ($(id)) $(id).textContent = t(k); });
+  [['ptabDetail','tab_detail'],['ptabDetail2','tab_detail']].forEach(([id,k]) => {
+    if ($(id)) $(id).innerHTML = esc(t(k)) + (pend ? `<span class="dot">${pend}</span>` : ''); });
+  ['ptabList','ptabList2'].forEach(id => $(id) && $(id).setAttribute('aria-selected', S.narrowTab==='list'));
+  ['ptabDetail','ptabDetail2'].forEach(id => $(id) && $(id).setAttribute('aria-selected', S.narrowTab==='detail'));
+  $('btnPanel').classList.toggle('hidden', !mobile);
+  $('btnPanel').textContent = S.hidePanel ? t('show_panel') : t('show_text');
+  $('btnFold').innerHTML = ICON.panelL;
+  $('btnFold').title = t(S.foldText ? 'expand' : 'collapse');
+  $('btnFoldR').innerHTML = ICON.panelR;
+  $('btnFoldR').title = t(S.foldDetail ? 'expand_r' : 'collapse_r');
+  $('ruler').title = t('ruler_lbl');
+}
+function setFold(v){ S.foldText = v; layout(); requestAnimationFrame(drawRuler); saveSoon(); }
 
 /* =========================================================================
    MODALES
    ========================================================================= */
-function modal(html, dismissible = true){
+function modal(html, dismissible = true, cls = ''){
   const v = document.createElement('div');
-  v.className = 'veil'; v.innerHTML = `<div class="modal">${html}</div>`;
+  v.className = 'veil'; v.innerHTML = `<div class="modal ${cls}">${html}</div>`;
   document.body.appendChild(v);
   if (dismissible) v.addEventListener('click', e => { if (e.target===v) v.remove(); });
   return v;
@@ -1738,11 +2047,12 @@ function openFragEditor(hitId){
     const at = original.indexOf(nf);
     if (nf && at !== -1 && nf.length !== original.length){ h.start += at; h.end = h.start + nf.length; }
     h.authors = tidyAuthors(a); h.year = normYear(y);
-    v.remove(); renderPanel();
+    if (h.status === 'ok') S.sel = {kind:'work', key: slug(h.authors)+'|'+slug(h.year)};
+    v.remove(); render();
   };
 }
 function openConfig(){
-  const opt = (v,cur,label) => `<option value="${v}"${cur===v?' selected':''}>${esc(label)}</option>`;
+  const opt = (val,cur,label) => `<option value="${val}"${cur===val?' selected':''}>${esc(label)}</option>`;
   const areas = Object.keys(AREAS).map(k => opt(k, CFG.area, t('ar_'+k))).join('');
   const srcs = Object.keys(SOURCES).map(k =>
     `<label class="check"><input type="checkbox" id="cs_${k}"${CFG.sources[k]?' checked':''}><span>${SOURCES[k].label}</span></label>`).join('');
@@ -1764,14 +2074,12 @@ function openConfig(){
         <span>${esc(t('cfg_ctx'))}<small>${esc(t('cfg_ctx_note'))}</small></span></label>
       <p class="mini-note">${esc(t('cfg_sources_note'))}</p>
     </div>
-
     <div class="cfg-group"><h4>${esc(t('cfg_detect'))}</h4>
       <label class="check"><input type="checkbox" id="cLaws"${CFG.laws?' checked':''}>
         <span>${esc(t('cfg_laws'))}<small>${esc(t('cfg_laws_note'))}</small></span></label>
       <label class="check"><input type="checkbox" id="cEtal"${CFG.mergeEtal?' checked':''}>
         <span>${esc(t('cfg_etal'))}<small>${esc(t('cfg_etal_note'))}</small></span></label>
     </div>
-
     <div class="cfg-group"><h4>${esc(t('cfg_data'))}</h4>
       <p class="mini-note">${esc(DB.ok ? t('cfg_data_ok') : t('cfg_data_no'))}</p>
       <div style="margin-top:8px"><button class="btn btn--drop btn--mini" id="cWipe">${ICON.trash}${esc(t('cfg_wipe'))}</button></div>
@@ -1786,15 +2094,14 @@ function openConfig(){
     CFG.area = $('cArea').value; CFG.pubLang = $('cPub').value;
     CFG.laws = $('cLaws').checked; CFG.mergeEtal = $('cEtal').checked; CFG.useCtx = $('cCtx').checked;
     Object.keys(SOURCES).forEach(k => CFG.sources[k] = $('cs_'+k).checked);
-    v.remove();
-    applyI18n();
+    v.remove(); applyI18n();
     if (CFG.laws !== prevLaws && S.paras.length){ S.hits = detect(S.paras); toast(t('t_reanalyzed')); }
-    renderPanel(); saveNow();
+    render(); saveNow();
   };
 }
 
 /* =========================================================================
-   SELECCIÓN MANUAL EN EL TEXTO
+   SELECCIÓN MANUAL EN EL MANUSCRITO
    ========================================================================= */
 function paraOffset(pEl, node, offset){
   let acc = 0, done = false;
@@ -1827,11 +2134,14 @@ function onSelect(){
   $('popAdd').onclick = () => { addManual(pi, st, en, txt); pop.classList.add('hidden'); sel.removeAllRanges(); };
 }
 function addManual(pi, st, en, txt){
+  const push = (a, y) => {
+    S.hits.push(mkHit(pi, st, en, a, y, 'manual', 'ok'));
+    S.hits.sort((x,z) => x.para-z.para || x.start-z.start);
+    S.sel = {kind:'work', key: slug(a)+'|'+slug(y)};
+    render();
+  };
   const g = txt.replace(/^[(\[]|[)\]]$/g,'').trim().match(RE_LOOSE);
-  if (g){
-    S.hits.push(mkHit(pi, st, en, tidyAuthors(trimStop(g[1])) || g[1], normYear(g[2]), 'manual', 'ok'));
-    S.hits.sort((x,z) => x.para-z.para || x.start-z.start); renderPanel(); return;
-  }
+  if (g){ push(tidyAuthors(trimStop(g[1])) || g[1], normYear(g[2])); return; }
   const gy = (txt.match(/\b(\d{4}[a-h]?)\b/)||[])[1] || '';
   const ga = trimStop(txt.replace(/[(\[\])]/g,'').replace(/\b\d{4}[a-h]?\b[\s\S]*$/,'').replace(/[,;:]\s*$/,'').trim());
   const v = modal(`<h3>${esc(t('add_h'))}</h3>
@@ -1845,21 +2155,23 @@ function addManual(pi, st, en, txt){
   $('aO').onclick = () => {
     const a = $('aA').value.trim(), y = $('aY').value.trim();
     if (!a || !y){ toast(t('t_missing')); return; }
-    S.hits.push(mkHit(pi, st, en, tidyAuthors(a), normYear(y), 'manual', 'ok'));
-    S.hits.sort((x,z) => x.para-z.para || x.start-z.start);
-    v.remove(); renderPanel();
+    v.remove(); push(tidyAuthors(a), normYear(y));
   };
 }
 $('doc').addEventListener('click', e => {
   const m = e.target.closest('mark.cit'); if (!m) return;
   const h = S.hits.find(x => x.id === m.dataset.hit); if (!h) return;
+  /* clickear una marca del texto selecciona su ficha en la lista */
+  if (h.kind === 'ley') select('norm', slug(h.authors), false);
+  else if (h.status === 'sug') select('sug', h.id, false);
+  else select('work', slug(h.authors)+'|'+slug(h.year), false);
   const pop = $('pop');
   showPop(m.getBoundingClientRect(), h.status === 'sug'
     ? `<button class="btn btn--mini btn--keep" id="pK">${esc(t('a_keep'))}</button><button class="btn btn--mini btn--drop" id="pD">${esc(t('a_drop'))}</button>`
     : `<button class="btn btn--mini btn--ghost" id="pE">${esc(t('a_edit'))}</button><button class="btn btn--mini btn--drop" id="pD">${esc(t('a_remove'))}</button>`);
-  if ($('pK')) $('pK').onclick = () => { h.status='ok'; pop.classList.add('hidden'); renderPanel(); };
+  if ($('pK')) $('pK').onclick = () => { h.status='ok'; pop.classList.add('hidden'); render(); };
   if ($('pE')) $('pE').onclick = () => { pop.classList.add('hidden'); if (h.kind!=='ley') openFragEditor(h.id); };
-  $('pD').onclick = () => { S.hits = S.hits.filter(x => x.id!==h.id); pop.classList.add('hidden'); renderPanel(); };
+  $('pD').onclick = () => { S.hits = S.hits.filter(x => x.id!==h.id); S.sel = null; pop.classList.add('hidden'); render(); };
 });
 document.addEventListener('mouseup', e => {
   if (!e.target.closest('.pop') && !e.target.closest('mark.cit')) setTimeout(onSelect, 0);
@@ -1877,14 +2189,14 @@ function loadParas(paras){
   S.paras = paras.filter(p => p.text.trim().length);
   S.hits = detect(S.paras);
   buildVocab();
-  S.refOverride.clear(); S.normOverride.clear(); S.origin.clear(); S.cands.clear(); S.link.clear();
-  S.cycle.clear(); S.occ.clear(); S.lastJumped=null;
-  S.tab='list'; S.findI=0; syncTabs(); $('qList').value='';
-  renderPanel(); $('scroller').scrollTop = 0;
+  S.refOverride.clear(); S.normOverride.clear(); S.origin.clear();
+  S.cands.clear(); S.link.clear(); S.doiCand.clear(); S.changing.clear();
+  S.cycle.clear(); S.occ.clear(); S.sel = null; S.filter = 'all'; S.lastJumped = null;
+  $('qList').value = '';
+  render(); $('scroller').scrollTop = 0;
   const sug = S.hits.filter(h=>h.status==='sug').length, ley = S.hits.filter(h=>h.kind==='ley').length;
   toast(t('t_cites', S.hits.filter(h=>h.status==='ok'&&h.kind!=='ley').length)
     + (ley ? ' · '+t('t_norms', ley) : '') + (sug ? ' · '+t('t_review', sug) : ''));
-  if (window.innerWidth <= 900) $('togglePanel').classList.remove('hidden');
 }
 async function loadDocx(file){
   if (!window.mammoth){ toast(t('t_docx_err')); return; }
@@ -1903,33 +2215,34 @@ function loadBib(text){
     const e = parseBib(text);
     if (!e.length){ toast(t('t_bib_none')); return; }
     S.bib = e; S.bibIndex = buildBibIndex(e); indexBibProfile();
-    toast(t('t_bib_read', e.length)); renderPanel();
+    toast(t('t_bib_read', e.length)); render();
   } catch(err){ console.error(err); toast(t('t_bib_err')); }
 }
 function wipeAll(){
   DB.del(KEY);
   S.paras=[]; S.hits=[]; S.works=[]; S.norms=[]; S.bib=[]; S.bibIndex=new Map();
-  S.cands.clear(); S.refOverride.clear(); S.normOverride.clear(); S.origin.clear(); S.link.clear();
-  S.vocab=new Map(); S.bibVenues=new Set(); S.bibSurnames=new Set(); S.findI=0; S.tab='list';
+  S.cands.clear(); S.refOverride.clear(); S.normOverride.clear(); S.origin.clear();
+  S.link.clear(); S.doiCand.clear(); S.changing.clear(); S.cycle.clear(); S.occ.clear();
+  S.vocab=new Map(); S.bibVenues=new Set(); S.bibSurnames=new Set();
+  S.sel=null; S.filter='all';
   $('doc').innerHTML=''; $('empty').classList.remove('hidden'); $('qList').value='';
   [...$('ruler').querySelectorAll('.tick')].forEach(x=>x.remove());
-  syncTabs(); renderPanel(); toast(t('t_deleted'));
+  render(); toast(t('t_deleted'));
 }
 
 /* =========================================================================
-   i18n APLICADO AL DOM
+   i18n AL DOM
    ========================================================================= */
 function applyI18n(){
   document.documentElement.lang = CFG.uiLang;
   document.querySelectorAll('[data-i18n]').forEach(el => el.textContent = t(el.dataset.i18n));
-  $('tabList').textContent = t('tab_list');
-  $('tabExp').textContent = t('tab_exp');
   $('qList').placeholder = t('search_ph');
   $('pasteBox').placeholder = t('paste_ph');
   $('btnClear').innerHTML = ICON.trash + esc(t('clear'));
   $('btnCfg').innerHTML = ICON.gear + esc(t('cfg'));
-  $('resizer').title = t('resize');
-  $('togglePanel').textContent = t('show_panel');
+  $('btnExport').innerHTML = ICON.down + esc(t('e_export'));
+  $('rz1').title = t('resize'); $('rz2').title = t('resize');
+  layout();
 }
 
 /* ---------------------------------------------------------------- eventos */
@@ -1944,14 +2257,14 @@ $('btnPaste').onclick = () => {
 };
 $('btnClear').onclick = () => { if (confirm(t('clear_confirm'))) wipeAll(); };
 $('btnCfg').onclick = openConfig;
-$('tabList').onclick = () => { S.tab='list'; syncTabs(); renderPanel(); };
-$('tabFind').onclick = () => { S.tab='find'; syncTabs(); renderPanel(); };
-$('tabExp').onclick  = () => { S.tab='exp';  syncTabs(); renderPanel(); };
-$('qList').addEventListener('input', renderList);
-$('togglePanel').onclick = () => {
-  const p = $('panel'); p.classList.toggle('is-hidden');
-  $('togglePanel').textContent = p.classList.contains('is-hidden') ? t('show_panel') : t('show_text');
-};
+$('btnExport').onclick = openExport;
+$('btnFold').onclick = () => setFold(!S.foldText);
+$('btnFoldR').onclick = () => { S.foldDetail = !S.foldDetail; layout(); requestAnimationFrame(drawRuler); saveSoon(); };
+$('qList').addEventListener('input', () => { renderList(); renderDetail(); });
+['ptabList','ptabList2'].forEach(id => $(id).onclick = () => { S.narrowTab='list'; layout(); });
+['ptabDetail','ptabDetail2'].forEach(id => $(id).onclick = () => { S.narrowTab='detail'; layout(); });
+$('btnPanel').onclick = () => { S.hidePanel = !S.hidePanel; layout(); };
+$('ruler').onclick = () => { if (S.foldText) setFold(false); };
 const drop = $('drop');
 ['dragenter','dragover'].forEach(ev => drop.addEventListener(ev, e => { e.preventDefault(); drop.classList.add('is-over'); }));
 ['dragleave','drop'].forEach(ev => drop.addEventListener(ev, e => { e.preventDefault(); drop.classList.remove('is-over'); }));
@@ -1960,52 +2273,66 @@ drop.addEventListener('drop', e => {
   if (/\.bib(tex)?$/i.test(f.name)) f.text().then(loadBib); else loadDocx(f);
 });
 $('scroller').addEventListener('scroll', () => $('pop').classList.add('hidden'));
-window.addEventListener('resize', drawRuler);
+window.addEventListener('resize', () => { layout(); drawRuler(); });
 document.addEventListener('keydown', e => {
-  if (S.tab !== 'find' || e.target.matches('input, textarea, [contenteditable]')) return;
-  const q = findQueue();
-  if (e.key === 'ArrowRight' && S.findI < q.length-1){ S.findI++; S.manualKey=null; renderPanel(); }
-  if (e.key === 'ArrowLeft' && S.findI > 0){ S.findI--; S.manualKey=null; renderPanel(); }
-  if (/^[1-9]$/.test(e.key)){
-    const w = q[S.findI], c = w && S.cands.get(w.key);
-    if (c && c[+e.key-1]){ const en2=c[+e.key-1];
-      S.refOverride.set(w.key, fmt(en2, w.year)); S.origin.set(w.key,'auto');
-      const u=entryLink(en2); if (u) S.link.set(w.key,u); advance(); }
-  }
+  const el = e.target;
+  const inField = el && typeof el.matches === 'function'
+    && el.matches('input, textarea, [contenteditable]');
+  if (inField || document.querySelector('.veil')) return;
+  if (e.key === 'ArrowDown'){ e.preventDefault(); moveSel(1); }
+  else if (e.key === 'ArrowUp'){ e.preventDefault(); moveSel(-1); }
+  else if (e.key === 'ArrowRight' && window._occGo){ e.preventDefault(); window._occGo(1); }
+  else if (e.key === 'ArrowLeft' && window._occGo){ e.preventDefault(); window._occGo(-1); }
 });
 
-/* divisor arrastrable */
-(function initResizer(){
-  const r = $('resizer'), p = $('panel');
-  let dragging = false;
-  const clamp = px => Math.max(340, Math.min(760, window.innerWidth*0.6, px));
-  const apply = px => { p.style.width = clamp(px)+'px'; drawRuler(); };
-  const at = e => (e.touches ? e.touches[0].clientX : e.clientX);
-  const move = e => { if (dragging) apply(window.innerWidth - at(e)); };
-  const stop = () => { if (!dragging) return; dragging=false; r.classList.remove('is-dragging');
+/* divisores arrastrables */
+(function initResizers(){
+  let drag = null;
+  const cl = (v,a,b) => Math.max(a, Math.min(b, v));
+  const apply = () => {
+    $('colList').style.width = S.w2 + 'px';
+    $('colDetail').style.width = S.w3 + 'px';
+    drawRuler();
+  };
+  const move = e => {
+    if (!drag) return;
+    const x = e.touches ? e.touches[0].clientX : e.clientX;
+    const fromRight = window.innerWidth - x;
+    if (drag === 'rz1') S.w2 = cl(fromRight - S.w3 - 14, 260, 520);
+    else S.w3 = cl(fromRight, 320, 600);
+    apply();
+  };
+  const stop = () => { if (!drag) return;
+    document.getElementById(drag).classList.remove('is-dragging'); drag = null;
     document.body.style.userSelect=''; document.body.style.cursor=''; saveSoon(); };
-  const start = e => { if (window.innerWidth <= 900) return; dragging=true; r.classList.add('is-dragging');
-    document.body.style.userSelect='none'; document.body.style.cursor='col-resize'; if (e.cancelable) e.preventDefault(); };
-  r.addEventListener('mousedown', start);
-  r.addEventListener('touchstart', start, {passive:false});
+  ['rz1','rz2'].forEach(id => {
+    const start = e => {
+      if (window.innerWidth <= 1150 && id === 'rz2') return;
+      if (window.innerWidth <= 820) return;
+      drag = id; $(id).classList.add('is-dragging');
+      document.body.style.userSelect='none'; document.body.style.cursor='col-resize';
+      if (e.cancelable) e.preventDefault();
+    };
+    $(id).addEventListener('mousedown', start);
+    $(id).addEventListener('touchstart', start, {passive:false});
+    $(id).addEventListener('dblclick', () => { if (id==='rz1') S.w2 = 320; else S.w3 = 400; apply(); saveSoon(); });
+  });
   document.addEventListener('mousemove', move);
   document.addEventListener('touchmove', move, {passive:true});
   document.addEventListener('mouseup', stop);
   document.addEventListener('touchend', stop);
-  r.addEventListener('dblclick', () => apply(410));
 })();
 
 /* ---------------------------------------------------------------- arranque */
 const hadSession = restore();
 applyI18n();
-syncTabs();
-renderPanel();
+render();
 if (hadSession){
   $('empty').classList.add('hidden');
   setTimeout(() => toast(t('t_session', S.works.length)), 500);
-  if (window.innerWidth <= 900) $('togglePanel').classList.remove('hidden');
 } else if (!DB.ok){ setTimeout(() => flashSaved(''), 800); }
 window.addEventListener('beforeunload', () => { clearTimeout(saveTimer); try { saveNow(); } catch(e){} });
+
 </script>
 </body>
 </html>
