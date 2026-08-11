@@ -19,7 +19,7 @@
   --sans:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",sans-serif;
 }
 *{box-sizing:border-box}
-html,body{margin:0;padding:0;height:100%}
+html,body{margin:0;padding:0;height:100%;overflow:hidden}
 body{background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased}
 button{font:inherit;cursor:pointer}
 :focus-visible{outline:2px solid var(--mimeo);outline-offset:2px}
@@ -343,6 +343,7 @@ const ICON = {
   copy:  SV('<rect x="5.4" y="5.4" width="8.2" height="8.2" rx="1"/><path d="M10.6 5.4V3.4a1 1 0 00-1-1H3.4a1 1 0 00-1 1v6.2a1 1 0 001 1h2"/>'),
   gear:  SV('<circle cx="8" cy="8" r="2.2"/><path d="M8 1.6v1.6M8 12.8v1.6M14.4 8h-1.6M3.2 8H1.6M12.5 3.5l-1.1 1.1M4.6 11.4l-1.1 1.1M12.5 12.5l-1.1-1.1M4.6 4.6L3.5 3.5"/>'),
   ext:   SV('<path d="M9.4 2.4h4.2v4.2M13.6 2.4L7.4 8.6M11.6 9.4v3.2a1 1 0 01-1 1H3.4a1 1 0 01-1-1V5.4a1 1 0 011-1h3.2"/>'),
+  tune:  SV('<path d="M2 5h7M11 5h3M2 11h3M7 11h7M5.5 3v4M9.5 9v4"/>'),
   panelL:SV('<rect x="1.9" y="2.9" width="12.2" height="10.2" rx="1.6"/><path d="M6.1 2.9v10.2"/>'),
   panelR:SV('<rect x="1.9" y="2.9" width="12.2" height="10.2" rx="1.6"/><path d="M9.9 2.9v10.2"/>'),
   redo:  SV('<path d="M13.4 8a5.4 5.4 0 11-1.9-4.1M13.6 2.4v3.4h-3.4"/>')
@@ -364,6 +365,7 @@ es:{ cfg:'Configuración', load_bib:'Cargar .bib', clear:'Limpiar',
  sec_doubtful:'Dudosas — confirmá o descartá', sec_works:'Obras citadas', sec_norms:'Normativa citada',
  sec_refs:'Referencias', sec_pending:'Sin resolver', sec_norm_refs:'Fuentes normativas',
  a_view:'Ver en el texto',
+ refine_open:'Refinar búsqueda', refine_ph:'Revista, editorial u otras palabras clave', refine_go:'Buscar',
  bulk_p1:'“{0}” aparece también con otro año. ¿Qué hacés con esa?', bulk_kp1:'“{0}” aparece en otra cita dudosa. ¿La confirmás también?',
  bulk_h:'Hay más citas con este nombre', bulk_p:'“{0}” aparece también con otros {1} años distintos. ¿Qué hacés con esas?', bulk_one:'Solo esta', bulk_all:'Todas las de este nombre', bulk_kh:'Confirmar las demás', bulk_kp:'“{0}” aparece en otras {1} citas dudosas. ¿Las confirmás también?',
  sel_none:'Seleccioná una cita de la lista para buscar su referencia completa.', fl_all:'Todas', fl_pend:'Sin resolver', fl_sug:'Dudosas', fl_norm:'Normativa', f_change:'Cambiar', f_clear:'Quitar referencia', f_chosen:'Referencia elegida', collapse:'Plegar el texto',collapse_r:'Plegar las referencias', expand:'Mostrar el texto',expand_r:'Mostrar las referencias', exp_list:'Copiar lista autor-año', exp_refs:'Copiar referencias completas', kb_hint:'↑↓ recorrer la lista · ←→ apariciones en el texto', sug_h:'Cita dudosa', sug_p:'Fijate en el manuscrito, a la izquierda, si esto es realmente una cita.', norm_edit:'Referencia de esta norma', tab_detail:'Referencia',
@@ -437,6 +439,7 @@ en:{ cfg:'Settings', load_bib:'Load .bib', clear:'Clear',
  sec_doubtful:'Uncertain — confirm or discard', sec_works:'Works cited', sec_norms:'Statutes cited',
  sec_refs:'References', sec_pending:'Unresolved', sec_norm_refs:'Legal sources',
  a_view:'Show in text',
+ refine_open:'Refine search', refine_ph:'Journal, publisher or other keywords', refine_go:'Search',
  bulk_p1:'“{0}” also appears with one other year. What about that one?', bulk_kp1:'“{0}” appears in one other uncertain citation. Confirm that one too?',
  bulk_h:'More citations with this name', bulk_p:'“{0}” also appears with {1} other years. What do you want to do with those?', bulk_one:'Only this one', bulk_all:'All with this name', bulk_kh:'Confirm the others', bulk_kp:'“{0}” appears in {1} other uncertain citations. Confirm those too?',
  sel_none:'Select a citation from the list to find its full reference.', fl_all:'All', fl_pend:'Unresolved', fl_sug:'Uncertain', fl_norm:'Statutes', f_change:'Change', f_clear:'Remove reference', f_chosen:'Chosen reference', collapse:'Collapse the text',collapse_r:'Collapse the references', expand:'Show the text',expand_r:'Show the references', exp_list:'Copy author-year list', exp_refs:'Copy full references', kb_hint:'↑↓ move through the list · ←→ occurrences in the text', sug_h:'Uncertain citation', sug_p:'Check the manuscript on the left to see whether this really is a citation.', norm_edit:'Reference for this statute', tab_detail:'Reference',
@@ -510,6 +513,7 @@ pt:{ cfg:'Configurações', load_bib:'Carregar .bib', clear:'Limpar',
  sec_doubtful:'Duvidosas — confirme ou descarte', sec_works:'Obras citadas', sec_norms:'Normas citadas',
  sec_refs:'Referências', sec_pending:'Sem resolver', sec_norm_refs:'Fontes normativas',
  a_view:'Ver no texto',
+ refine_open:'Refinar busca', refine_ph:'Revista, editora ou outras palavras-chave', refine_go:'Buscar',
  bulk_p1:'“{0}” aparece também com outro ano. O que fazer com ela?', bulk_kp1:'“{0}” aparece em outra citação duvidosa. Confirmar também?',
  bulk_h:'Há mais citações com este nome', bulk_p:'“{0}” aparece também com outros {1} anos. O que fazer com elas?', bulk_one:'Só esta', bulk_all:'Todas deste nome', bulk_kh:'Confirmar as demais', bulk_kp:'“{0}” aparece em outras {1} citações duvidosas. Confirmar também?',
  sel_none:'Selecione uma citação da lista para buscar sua referência completa.', fl_all:'Todas', fl_pend:'Sem resolver', fl_sug:'Duvidosas', fl_norm:'Normas', f_change:'Trocar', f_clear:'Remover referência', f_chosen:'Referência escolhida', collapse:'Recolher o texto',collapse_r:'Recolher as referências', expand:'Mostrar o texto',expand_r:'Mostrar as referências', exp_list:'Copiar lista autor-ano', exp_refs:'Copiar referências completas', kb_hint:'↑↓ percorrer a lista · ←→ ocorrências no texto', sug_h:'Citação duvidosa', sug_p:'Veja no manuscrito, à esquerda, se isto é mesmo uma citação.', norm_edit:'Referência desta norma', tab_detail:'Referência',
@@ -606,7 +610,7 @@ const SOURCES = { crossref:{label:'Crossref'}, openalex:{label:'OpenAlex'},
 const S = {
   paras:[], hits:[], works:[], norms:[], bib:[], bibIndex:new Map(),
   refOverride:new Map(), normOverride:new Map(), origin:new Map(), cands:new Map(), link:new Map(),
-  doiCand:new Map(), nameStats:new Map(), vocab:new Map(), bibVenues:new Set(), bibSurnames:new Set(),
+  doiCand:new Map(), nameStats:new Map(), vocab:new Map(), refineOpen:null, refineKw:new Map(), bibVenues:new Set(), bibSurnames:new Set(),
   cycle:new Map(), occ:new Map(), lastJumped:null,
   sel:null,              // {kind:'work'|'sug'|'norm', key}
   filter:'all', changing:new Set(), manualOpen:false,
@@ -706,10 +710,21 @@ function restore(){
 const UC = '\\p{Lu}';
 const LW = "[\\p{L}'\u2019\\-]";
 const NW = `${UC}${LW}*`;
-const PART = "(?:de las|de los|de la|del|de|da|das|do|dos|di|della|dello|van der|van den|van|von|le|la|du|des|d'|O'|Mc|Mac|St\\.)";
+/* las partículas van en minúscula (caso sensible, a propósito: si "de" o "la"
+   valieran también en mayúscula sin más, "La Plata" pasaría por apellido).
+   Pero al empezar una oración o una cita narrativa sí llevan mayúscula inicial
+   —"Van der Linden (2008)"—, así que sumamos esa única variante capitalizada. */
+const PART_LC = "de las|de los|de la|del|de|da|das|do|dos|di|della|dello|van der|van den|van|von|le|la|du|des|d'|St\\.";
+const PART_CAP = PART_LC.split('|').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join('|');
+const PART = `(?:${PART_LC}|${PART_CAP}|O'|Mc|Mac)`;
 const PART_SET = new Set(['de','del','da','das','do','dos','di','della','dello','van','von','le','la','du','des',"d'","o'",'mc','mac']);
-const SUR_IN = `(?:${PART}\\s+)?${NW}(?:[\\s\\-]+(?:${PART}\\s+)?${NW}){0,3}`;
-const SUR_NA = `(?:${PART}\\s+)?${NW}(?:\\s+(?:${PART}\\s+)?${NW}){0,1}`;
+const PART_B = `(?<![\\p{L}])(?:${PART})`;
+const SUR_IN = `(?:${PART_B}\\s+)?${NW}(?:[\\s\\-]+(?:${PART_B}\\s+)?${NW}){0,3}`;
+const SUR_NA = `(?:${PART_B}\\s+)?${NW}(?:\\s+(?:${PART_B}\\s+)?${NW}){0,1}`;
+/* partículas que en castellano también son preposición o artículo suelto:
+   "de Artopoulos" puede ser "de Artopoulos [apellido]" o "un trabajo de Artopoulos".
+   Las de origen holandés/portugués/francés casi no tienen ese doble uso. */
+const AMBIG_PART = new Set(['de','del','la','las','los']);
 const SEP = "(?:\\s*,\\s*|\\s+(?:y|e|and|&)\\s+)";
 const ETAL = "(?:\\s*,?\\s*et\\s*al\\.?)?";
 const SIGLA = "(?:\\s*\\[[^\\]]{1,60}\\])?";
@@ -952,7 +967,7 @@ function detect(paras){
     }
   });
   hits.sort((a,b) => a.para - b.para || a.start - b.start);
-  return vetPlaces(hits);
+  return vetPlaces(hits, paras);
 }
 
 /* =========================================================================
@@ -991,12 +1006,15 @@ function phraseCount(name, cache){
   } catch(e){ n = 0; }
   cache.set(name, n); return n;
 }
-function vetPlaces(hits){
+function vetPlaces(hits, paras){
   if (!hits.length) return hits;
   const freq = buildNameFreq(), cache = new Map();
-  const parenSur = new Set();
-  hits.forEach(h => { if (h.kind === 'paren' && h.status === 'ok' && h.year)
-    parenSur.add(slug(firstSurname(h.authors))); });
+  const parenSur = new Set(), parenCompound = new Set();
+  hits.forEach(h => { if (h.kind === 'paren' && h.status === 'ok' && h.year){
+    const fs = firstSurname(h.authors);
+    parenSur.add(slug(fs));
+    if (/\s/.test(fs)) parenCompound.add(slug(fs));
+  }});
   const withYear = new Map();
   hits.forEach(h => { if (h.kind === 'ley') return;
     const k = slug(firstSurname(h.authors));
@@ -1005,6 +1023,22 @@ function vetPlaces(hits){
 
   hits.forEach(h => {
     if (h.kind !== 'narr' || h.status !== 'ok') return;
+
+    /* "de Artopoulos" — de/la/del/las/los también son preposición o artículo
+       sueltos en castellano. Si el documento confirma "Artopoulos" solo en
+       otro lado y nunca confirma la forma compuesta, la partícula es prosa,
+       no apellido: se recorta antes de seguir evaluando esta cita. */
+    const pm = h.authors.match(new RegExp('^(' + PART + ')\\s+(\\S.*)$', 'iu'));
+    if (pm){
+      const particle = deacc(pm[1]).toLowerCase().replace(/\s+/g,' ');
+      const bareCand = pm[2].replace(/\s+et al\.?$/i,'').trim();
+      const fullCand = h.authors.replace(/\s+et al\.?$/i,'').trim();
+      if (AMBIG_PART.has(particle) && parenSur.has(slug(bareCand)) && !parenCompound.has(slug(fullCand))){
+        h.start += h.authors.length - pm[2].length;
+        h.authors = pm[2];
+      }
+    }
+
     const name = h.authors.replace(/\s+et al\.?$/i,'').trim();
     const sur = firstSurname(name), k = slug(sur);
     if (S.bibSurnames.has(k)) return;        // figura en tu .bib
@@ -1165,6 +1199,11 @@ function matchWork(w){
    ========================================================================= */
 const tokenize = s => deacc(String(s)).toLowerCase().replace(/[^a-z0-9áéíóúñü\s]/g,' ')
   .split(/\s+/).filter(w => w.length >= 5 && !STOP.has(w) && !/^\d+$/.test(w));
+/* para lo que escribís a mano en "refinar búsqueda" el filtro es más laxo:
+   una revista o editorial corta ("OIT", "UBA") no debería perderse por el
+   umbral de longitud que sí tiene sentido para barrer prosa corrida */
+const tokenizeManual = s => deacc(String(s)).toLowerCase().replace(/[^a-z0-9áéíóúñü\s]/g,' ')
+  .split(/\s+/).filter(w => w.length >= 2 && !STOP.has(w));
 
 function buildVocab(){
   const f = new Map();
@@ -1174,15 +1213,20 @@ function buildVocab(){
 }
 /* términos que rodean a esta cita en particular */
 function ctxWords(w, n = 5){
-  if (!CFG.useCtx) return [];
+  const manualRaw = S.refineKw.get(w.key);
+  if (manualRaw){
+    /* al refinar, la búsqueda usa SOLO lo que escribiste — nada de contexto
+       automático mezclado, para que el resultado cambie de verdad */
+    return tokenizeManual(manualRaw).slice(0, 8);
+  }
   const bag = new Map();
   const own = new Set(slug(w.authors).match(/[a-z]+/g) || []);
-  w.hits.slice(0, 4).forEach(h => {
+  if (CFG.useCtx) w.hits.slice(0, 4).forEach(h => {
     const txt = S.paras[h.para] ? S.paras[h.para].text : '';
     const seg = txt.slice(Math.max(0, h.start-240), Math.min(txt.length, h.end+240));
     tokenize(seg).forEach(t2 => {
-      if (own.has(t2)) return;
-      bag.set(t2, (bag.get(t2)||0) + 1 + (S.vocab.has(t2) ? 1 : 0));
+      if (own.has(t2) || bag.has(t2)) return;
+      bag.set(t2, 1 + (S.vocab.has(t2) ? 1 : 0));
     });
   });
   return [...bag.entries()].sort((a,b) => b[1]-a[1]).slice(0, n).map(x => x[0]);
@@ -1283,7 +1327,7 @@ const crossrefItem = it => mkEntry(CR_TYPE[it.type]||'misc',
 
 const openalexItem = it => {
   const loc = it.primary_location?.source?.display_name || '';
-  return mkEntry(OA_TYPE[it.type]||'misc',
+  const e = mkEntry(OA_TYPE[it.type]||'misc',
     (it.authorships||[]).map(a => splitDisplay(a.author?.display_name || a.raw_author_name || '')).filter(a=>a.last),
     it.publication_year||'',
     { title:it.title||it.display_name||'', journal:loc, booktitle:loc,
@@ -1291,6 +1335,10 @@ const openalexItem = it => {
       pages:[it.biblio?.first_page,it.biblio?.last_page].filter(Boolean).join('–'),
       publisher:it.primary_location?.source?.host_organization_name||'',
       doi:(it.doi||'').replace('https://doi.org/','') }, 'OpenAlex', it.language||'');
+  /* si la fuente primaria es un repositorio, "publisher" suele ser la
+     institución que alojó el archivo, no la editorial real del libro */
+  e._srcType = it.primary_location?.source?.type || '';
+  return e;
 };
 
 /* recupera una referencia a partir de un DOI, un ISBN o una URL pegada */
@@ -1382,12 +1430,23 @@ function scoreCand(e, w, kw){
   s += Math.min(co, 2) * 1.2;
   const tt = new Set(tokenize(e.fields.title || ''));
   let voc = 0, ctx = 0;
-  tt.forEach(x => { if (S.vocab.has(x)) voc++; if (kw.includes(x)) ctx++; });
-  s += Math.min(voc, 4) * 0.7 + Math.min(ctx, 3) * 1.3;
+  tt.forEach(x => { if (S.vocab.has(x)) voc++; });
+  /* coincidencia por subcadena, no por token exacto: así una palabra clave
+     corta ("OIT", "UBA") escrita a mano también cuenta */
+  const titleSlug = slug(e.fields.title || '');
+  kw.forEach(k => { if (k.length >= 3 && titleSlug.includes(k)) ctx++; });
+  /* si el candidato viene de "refinar búsqueda", kw es lo que escribiste a
+     mano: pesa más fuerte porque es una decisión deliberada, no una pista */
+  const kwWeight = S.refineKw.has(w.key) ? 2.4 : 1.3;
+  s += Math.min(voc, 4) * 0.7 + Math.min(ctx, 4) * kwWeight;
   if (e._lang && CFG.pubLang && e._lang === CFG.pubLang) s += 1;
   else if (e._lang && !CFG.pubLang && e._lang === CFG.refLang) s += 0.5;
   if (e.fields.doi) s += 0.5;
   if (!e.fields.title) s -= 5;
+  /* en un libro o capítulo indexado desde un repositorio, "editorial" suele
+     ser la institución que alojó el archivo, no quien lo publicó de verdad.
+     No lo marcamos, pero si hay algo mejor, que aparezca primero. */
+  if (e._srcType === 'repository' && (e.type === 'book' || e.type === 'incollection')) s -= 1.5;
   return s;
 }
 async function lookup(w){
@@ -1521,10 +1580,13 @@ function visibleItems(){
 function select(kind, key, jump = true){
   if (S.sel && S.sel.kind === kind && S.sel.key === key) return;
   S.sel = {kind, key};
-  S.changing.delete(key); S.manualOpen = false;
+  S.changing.delete(key); S.manualOpen = false; S.refineOpen = null;
   S.lastJumped = null;
   clearTimeout(S.selTimer);
   render();
+  /* seleccionar desde cualquier lado —lista, teclado, o un click en el
+     manuscrito— siempre trae la ficha correspondiente a la vista */
+  document.querySelector(`[data-card="${kind}:${key}"]`)?.scrollIntoView?.({block:'nearest'});
   if (jump){
     const it = selItem();
     const hits = it && (it.hits || [it]);
@@ -1691,22 +1753,32 @@ function renderWork(body, w){
   const cands = S.cands.get(w.key), doiC = S.doiCand.get(w.key);
   let html = '';
 
-  /* identificador siempre a la vista: es el camino más rápido si ya lo tenés */
-  html += `<p class="lbl">${esc(t('m_ident'))}</p>
-    <div class="ident">
-      <input type="text" id="idBox" placeholder="10.1177/0950017019836140 · 9789871234567">
-      <button class="btn btn--mini" id="idFetch">${esc(t('m_fetch'))}</button>
-    </div>`;
+  /* mientras no haya una referencia elegida, o si pediste cambiar: campo de
+     identificador, refinar búsqueda e ingreso manual, todo a la vista */
+  if (!chosen || changing){
+    html += `<div class="ident">
+        <input type="text" id="idBox" placeholder="${esc(t('m_ident'))}">
+        <button class="btn btn--mini" id="idFetch">${esc(t('m_fetch'))}</button>
+      </div>`;
 
-  if (S.manualOpen){
-    html += `<p class="lbl">${esc(t('m_ref'))}</p>
-      <div class="manual"><textarea id="manBox" placeholder="${esc(t('f_manual_ph'))}">${esc(chosen?stripTags(chosen):'')}</textarea>
-      <div class="manual-acts">
-        <button class="btn btn--mini btn--ghost" id="manCancel">${esc(t('cancel'))}</button>
-        <button class="btn btn--mini btn--key" id="manSave">${esc(t('f_save_next'))}</button>
-      </div></div>`;
-  } else {
-    html += `<button class="btn btn--ghost btn--mini toggle-man" id="manOpen">${ICON.pencil}${esc(t('m_open'))}</button>`;
+    if (S.refineOpen === w.key){
+      html += `<div class="manual"><textarea id="refBox" placeholder="${esc(t('refine_ph'))}">${esc(S.refineKw.get(w.key)||'')}</textarea>
+        <div class="manual-acts">
+          <button class="btn btn--mini btn--ghost" id="refCancel">${esc(t('cancel'))}</button>
+          <button class="btn btn--mini btn--key" id="refGo">${esc(t('refine_go'))}</button>
+        </div></div>`;
+    } else if (S.manualOpen){
+      html += `<div class="manual"><textarea id="manBox" placeholder="${esc(t('f_manual_ph'))}">${esc(chosen?stripTags(chosen):'')}</textarea>
+        <div class="manual-acts">
+          <button class="btn btn--mini btn--ghost" id="manCancel">${esc(t('cancel'))}</button>
+          <button class="btn btn--mini btn--key" id="manSave">${esc(t('save'))}</button>
+        </div></div>`;
+    } else {
+      html += `<div class="opt-acts" style="margin-bottom:12px">
+        <button class="btn btn--ghost btn--mini" id="manOpen">${ICON.pencil}${esc(t('m_open'))}</button>
+        <button class="btn btn--ghost btn--mini" id="refOpen">${ICON.tune}${esc(t('refine_open'))}</button>
+      </div>`;
+    }
   }
 
   if (chosen && !changing){
@@ -1766,13 +1838,26 @@ function renderWork(body, w){
   if ($('wClear')) $('wClear').onclick = () => { S.refOverride.delete(w.key); S.origin.delete(w.key);
     S.link.delete(w.key); render(); };
   if ($('wAgain')) $('wAgain').onclick = () => { S.cands.delete(w.key); render(); autoLookup(w); };
-  if ($('manOpen')) $('manOpen').onclick = () => { S.manualOpen = true; render(); setTimeout(()=>$('manBox')?.focus(),20); };
+  if ($('manOpen')) $('manOpen').onclick = () => { S.manualOpen = true; S.refineOpen = null; render(); setTimeout(()=>$('manBox')?.focus(),20); };
   if ($('manCancel')) $('manCancel').onclick = () => { S.manualOpen = false; render(); };
   if ($('manSave')) $('manSave').onclick = () => {
     const v = $('manBox').value.trim(); if (!v){ toast(t('t_missing')); return; }
     S.refOverride.set(w.key, esc(v).replace(/_([^_]+)_/g,'<em>$1</em>'));
     S.origin.set(w.key, 'mano'); S.manualOpen = false; S.changing.delete(w.key); render(); };
-  $('idFetch').onclick = async () => {
+
+  /* refinar búsqueda: suma tus propias palabras clave a las que ya saca
+     del contexto, con más peso, y vuelve a consultar las mismas fuentes */
+  if ($('refOpen')) $('refOpen').onclick = () => { S.refineOpen = w.key; S.manualOpen = false; render();
+    setTimeout(()=>$('refBox')?.focus(),20); };
+  if ($('refCancel')) $('refCancel').onclick = () => { S.refineOpen = null; render(); };
+  if ($('refGo')) $('refGo').onclick = () => {
+    const v = $('refBox').value.trim();
+    if (v) S.refineKw.set(w.key, v); else S.refineKw.delete(w.key);
+    S.refineOpen = null; S.cands.delete(w.key); render(); autoLookup(w);
+  };
+  if ($('refBox')) $('refBox').addEventListener('keydown', e => { if (e.key === 'Enter'){ e.preventDefault(); $('refGo').click(); } });
+
+  if ($('idFetch')) $('idFetch').onclick = async () => {
     const btn = $('idFetch'), raw = $('idBox').value.trim(); if (!raw) return;
     btn.disabled = true; btn.textContent = t('m_fetching');
     let r = null;
@@ -1784,7 +1869,7 @@ function renderWork(body, w){
       S.doiCand.set(w.key, r.entry); S.changing.add(w.key); render(); toast(t('m_filled'));
     } else toast(t('m_linkonly'));
   };
-  $('idBox').addEventListener('keydown', e => { if (e.key === 'Enter'){ e.preventDefault(); $('idFetch').click(); } });
+  if ($('idBox')) $('idBox').addEventListener('keydown', e => { if (e.key === 'Enter'){ e.preventDefault(); $('idFetch').click(); } });
 }
 const optBox = (tagKey, ref, cls, acts, ok) =>
   `<div class="opt ${cls}"><div class="opt-tag"><span class="${ok?'ok':''}">${esc(t(tagKey))}</span></div>
@@ -2010,7 +2095,17 @@ function layout(){
   $('btnFoldR').title = t(S.foldDetail ? 'expand_r' : 'collapse_r');
   $('ruler').title = t('ruler_lbl');
 }
-function setFold(v){ S.foldText = v; layout(); requestAnimationFrame(drawRuler); saveSoon(); }
+function setFold(v){
+  S.foldText = v;
+  /* nunca las dos plegadas a la vez: si cierro una, la otra se abre */
+  if (v && S.foldDetail) S.foldDetail = false;
+  layout(); requestAnimationFrame(drawRuler); saveSoon();
+}
+function setFoldR(v){
+  S.foldDetail = v;
+  if (v && S.foldText) S.foldText = false;
+  layout(); requestAnimationFrame(drawRuler); saveSoon();
+}
 
 /* =========================================================================
    MODALES
@@ -2038,6 +2133,9 @@ function openFragEditor(hitId){
   $('eFrag').addEventListener('input', () => {
     const g = $('eFrag').value.replace(/^[(\[]|[)\]]$/g,'').trim().match(RE_LOOSE);
     if (g){ $('eA').value = tidyAuthors(trimStop(g[1])) || g[1]; $('eY').value = normYear(g[2]); }
+  });
+  v.querySelector('.modal').addEventListener('keydown', e => {
+    if (e.key === 'Enter' && !e.shiftKey){ e.preventDefault(); $('eS').click(); }
   });
   $('eFrag').focus();
   $('eC').onclick = () => v.remove();
@@ -2190,7 +2288,7 @@ function loadParas(paras){
   S.hits = detect(S.paras);
   buildVocab();
   S.refOverride.clear(); S.normOverride.clear(); S.origin.clear();
-  S.cands.clear(); S.link.clear(); S.doiCand.clear(); S.changing.clear();
+  S.cands.clear(); S.link.clear(); S.doiCand.clear(); S.changing.clear(); S.refineKw.clear(); S.refineOpen = null;
   S.cycle.clear(); S.occ.clear(); S.sel = null; S.filter = 'all'; S.lastJumped = null;
   $('qList').value = '';
   render(); $('scroller').scrollTop = 0;
@@ -2222,7 +2320,7 @@ function wipeAll(){
   DB.del(KEY);
   S.paras=[]; S.hits=[]; S.works=[]; S.norms=[]; S.bib=[]; S.bibIndex=new Map();
   S.cands.clear(); S.refOverride.clear(); S.normOverride.clear(); S.origin.clear();
-  S.link.clear(); S.doiCand.clear(); S.changing.clear(); S.cycle.clear(); S.occ.clear();
+  S.link.clear(); S.doiCand.clear(); S.changing.clear(); S.refineKw.clear(); S.refineOpen = null; S.cycle.clear(); S.occ.clear();
   S.vocab=new Map(); S.bibVenues=new Set(); S.bibSurnames=new Set();
   S.sel=null; S.filter='all';
   $('doc').innerHTML=''; $('empty').classList.remove('hidden'); $('qList').value='';
@@ -2259,7 +2357,7 @@ $('btnClear').onclick = () => { if (confirm(t('clear_confirm'))) wipeAll(); };
 $('btnCfg').onclick = openConfig;
 $('btnExport').onclick = openExport;
 $('btnFold').onclick = () => setFold(!S.foldText);
-$('btnFoldR').onclick = () => { S.foldDetail = !S.foldDetail; layout(); requestAnimationFrame(drawRuler); saveSoon(); };
+$('btnFoldR').onclick = () => setFoldR(!S.foldDetail);
 $('qList').addEventListener('input', () => { renderList(); renderDetail(); });
 ['ptabList','ptabList2'].forEach(id => $(id).onclick = () => { S.narrowTab='list'; layout(); });
 ['ptabDetail','ptabDetail2'].forEach(id => $(id).onclick = () => { S.narrowTab='detail'; layout(); });
