@@ -106,6 +106,9 @@ mark.cit.is-sel{box-shadow:0 0 0 2px var(--mimeo)}
 .chip b{font-weight:600;margin-left:4px;opacity:.7}
 .chip.c-gap[aria-pressed="false"]{color:var(--rust);border-color:var(--rust-soft)}
 .search{width:100%;padding:6px 8px;border:1px solid var(--rule);border-radius:2px;font-family:var(--mono);font-size:12px;background:var(--sheet);color:var(--ink)}
+.sort-row{display:flex;align-items:center;gap:7px;margin-bottom:8px}
+.sort-lbl{flex:none;font-family:var(--mono);font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-faint)}
+.sort-row select.search{flex:1}
 
 .section-head{display:flex;align-items:baseline;justify-content:space-between;gap:8px;font-family:var(--mono);font-size:9.5px;
   letter-spacing:.13em;text-transform:uppercase;color:var(--ink-faint);margin:2px 0 8px}
@@ -192,9 +195,13 @@ mark.cit.is-sel{box-shadow:0 0 0 2px var(--mimeo)}
 
 /* modales */
 .veil{position:fixed;inset:0;background:rgba(23,23,27,.45);display:flex;align-items:center;justify-content:center;z-index:60;padding:20px;overflow-y:auto}
-.modal{background:var(--sheet);border-radius:3px;padding:20px;max-width:480px;width:100%;border:1px solid var(--ink);margin:auto}
+.modal{background:var(--sheet);border-radius:3px;padding:20px;max-width:480px;width:100%;border:1px solid var(--ink);margin:auto;position:relative}
+.modal-x{position:absolute;top:12px;right:12px;width:24px;height:24px;border:0;background:transparent;
+  color:var(--ink-faint);display:flex;align-items:center;justify-content:center;border-radius:3px;padding:0}
+.modal-x svg{width:14px;height:14px}
+.modal-x:hover{background:var(--rust-wash);color:var(--rust)}
 .modal.wide{max-width:760px}
-.modal h3{font-family:var(--mono);font-size:12px;letter-spacing:.12em;text-transform:uppercase;margin:0 0 12px;color:var(--mimeo)}
+.modal h3{font-family:var(--mono);font-size:12px;letter-spacing:.12em;text-transform:uppercase;margin:0 26px 12px 0;color:var(--mimeo)}
 .modal label{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-faint);margin:12px 0 4px}
 .modal input[type=text],.modal textarea,.modal select{width:100%;padding:8px;border:1px solid var(--rule);border-radius:2px;font:inherit;background:var(--panel);color:var(--ink)}
 .modal textarea{min-height:80px;font-family:var(--serif);resize:vertical}
@@ -207,13 +214,14 @@ mark.cit.is-sel{box-shadow:0 0 0 2px var(--mimeo)}
 .cfg-group{border-top:1px solid var(--rule);padding-top:12px;margin-top:16px}
 .cfg-group>h4{font-family:var(--mono);font-size:10px;letter-spacing:.11em;text-transform:uppercase;color:var(--ink-faint);margin:0 0 6px}
 
-.bib-doc{font-family:var(--serif);font-size:14.5px;line-height:1.62;max-height:46vh;overflow-y:auto;
+.bib-doc{font-family:var(--serif);font-size:14.5px;line-height:1.62;max-height:46vh;overflow-y:auto;overflow-x:hidden;
   border:1px solid var(--rule);border-radius:2px;background:var(--panel);padding:12px 14px;margin-top:6px}
-.bib-item{position:relative;padding:3px 0 3px 1.7em;text-indent:-1.7em;border-radius:2px;margin-bottom:.4em}
+.bib-item{position:relative;padding:3px 0 3px 1.7em;text-indent:-1.7em;border-radius:2px;margin-bottom:.4em;max-width:100%}
 .bib-item:hover{background:var(--sheet)}
-.bib-ref{outline:0;border-radius:2px}
+.bib-ref{outline:0;border-radius:2px;overflow-wrap:anywhere;word-break:break-word;max-width:100%}
 .bib-ref em{font-style:italic}
-.bib-ref[contenteditable="true"]:focus{background:var(--sheet);box-shadow:0 0 0 2px var(--mimeo);padding:2px 4px}
+.bib-ref[contenteditable="true"]:focus{background:var(--sheet);box-shadow:0 0 0 2px var(--mimeo);
+  padding:2px 4px;margin:-2px -4px}
 .bib-meta{display:flex;align-items:center;gap:5px;flex-wrap:wrap;text-indent:0;margin-top:2px;opacity:0;transition:opacity .12s}
 .bib-item:hover .bib-meta,.bib-item:focus-within .bib-meta{opacity:1}
 .badge{font-family:var(--mono);font-size:8.5px;letter-spacing:.09em;text-transform:uppercase;border:1px solid var(--rule);
@@ -295,6 +303,14 @@ mark.cit.is-sel{box-shadow:0 0 0 2px var(--mimeo)}
       </div>
       <div class="col-sub">
         <div class="chips" id="chips"></div>
+        <div class="sort-row">
+          <span class="sort-lbl" data-i18n="sort_label"></span>
+          <select class="search" id="sortSel">
+            <option value="appear" data-i18n="sort_appear"></option>
+            <option value="alpha" data-i18n="sort_alpha"></option>
+            <option value="status" data-i18n="sort_status"></option>
+          </select>
+        </div>
         <input class="search" id="qList" type="search" autocomplete="off">
       </div>
       <div class="col-body" id="listBody"></div>
@@ -365,6 +381,7 @@ es:{ cfg:'Configuración', load_bib:'Cargar .bib', clear:'Limpiar',
  sec_doubtful:'Dudosas — confirmá o descartá', sec_works:'Obras citadas', sec_norms:'Normativa citada',
  sec_refs:'Referencias', sec_pending:'Sin resolver', sec_norm_refs:'Fuentes normativas',
  a_view:'Ver en el texto',
+ sort_label:'Orden', sort_appear:'Por aparición', sort_alpha:'Alfabético', sort_status:'Por estado', close:'Cerrar', e_pending_modal:'{0} obras todavía sin referencia completa: no van a salir en la lista de abajo.',
  refine_open:'Refinar búsqueda', refine_ph:'Revista, editorial u otras palabras clave', refine_go:'Buscar',
  bulk_p1:'“{0}” aparece también con otro año. ¿Qué hacés con esa?', bulk_kp1:'“{0}” aparece en otra cita dudosa. ¿La confirmás también?',
  bulk_h:'Hay más citas con este nombre', bulk_p:'“{0}” aparece también con otros {1} años distintos. ¿Qué hacés con esas?', bulk_one:'Solo esta', bulk_all:'Todas las de este nombre', bulk_kh:'Confirmar las demás', bulk_kp:'“{0}” aparece en otras {1} citas dudosas. ¿Las confirmás también?',
@@ -439,6 +456,7 @@ en:{ cfg:'Settings', load_bib:'Load .bib', clear:'Clear',
  sec_doubtful:'Uncertain — confirm or discard', sec_works:'Works cited', sec_norms:'Statutes cited',
  sec_refs:'References', sec_pending:'Unresolved', sec_norm_refs:'Legal sources',
  a_view:'Show in text',
+ sort_label:'Sort', sort_appear:'By appearance', sort_alpha:'Alphabetical', sort_status:'By status', close:'Close', e_pending_modal:'{0} works still lack a full reference: they won\'t appear in the list below.',
  refine_open:'Refine search', refine_ph:'Journal, publisher or other keywords', refine_go:'Search',
  bulk_p1:'“{0}” also appears with one other year. What about that one?', bulk_kp1:'“{0}” appears in one other uncertain citation. Confirm that one too?',
  bulk_h:'More citations with this name', bulk_p:'“{0}” also appears with {1} other years. What do you want to do with those?', bulk_one:'Only this one', bulk_all:'All with this name', bulk_kh:'Confirm the others', bulk_kp:'“{0}” appears in {1} other uncertain citations. Confirm those too?',
@@ -513,6 +531,7 @@ pt:{ cfg:'Configurações', load_bib:'Carregar .bib', clear:'Limpar',
  sec_doubtful:'Duvidosas — confirme ou descarte', sec_works:'Obras citadas', sec_norms:'Normas citadas',
  sec_refs:'Referências', sec_pending:'Sem resolver', sec_norm_refs:'Fontes normativas',
  a_view:'Ver no texto',
+ sort_label:'Ordenar', sort_appear:'Por aparição', sort_alpha:'Alfabético', sort_status:'Por status', close:'Fechar', e_pending_modal:'{0} obras ainda sem referência completa: não vão aparecer na lista abaixo.',
  refine_open:'Refinar busca', refine_ph:'Revista, editora ou outras palavras-chave', refine_go:'Buscar',
  bulk_p1:'“{0}” aparece também com outro ano. O que fazer com ela?', bulk_kp1:'“{0}” aparece em outra citação duvidosa. Confirmar também?',
  bulk_h:'Há mais citações com este nome', bulk_p:'“{0}” aparece também com outros {1} anos. O que fazer com elas?', bulk_one:'Só esta', bulk_all:'Todas deste nome', bulk_kh:'Confirmar as demais', bulk_kp:'“{0}” aparece em outras {1} citações duvidosas. Confirmar também?',
@@ -613,7 +632,7 @@ const S = {
   doiCand:new Map(), nameStats:new Map(), vocab:new Map(), refineOpen:null, refineKw:new Map(), bibVenues:new Set(), bibSurnames:new Set(),
   cycle:new Map(), occ:new Map(), lastJumped:null,
   sel:null,              // {kind:'work'|'sug'|'norm', key}
-  filter:'all', changing:new Set(), manualOpen:false,
+  filter:'all', sortMode:'appear', changing:new Set(), manualOpen:false,
   foldText:false, foldDetail:false, narrowTab:'list', hidePanel:false,
   seq:0, busyKey:null, lookupToken:0, selTimer:null,
   w2:320, w3:400
@@ -667,7 +686,7 @@ let saveTimer = null;
 const saveSoon = () => { clearTimeout(saveTimer); saveTimer = setTimeout(saveNow, 700); };
 const snapshot = () => ({ v:4, cfg:CFG, paras:S.paras, hits:S.hits, seq:S.seq, bib:S.bib,
   refOverride:[...S.refOverride], normOverride:[...S.normOverride], origin:[...S.origin],
-  cands:[...S.cands], link:[...S.link], sel:S.sel, filter:S.filter,
+  cands:[...S.cands], link:[...S.link], sel:S.sel, filter:S.filter, sortMode:S.sortMode,
   foldText:S.foldText, foldDetail:S.foldDetail, w2:S.w2, w3:S.w3 });
 function saveNow(){
   const full = snapshot();
@@ -693,7 +712,7 @@ function restore(){
     S.bib = d.bib||[]; S.bibIndex = buildBibIndex(S.bib); indexBibProfile();
     S.refOverride = new Map(d.refOverride||[]); S.normOverride = new Map(d.normOverride||[]);
     S.origin = new Map(d.origin||[]); S.cands = new Map(d.cands||[]); S.link = new Map(d.link||[]);
-    S.sel = d.sel || null; S.filter = d.filter || 'all';
+    S.sel = d.sel || null; S.filter = d.filter || 'all'; S.sortMode = d.sortMode || 'appear';
     S.foldText = !!d.foldText; S.foldDetail = !!d.foldDetail; S.w2 = d.w2 || 320; S.w3 = d.w3 || 400;
     if (S.paras.length) buildVocab();
     return S.paras.length > 0;
@@ -1086,7 +1105,8 @@ function groupWorks(hits){
     w.hits.sort((a,b) => a.para - b.para || a.start - b.start);
     w.manual = S.refOverride.get(w.key) || null;
   });
-  list.sort((a,b) => slug(a.surname).localeCompare(slug(b.surname)) || String(a.year).localeCompare(String(b.year)));
+  /* el orden final (aparición / alfabético / estado) se aplica en recount(),
+     una vez que w.bib ya está asignado y refOf(w) tiene sentido */
   return list;
 }
 function groupNorms(hits){
@@ -1380,22 +1400,30 @@ async function qCrossref(sur, year, kw){
   return (j.message?.items||[]).map(crossrefItem);
 }
 async function qOpenAlex(sur, year, kw){
-  const build = withArea => {
+  /* OpenAlex documenta que "search" y "filter" se pueden combinar en la misma
+     consulta. Antes esta función recibía las palabras clave y nunca las
+     usaba: por eso refinar la búsqueda no cambiaba nada en esta fuente. */
+  const build = (withArea, withSearch) => {
     const f = [`raw_author_name.search:${sur}`];
     if (/^\d{4}$/.test(year)) f.push(`publication_year:${year}`);
     if (withArea && AREAS[CFG.area] && AREAS[CFG.area].length)
       f.push('primary_topic.field.id:' + AREAS[CFG.area].map(n => 'fields/'+n).join('|'));
     if (CFG.pubLang) f.push('language:' + CFG.pubLang);
-    return `https://api.openalex.org/works?filter=${encodeURIComponent(f.join(','))}&per-page=6`;
+    const search = (withSearch && kw.length) ? `&search=${encodeURIComponent(kw.join(' '))}` : '';
+    return `https://api.openalex.org/works?filter=${encodeURIComponent(f.join(','))}${search}&per-page=6`;
   };
-  let j;
-  try { j = await jget(build(true)); }
-  catch(e){ j = await jget(build(false)); }        // si el filtro de área falla, buscamos sin él
-  if (!(j.results||[]).length && (AREAS[CFG.area]||[]).length) { try { j = await jget(build(false)); } catch(e){} }
+  /* área+palabras clave primero; si no aparece nada, vamos aflojando en vez
+     de dejarte sin candidatas por una combinación demasiado estricta */
+  let j = { results: [] };
+  for (const [area, search] of [[true,true],[false,true],[false,false]]){
+    try { j = await jget(build(area, search)); } catch(e){ continue; }
+    if ((j.results||[]).length) break;
+  }
   return (j.results||[]).map(openalexItem);
 }
 async function qDoaj(sur, year, kw){
   let q = `bibjson.author.name:"${sur}"` + (/^\d{4}$/.test(year) ? ` AND bibjson.year:${year}` : '');
+  if (kw.length) q += ` AND (${kw.map(k => `bibjson.title:${k}`).join(' OR ')})`;
   const j = await jget(`https://doaj.org/api/search/articles/${encodeURIComponent(q)}?pageSize=6`);
   return (j.results||[]).map(r => {
     const b = r.bibjson||{}, doi = (b.identifier||[]).find(i => i.type==='doi');
@@ -1897,6 +1925,7 @@ function buildList(style, lang, inclNorms){
   return { refs, norms };
 }
 function openExport(){
+  const pend = pendingWorks().length;
   const v = modal(`<h3>${esc(t('e_modal'))}</h3>
     <div class="two">
       <div><label>${esc(t('e_style'))}</label><select id="xStyle">
@@ -1910,6 +1939,7 @@ function openExport(){
     </div>
     ${S.norms.length ? `<label class="check" style="margin-top:12px"><input type="checkbox" id="xNorms" checked>
       <span>${esc(t('e_incl_norms'))}</span></label>` : ''}
+    ${pend ? `<p class="fwarn" style="margin-top:12px">${esc(t('e_pending_modal', pend))}</p>` : ''}
     <label>${esc(t('e_preview'))}</label>
     <div class="bib-doc" id="xList"></div>
     <p class="mini-note" style="margin-top:8px">${esc(t('e_hint'))}</p>
@@ -2036,6 +2066,21 @@ function bindCommon(b){
   b.querySelectorAll('[data-editfrag]').forEach(x => x.onclick = e => { e.stopPropagation(); openFragEditor(x.dataset.editfrag); });
 }
 
+/* el orden de la lista: aparición (natural, ya viene así de groupWorks),
+   alfabético, o por estado (pendientes primero) */
+function sortWorks(list){
+  const arr = list.slice();
+  if (S.sortMode === 'alpha'){
+    arr.sort((a,b) => slug(a.surname).localeCompare(slug(b.surname)) || String(a.year).localeCompare(String(b.year)));
+  } else if (S.sortMode === 'status'){
+    arr.sort((a,b) => {
+      const pa = refOf(a) ? 1 : 0, pb = refOf(b) ? 1 : 0;
+      if (pa !== pb) return pa - pb;
+      return slug(a.surname).localeCompare(slug(b.surname)) || String(a.year).localeCompare(String(b.year));
+    });
+  }
+  return arr;
+}
 function recount(){
   S.works = groupWorks(S.hits);
   S.norms = groupNorms(S.hits);
@@ -2043,6 +2088,7 @@ function recount(){
     const m = matchWork(w);
     w.bib = m ? m.entry : null; w.ambiguous = m ? m.ambiguous : false; w.alts = m ? m.alts : null;
   });
+  S.works = sortWorks(S.works);
   const sug = S.hits.filter(h => h.status==='sug').length;
   const ok = S.works.filter(w => refOf(w)).length;
   $('counters').innerHTML =
@@ -2112,9 +2158,12 @@ function setFoldR(v){
    ========================================================================= */
 function modal(html, dismissible = true, cls = ''){
   const v = document.createElement('div');
-  v.className = 'veil'; v.innerHTML = `<div class="modal ${cls}">${html}</div>`;
+  v.className = 'veil'; v.innerHTML = `<div class="modal ${cls}">
+    <button class="modal-x" title="${esc(t('close'))}" aria-label="${esc(t('close'))}">${ICON.cross}</button>
+    ${html}</div>`;
   document.body.appendChild(v);
   if (dismissible) v.addEventListener('click', e => { if (e.target===v) v.remove(); });
+  v.querySelector('.modal-x').onclick = () => v.remove();
   return v;
 }
 function openFragEditor(hitId){
@@ -2340,6 +2389,7 @@ function applyI18n(){
   $('btnCfg').innerHTML = ICON.gear + esc(t('cfg'));
   $('btnExport').innerHTML = ICON.down + esc(t('e_export'));
   $('rz1').title = t('resize'); $('rz2').title = t('resize');
+  $('sortSel').value = S.sortMode;
   layout();
 }
 
@@ -2359,6 +2409,7 @@ $('btnExport').onclick = openExport;
 $('btnFold').onclick = () => setFold(!S.foldText);
 $('btnFoldR').onclick = () => setFoldR(!S.foldDetail);
 $('qList').addEventListener('input', () => { renderList(); renderDetail(); });
+$('sortSel').addEventListener('change', () => { S.sortMode = $('sortSel').value; render(); });
 ['ptabList','ptabList2'].forEach(id => $(id).onclick = () => { S.narrowTab='list'; layout(); });
 ['ptabDetail','ptabDetail2'].forEach(id => $(id).onclick = () => { S.narrowTab='detail'; layout(); });
 $('btnPanel').onclick = () => { S.hidePanel = !S.hidePanel; layout(); };
