@@ -19,7 +19,7 @@
   --sans:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",sans-serif;
 }
 *{box-sizing:border-box}
-html,body{margin:0;padding:0;height:100%}
+html,body{margin:0;padding:0;height:100%;overflow:hidden}
 body{background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased}
 button{font:inherit;cursor:pointer}
 :focus-visible{outline:2px solid var(--mimeo);outline-offset:2px}
@@ -365,7 +365,7 @@ es:{ cfg:'Configuración', load_bib:'Cargar .bib', clear:'Limpiar',
  sec_doubtful:'Dudosas — confirmá o descartá', sec_works:'Obras citadas', sec_norms:'Normativa citada',
  sec_refs:'Referencias', sec_pending:'Sin resolver', sec_norm_refs:'Fuentes normativas',
  a_view:'Ver en el texto',
- refine_open:'Refinar búsqueda', refine_ph:'Revista, editorial u otras palabras clave', refine_go:'Buscar con esto',
+ refine_open:'Refinar búsqueda', refine_ph:'Revista, editorial u otras palabras clave', refine_go:'Buscar',
  bulk_p1:'“{0}” aparece también con otro año. ¿Qué hacés con esa?', bulk_kp1:'“{0}” aparece en otra cita dudosa. ¿La confirmás también?',
  bulk_h:'Hay más citas con este nombre', bulk_p:'“{0}” aparece también con otros {1} años distintos. ¿Qué hacés con esas?', bulk_one:'Solo esta', bulk_all:'Todas las de este nombre', bulk_kh:'Confirmar las demás', bulk_kp:'“{0}” aparece en otras {1} citas dudosas. ¿Las confirmás también?',
  sel_none:'Seleccioná una cita de la lista para buscar su referencia completa.', fl_all:'Todas', fl_pend:'Sin resolver', fl_sug:'Dudosas', fl_norm:'Normativa', f_change:'Cambiar', f_clear:'Quitar referencia', f_chosen:'Referencia elegida', collapse:'Plegar el texto',collapse_r:'Plegar las referencias', expand:'Mostrar el texto',expand_r:'Mostrar las referencias', exp_list:'Copiar lista autor-año', exp_refs:'Copiar referencias completas', kb_hint:'↑↓ recorrer la lista · ←→ apariciones en el texto', sug_h:'Cita dudosa', sug_p:'Fijate en el manuscrito, a la izquierda, si esto es realmente una cita.', norm_edit:'Referencia de esta norma', tab_detail:'Referencia',
@@ -439,7 +439,7 @@ en:{ cfg:'Settings', load_bib:'Load .bib', clear:'Clear',
  sec_doubtful:'Uncertain — confirm or discard', sec_works:'Works cited', sec_norms:'Statutes cited',
  sec_refs:'References', sec_pending:'Unresolved', sec_norm_refs:'Legal sources',
  a_view:'Show in text',
- refine_open:'Refine search', refine_ph:'Journal, publisher or other keywords', refine_go:'Search with this',
+ refine_open:'Refine search', refine_ph:'Journal, publisher or other keywords', refine_go:'Search',
  bulk_p1:'“{0}” also appears with one other year. What about that one?', bulk_kp1:'“{0}” appears in one other uncertain citation. Confirm that one too?',
  bulk_h:'More citations with this name', bulk_p:'“{0}” also appears with {1} other years. What do you want to do with those?', bulk_one:'Only this one', bulk_all:'All with this name', bulk_kh:'Confirm the others', bulk_kp:'“{0}” appears in {1} other uncertain citations. Confirm those too?',
  sel_none:'Select a citation from the list to find its full reference.', fl_all:'All', fl_pend:'Unresolved', fl_sug:'Uncertain', fl_norm:'Statutes', f_change:'Change', f_clear:'Remove reference', f_chosen:'Chosen reference', collapse:'Collapse the text',collapse_r:'Collapse the references', expand:'Show the text',expand_r:'Show the references', exp_list:'Copy author-year list', exp_refs:'Copy full references', kb_hint:'↑↓ move through the list · ←→ occurrences in the text', sug_h:'Uncertain citation', sug_p:'Check the manuscript on the left to see whether this really is a citation.', norm_edit:'Reference for this statute', tab_detail:'Reference',
@@ -513,7 +513,7 @@ pt:{ cfg:'Configurações', load_bib:'Carregar .bib', clear:'Limpar',
  sec_doubtful:'Duvidosas — confirme ou descarte', sec_works:'Obras citadas', sec_norms:'Normas citadas',
  sec_refs:'Referências', sec_pending:'Sem resolver', sec_norm_refs:'Fontes normativas',
  a_view:'Ver no texto',
- refine_open:'Refinar busca', refine_ph:'Revista, editora ou outras palavras-chave', refine_go:'Buscar com isto',
+ refine_open:'Refinar busca', refine_ph:'Revista, editora ou outras palavras-chave', refine_go:'Buscar',
  bulk_p1:'“{0}” aparece também com outro ano. O que fazer com ela?', bulk_kp1:'“{0}” aparece em outra citação duvidosa. Confirmar também?',
  bulk_h:'Há mais citações com este nome', bulk_p:'“{0}” aparece também com outros {1} anos. O que fazer com elas?', bulk_one:'Só esta', bulk_all:'Todas deste nome', bulk_kh:'Confirmar as demais', bulk_kp:'“{0}” aparece em outras {1} citações duvidosas. Confirmar também?',
  sel_none:'Selecione uma citação da lista para buscar sua referência completa.', fl_all:'Todas', fl_pend:'Sem resolver', fl_sug:'Duvidosas', fl_norm:'Normas', f_change:'Trocar', f_clear:'Remover referência', f_chosen:'Referência escolhida', collapse:'Recolher o texto',collapse_r:'Recolher as referências', expand:'Mostrar o texto',expand_r:'Mostrar as referências', exp_list:'Copiar lista autor-ano', exp_refs:'Copiar referências completas', kb_hint:'↑↓ percorrer a lista · ←→ ocorrências no texto', sug_h:'Citação duvidosa', sug_p:'Veja no manuscrito, à esquerda, se isto é mesmo uma citação.', norm_edit:'Referência desta norma', tab_detail:'Referência',
@@ -1199,6 +1199,11 @@ function matchWork(w){
    ========================================================================= */
 const tokenize = s => deacc(String(s)).toLowerCase().replace(/[^a-z0-9áéíóúñü\s]/g,' ')
   .split(/\s+/).filter(w => w.length >= 5 && !STOP.has(w) && !/^\d+$/.test(w));
+/* para lo que escribís a mano en "refinar búsqueda" el filtro es más laxo:
+   una revista o editorial corta ("OIT", "UBA") no debería perderse por el
+   umbral de longitud que sí tiene sentido para barrer prosa corrida */
+const tokenizeManual = s => deacc(String(s)).toLowerCase().replace(/[^a-z0-9áéíóúñü\s]/g,' ')
+  .split(/\s+/).filter(w => w.length >= 2 && !STOP.has(w));
 
 function buildVocab(){
   const f = new Map();
@@ -1208,11 +1213,14 @@ function buildVocab(){
 }
 /* términos que rodean a esta cita en particular */
 function ctxWords(w, n = 5){
+  const manualRaw = S.refineKw.get(w.key);
+  if (manualRaw){
+    /* al refinar, la búsqueda usa SOLO lo que escribiste — nada de contexto
+       automático mezclado, para que el resultado cambie de verdad */
+    return tokenizeManual(manualRaw).slice(0, 8);
+  }
   const bag = new Map();
   const own = new Set(slug(w.authors).match(/[a-z]+/g) || []);
-  /* lo que escribiste a mano en "refinar búsqueda" domina el ranking */
-  const manual = tokenize(S.refineKw.get(w.key) || '');
-  manual.forEach(t2 => bag.set(t2, 10));
   if (CFG.useCtx) w.hits.slice(0, 4).forEach(h => {
     const txt = S.paras[h.para] ? S.paras[h.para].text : '';
     const seg = txt.slice(Math.max(0, h.start-240), Math.min(txt.length, h.end+240));
@@ -1422,8 +1430,15 @@ function scoreCand(e, w, kw){
   s += Math.min(co, 2) * 1.2;
   const tt = new Set(tokenize(e.fields.title || ''));
   let voc = 0, ctx = 0;
-  tt.forEach(x => { if (S.vocab.has(x)) voc++; if (kw.includes(x)) ctx++; });
-  s += Math.min(voc, 4) * 0.7 + Math.min(ctx, 3) * 1.3;
+  tt.forEach(x => { if (S.vocab.has(x)) voc++; });
+  /* coincidencia por subcadena, no por token exacto: así una palabra clave
+     corta ("OIT", "UBA") escrita a mano también cuenta */
+  const titleSlug = slug(e.fields.title || '');
+  kw.forEach(k => { if (k.length >= 3 && titleSlug.includes(k)) ctx++; });
+  /* si el candidato viene de "refinar búsqueda", kw es lo que escribiste a
+     mano: pesa más fuerte porque es una decisión deliberada, no una pista */
+  const kwWeight = S.refineKw.has(w.key) ? 2.4 : 1.3;
+  s += Math.min(voc, 4) * 0.7 + Math.min(ctx, 4) * kwWeight;
   if (e._lang && CFG.pubLang && e._lang === CFG.pubLang) s += 1;
   else if (e._lang && !CFG.pubLang && e._lang === CFG.refLang) s += 0.5;
   if (e.fields.doi) s += 0.5;
@@ -1569,6 +1584,9 @@ function select(kind, key, jump = true){
   S.lastJumped = null;
   clearTimeout(S.selTimer);
   render();
+  /* seleccionar desde cualquier lado —lista, teclado, o un click en el
+     manuscrito— siempre trae la ficha correspondiente a la vista */
+  document.querySelector(`[data-card="${kind}:${key}"]`)?.scrollIntoView?.({block:'nearest'});
   if (jump){
     const it = selItem();
     const hits = it && (it.hits || [it]);
@@ -1744,8 +1762,7 @@ function renderWork(body, w){
       </div>`;
 
     if (S.refineOpen === w.key){
-      html += `<div class="manual"><input type="text" id="refBox" value="${esc(S.refineKw.get(w.key)||'')}"
-          placeholder="${esc(t('refine_ph'))}">
+      html += `<div class="manual"><textarea id="refBox" placeholder="${esc(t('refine_ph'))}">${esc(S.refineKw.get(w.key)||'')}</textarea>
         <div class="manual-acts">
           <button class="btn btn--mini btn--ghost" id="refCancel">${esc(t('cancel'))}</button>
           <button class="btn btn--mini btn--key" id="refGo">${esc(t('refine_go'))}</button>
@@ -1754,7 +1771,7 @@ function renderWork(body, w){
       html += `<div class="manual"><textarea id="manBox" placeholder="${esc(t('f_manual_ph'))}">${esc(chosen?stripTags(chosen):'')}</textarea>
         <div class="manual-acts">
           <button class="btn btn--mini btn--ghost" id="manCancel">${esc(t('cancel'))}</button>
-          <button class="btn btn--mini btn--key" id="manSave">${esc(t('f_save_next'))}</button>
+          <button class="btn btn--mini btn--key" id="manSave">${esc(t('save'))}</button>
         </div></div>`;
     } else {
       html += `<div class="opt-acts" style="margin-bottom:12px">
@@ -2078,7 +2095,17 @@ function layout(){
   $('btnFoldR').title = t(S.foldDetail ? 'expand_r' : 'collapse_r');
   $('ruler').title = t('ruler_lbl');
 }
-function setFold(v){ S.foldText = v; layout(); requestAnimationFrame(drawRuler); saveSoon(); }
+function setFold(v){
+  S.foldText = v;
+  /* nunca las dos plegadas a la vez: si cierro una, la otra se abre */
+  if (v && S.foldDetail) S.foldDetail = false;
+  layout(); requestAnimationFrame(drawRuler); saveSoon();
+}
+function setFoldR(v){
+  S.foldDetail = v;
+  if (v && S.foldText) S.foldText = false;
+  layout(); requestAnimationFrame(drawRuler); saveSoon();
+}
 
 /* =========================================================================
    MODALES
@@ -2330,7 +2357,7 @@ $('btnClear').onclick = () => { if (confirm(t('clear_confirm'))) wipeAll(); };
 $('btnCfg').onclick = openConfig;
 $('btnExport').onclick = openExport;
 $('btnFold').onclick = () => setFold(!S.foldText);
-$('btnFoldR').onclick = () => { S.foldDetail = !S.foldDetail; layout(); requestAnimationFrame(drawRuler); saveSoon(); };
+$('btnFoldR').onclick = () => setFoldR(!S.foldDetail);
 $('qList').addEventListener('input', () => { renderList(); renderDetail(); });
 ['ptabList','ptabList2'].forEach(id => $(id).onclick = () => { S.narrowTab='list'; layout(); });
 ['ptabDetail','ptabDetail2'].forEach(id => $(id).onclick = () => { S.narrowTab='detail'; layout(); });
