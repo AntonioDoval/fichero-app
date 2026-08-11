@@ -98,22 +98,40 @@ mark.cit.is-sel{box-shadow:0 0 0 2px var(--mimeo)}
 .col-list .col-sub{background:var(--panel)}
 .col-body{flex:1;overflow-y:auto;padding:12px}
 
-.chips{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:8px}
-.chip{border:1px solid var(--rule);background:var(--sheet);color:var(--ink-soft);font-family:var(--mono);
-  font-size:9px;letter-spacing:.07em;text-transform:uppercase;padding:4px 7px;border-radius:10px}
-.chip:hover{border-color:var(--ink-faint)}
-.chip[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:var(--sheet)}
-.chip b{font-weight:600;margin-left:4px;opacity:.7}
-.chip.c-gap[aria-pressed="false"]{color:var(--rust);border-color:var(--rust-soft)}
 .search{width:100%;padding:6px 8px;border:1px solid var(--rule);border-radius:2px;font-family:var(--mono);font-size:12px;background:var(--sheet);color:var(--ink)}
-.sort-row{display:flex;align-items:center;gap:7px;margin-bottom:8px}
-.sort-lbl{flex:none;font-family:var(--mono);font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-faint)}
-.sort-row select.search{flex:1}
+.col-title{display:flex;align-items:baseline;justify-content:space-between;gap:8px;padding:10px 12px 9px;
+  font-family:var(--mono);font-size:10px;letter-spacing:.13em;text-transform:uppercase;color:var(--ink-faint);
+  background:var(--panel);border-bottom:1px solid var(--rule);flex:none}
+.col-title b{color:var(--ink-soft);font-weight:600}
+.search-row{display:flex;align-items:stretch;gap:6px}
+.search-row .search{flex:1}
+.sort-btn{flex:none;width:32px;border:1px solid var(--rule);border-radius:2px;background:var(--sheet)}
+.sort-btn:hover{background:var(--rule);color:var(--ink)}
+.sort-btn.is-open{background:var(--mimeo);border-color:var(--mimeo);color:#fff}
+.sort-menu{position:absolute;z-index:50;background:var(--sheet);border:1px solid var(--ink);border-radius:3px;
+  padding:4px;box-shadow:0 4px 14px rgba(0,0,0,.2);min-width:170px;display:flex;flex-direction:column;gap:1px}
+.sort-opt{display:flex;align-items:center;gap:7px;border:0;background:transparent;color:var(--ink-soft);
+  font-family:var(--mono);font-size:11.5px;letter-spacing:.03em;text-align:left;padding:7px 8px;border-radius:2px}
+.sort-opt:hover{background:var(--panel)}
+.sort-opt.is-active{color:var(--mimeo);font-weight:600}
+.sort-opt svg{width:13px;height:13px;flex:none;visibility:hidden}
+.sort-opt.is-active svg{visibility:visible}
 
 .section-head{display:flex;align-items:baseline;justify-content:space-between;gap:8px;font-family:var(--mono);font-size:9.5px;
   letter-spacing:.13em;text-transform:uppercase;color:var(--ink-faint);margin:2px 0 8px}
 .gap{margin-top:18px}
 .blank{color:var(--ink-faint);font-size:13px;line-height:1.6;padding:8px 2px}
+
+.sec-head{width:100%;display:flex;align-items:center;gap:7px;border:0;border-radius:2px;
+  background:var(--sheet);border:1px solid var(--rule);padding:7px 9px;margin:0 0 6px;
+  font-family:var(--mono);font-size:10px;letter-spacing:.11em;text-transform:uppercase;color:var(--ink-soft)}
+.sec-head ~ .sec-head{margin-top:16px}
+.sec-head:hover{border-color:var(--ink-faint)}
+.sec-chev{flex:none;display:flex;transition:transform .12s;color:var(--ink-faint)}
+.sec-chev svg{width:12px;height:12px}
+.sec-chev.is-collapsed{transform:rotate(-90deg)}
+.sec-label{flex:1;text-align:left}
+.sec-count{flex:none;font-weight:600;color:var(--ink-faint)}
 
 .ficha{background:var(--sheet);border:1px solid var(--rule);border-left:3px solid var(--mimeo);border-radius:2px;
   padding:6px 8px;margin-bottom:5px;cursor:pointer}
@@ -216,7 +234,7 @@ mark.cit.is-sel{box-shadow:0 0 0 2px var(--mimeo)}
 
 .bib-doc{font-family:var(--serif);font-size:14.5px;line-height:1.62;max-height:46vh;overflow-y:auto;overflow-x:hidden;
   border:1px solid var(--rule);border-radius:2px;background:var(--panel);padding:12px 14px;margin-top:6px}
-.bib-item{position:relative;padding:3px 0 3px 1.7em;text-indent:-1.7em;border-radius:2px;margin-bottom:.4em;max-width:100%}
+.bib-item{position:relative;padding:3px 0;border-radius:2px;margin-bottom:.4em;max-width:100%}
 .bib-item:hover{background:var(--sheet)}
 .bib-ref{outline:0;border-radius:2px;overflow-wrap:anywhere;word-break:break-word;max-width:100%}
 .bib-ref em{font-style:italic}
@@ -301,17 +319,12 @@ mark.cit.is-sel{box-shadow:0 0 0 2px var(--mimeo)}
         <button class="ptab" id="ptabList" role="tab" aria-selected="true"></button>
         <button class="ptab" id="ptabDetail" role="tab" aria-selected="false"></button>
       </div>
+      <div class="col-title" id="colTitle"></div>
       <div class="col-sub">
-        <div class="chips" id="chips"></div>
-        <div class="sort-row">
-          <span class="sort-lbl" data-i18n="sort_label"></span>
-          <select class="search" id="sortSel">
-            <option value="appear" data-i18n="sort_appear"></option>
-            <option value="alpha" data-i18n="sort_alpha"></option>
-            <option value="status" data-i18n="sort_status"></option>
-          </select>
+        <div class="search-row">
+          <input class="search" id="qList" type="search" autocomplete="off">
+          <button class="ico sort-btn" id="sortBtn"></button>
         </div>
-        <input class="search" id="qList" type="search" autocomplete="off">
       </div>
       <div class="col-body" id="listBody"></div>
     </aside>
@@ -336,6 +349,7 @@ mark.cit.is-sel{box-shadow:0 0 0 2px var(--mimeo)}
 <button class="btn btn--key fab" id="btnExport"></button>
 <button class="btn btn--ghost fab hidden" id="btnPanel" style="right:150px"></button>
 <div class="pop hidden" id="pop"></div>
+<div class="sort-menu hidden" id="sortMenu"></div>
 <input type="file" id="fileDoc" accept=".docx" class="hidden">
 <input type="file" id="fileBib" accept=".bib,.bibtex,.txt" class="hidden">
 
@@ -360,6 +374,8 @@ const ICON = {
   gear:  SV('<circle cx="8" cy="8" r="2.2"/><path d="M8 1.6v1.6M8 12.8v1.6M14.4 8h-1.6M3.2 8H1.6M12.5 3.5l-1.1 1.1M4.6 11.4l-1.1 1.1M12.5 12.5l-1.1-1.1M4.6 4.6L3.5 3.5"/>'),
   ext:   SV('<path d="M9.4 2.4h4.2v4.2M13.6 2.4L7.4 8.6M11.6 9.4v3.2a1 1 0 01-1 1H3.4a1 1 0 01-1-1V5.4a1 1 0 011-1h3.2"/>'),
   tune:  SV('<path d="M2 5h7M11 5h3M2 11h3M7 11h7M5.5 3v4M9.5 9v4"/>'),
+  sort:  SV('<path d="M4.5 3v10M4.5 3L2 5.6M4.5 3l2.5 2.6M11.5 13V3M11.5 13l-2.5-2.6M11.5 13l2.5-2.6"/>'),
+  chev:  SV('<path d="M4 6.2l4 4 4-4"/>'),
   panelL:SV('<rect x="1.9" y="2.9" width="12.2" height="10.2" rx="1.6"/><path d="M6.1 2.9v10.2"/>'),
   panelR:SV('<rect x="1.9" y="2.9" width="12.2" height="10.2" rx="1.6"/><path d="M9.9 2.9v10.2"/>'),
   redo:  SV('<path d="M13.4 8a5.4 5.4 0 11-1.9-4.1M13.6 2.4v3.4h-3.4"/>')
@@ -378,14 +394,14 @@ es:{ cfg:'Configuración', load_bib:'Cargar .bib', clear:'Limpiar',
  paste_btn:'Analizar texto pegado',
  privacy:'Sin servidor, sin cuenta, sin base de datos. El .docx se lee en tu máquina. Solo salen datos si pedís buscar referencias, y en ese caso viajan el apellido, el año y algunas palabras clave del contexto.',
  search_ph:'Buscar entre las citas…',
- sec_doubtful:'Dudosas — confirmá o descartá', sec_works:'Obras citadas', sec_norms:'Normativa citada',
+ sec_doubtful:'Dudosas', sec_done:'Completas', sec_works:'Obras citadas', sec_norms:'Normativa citada',
  sec_refs:'Referencias', sec_pending:'Sin resolver', sec_norm_refs:'Fuentes normativas',
  a_view:'Ver en el texto',
  sort_label:'Orden', sort_appear:'Por aparición', sort_alpha:'Alfabético', sort_status:'Por estado', close:'Cerrar', e_pending_modal:'{0} obras todavía sin referencia completa: no van a salir en la lista de abajo.',
  refine_open:'Refinar búsqueda', refine_ph:'Revista, editorial u otras palabras clave', refine_go:'Buscar',
  bulk_p1:'“{0}” aparece también con otro año. ¿Qué hacés con esa?', bulk_kp1:'“{0}” aparece en otra cita dudosa. ¿La confirmás también?',
  bulk_h:'Hay más citas con este nombre', bulk_p:'“{0}” aparece también con otros {1} años distintos. ¿Qué hacés con esas?', bulk_one:'Solo esta', bulk_all:'Todas las de este nombre', bulk_kh:'Confirmar las demás', bulk_kp:'“{0}” aparece en otras {1} citas dudosas. ¿Las confirmás también?',
- sel_none:'Seleccioná una cita de la lista para buscar su referencia completa.', fl_all:'Todas', fl_pend:'Sin resolver', fl_sug:'Dudosas', fl_norm:'Normativa', f_change:'Cambiar', f_clear:'Quitar referencia', f_chosen:'Referencia elegida', collapse:'Plegar el texto',collapse_r:'Plegar las referencias', expand:'Mostrar el texto',expand_r:'Mostrar las referencias', exp_list:'Copiar lista autor-año', exp_refs:'Copiar referencias completas', kb_hint:'↑↓ recorrer la lista · ←→ apariciones en el texto', sug_h:'Cita dudosa', sug_p:'Fijate en el manuscrito, a la izquierda, si esto es realmente una cita.', norm_edit:'Referencia de esta norma', tab_detail:'Referencia',
+ sel_none:'Seleccioná una cita de la lista para buscar su referencia completa.', fl_all:'Todas', fl_pend:'Sin resolver', fl_sug:'Dudosas', fl_norm:'Normativa', f_change:'Cambiar', f_clear:'Quitar referencia', f_chosen:'Referencia elegida', collapse:'Plegar el texto',collapse_r:'Plegar las referencias', expand:'Mostrar el texto',expand_r:'Mostrar las referencias', exp_list:'Copiar lista autor-año', exp_refs:'Copiar referencias completas', kb_hint:'↑↓ recorrer · ←→ apariciones · 1 conservar · 2 quitar · 3 editar', sug_h:'Cita dudosa', sug_p:'Fijate en el manuscrito, a la izquierda, si esto es realmente una cita.', norm_edit:'Referencia de esta norma', tab_detail:'Referencia',
  m_open:'Ingresar manualmente', m_ident:'Ingresar DOI o ISBN', m_fetch:'Traer datos', m_ref:'Referencia completa', m_fetching:'Recuperando…', m_notfound:'No se pudo recuperar nada con eso. Completá la referencia a mano.', m_filled:'Referencia recuperada', m_linkonly:'Guardé el enlace, pero la referencia hay que escribirla.',
  occ_one:'1 aparición', occ_n:'{0} de {1} apariciones', occ_next:'Ver la siguiente aparición', occ_prev:'Ver la anterior', e_link:'Abrir la publicación', a_edit:'Editar', a_remove:'Quitar', a_keep:'Conservar cita', a_drop:'Quitar cita',
  merged:'Unificada con la forma “et al.”.',
@@ -453,14 +469,14 @@ en:{ cfg:'Settings', load_bib:'Load .bib', clear:'Clear',
  paste_btn:'Analyse pasted text',
  privacy:'No server, no account, no database. The .docx is read on your machine. Data only leaves when you search for references, and then only the surname, the year and a few context keywords.',
  search_ph:'Search the citations…',
- sec_doubtful:'Uncertain — confirm or discard', sec_works:'Works cited', sec_norms:'Statutes cited',
+ sec_doubtful:'Uncertain', sec_done:'Complete', sec_works:'Works cited', sec_norms:'Statutes cited',
  sec_refs:'References', sec_pending:'Unresolved', sec_norm_refs:'Legal sources',
  a_view:'Show in text',
  sort_label:'Sort', sort_appear:'By appearance', sort_alpha:'Alphabetical', sort_status:'By status', close:'Close', e_pending_modal:'{0} works still lack a full reference: they won\'t appear in the list below.',
  refine_open:'Refine search', refine_ph:'Journal, publisher or other keywords', refine_go:'Search',
  bulk_p1:'“{0}” also appears with one other year. What about that one?', bulk_kp1:'“{0}” appears in one other uncertain citation. Confirm that one too?',
  bulk_h:'More citations with this name', bulk_p:'“{0}” also appears with {1} other years. What do you want to do with those?', bulk_one:'Only this one', bulk_all:'All with this name', bulk_kh:'Confirm the others', bulk_kp:'“{0}” appears in {1} other uncertain citations. Confirm those too?',
- sel_none:'Select a citation from the list to find its full reference.', fl_all:'All', fl_pend:'Unresolved', fl_sug:'Uncertain', fl_norm:'Statutes', f_change:'Change', f_clear:'Remove reference', f_chosen:'Chosen reference', collapse:'Collapse the text',collapse_r:'Collapse the references', expand:'Show the text',expand_r:'Show the references', exp_list:'Copy author-year list', exp_refs:'Copy full references', kb_hint:'↑↓ move through the list · ←→ occurrences in the text', sug_h:'Uncertain citation', sug_p:'Check the manuscript on the left to see whether this really is a citation.', norm_edit:'Reference for this statute', tab_detail:'Reference',
+ sel_none:'Select a citation from the list to find its full reference.', fl_all:'All', fl_pend:'Unresolved', fl_sug:'Uncertain', fl_norm:'Statutes', f_change:'Change', f_clear:'Remove reference', f_chosen:'Chosen reference', collapse:'Collapse the text',collapse_r:'Collapse the references', expand:'Show the text',expand_r:'Show the references', exp_list:'Copy author-year list', exp_refs:'Copy full references', kb_hint:'↑↓ move · ←→ occurrences · 1 keep · 2 remove · 3 edit', sug_h:'Uncertain citation', sug_p:'Check the manuscript on the left to see whether this really is a citation.', norm_edit:'Reference for this statute', tab_detail:'Reference',
  m_open:'Enter manually', m_ident:'Enter a DOI or ISBN', m_fetch:'Fetch data', m_ref:'Full reference', m_fetching:'Fetching…', m_notfound:'Nothing could be retrieved from that. Write the reference by hand.', m_filled:'Reference retrieved', m_linkonly:'Link saved, but the reference has to be written.',
  occ_one:'1 occurrence', occ_n:'{0} of {1} occurrences', occ_next:'Show next occurrence', occ_prev:'Show previous', e_link:'Open the publication', a_edit:'Edit', a_remove:'Remove', a_keep:'Keep citation', a_drop:'Remove citation',
  merged:'Merged with the “et al.” form.',
@@ -528,14 +544,14 @@ pt:{ cfg:'Configurações', load_bib:'Carregar .bib', clear:'Limpar',
  paste_btn:'Analisar texto colado',
  privacy:'Sem servidor, sem conta, sem banco de dados. O .docx é lido na sua máquina. Só saem dados se você pedir para buscar referências, e nesse caso vão apenas o sobrenome, o ano e algumas palavras-chave.',
  search_ph:'Buscar entre as citações…',
- sec_doubtful:'Duvidosas — confirme ou descarte', sec_works:'Obras citadas', sec_norms:'Normas citadas',
+ sec_doubtful:'Duvidosas', sec_done:'Completas', sec_works:'Obras citadas', sec_norms:'Normas citadas',
  sec_refs:'Referências', sec_pending:'Sem resolver', sec_norm_refs:'Fontes normativas',
  a_view:'Ver no texto',
  sort_label:'Ordenar', sort_appear:'Por aparição', sort_alpha:'Alfabético', sort_status:'Por status', close:'Fechar', e_pending_modal:'{0} obras ainda sem referência completa: não vão aparecer na lista abaixo.',
  refine_open:'Refinar busca', refine_ph:'Revista, editora ou outras palavras-chave', refine_go:'Buscar',
  bulk_p1:'“{0}” aparece também com outro ano. O que fazer com ela?', bulk_kp1:'“{0}” aparece em outra citação duvidosa. Confirmar também?',
  bulk_h:'Há mais citações com este nome', bulk_p:'“{0}” aparece também com outros {1} anos. O que fazer com elas?', bulk_one:'Só esta', bulk_all:'Todas deste nome', bulk_kh:'Confirmar as demais', bulk_kp:'“{0}” aparece em outras {1} citações duvidosas. Confirmar também?',
- sel_none:'Selecione uma citação da lista para buscar sua referência completa.', fl_all:'Todas', fl_pend:'Sem resolver', fl_sug:'Duvidosas', fl_norm:'Normas', f_change:'Trocar', f_clear:'Remover referência', f_chosen:'Referência escolhida', collapse:'Recolher o texto',collapse_r:'Recolher as referências', expand:'Mostrar o texto',expand_r:'Mostrar as referências', exp_list:'Copiar lista autor-ano', exp_refs:'Copiar referências completas', kb_hint:'↑↓ percorrer a lista · ←→ ocorrências no texto', sug_h:'Citação duvidosa', sug_p:'Veja no manuscrito, à esquerda, se isto é mesmo uma citação.', norm_edit:'Referência desta norma', tab_detail:'Referência',
+ sel_none:'Selecione uma citação da lista para buscar sua referência completa.', fl_all:'Todas', fl_pend:'Sem resolver', fl_sug:'Duvidosas', fl_norm:'Normas', f_change:'Trocar', f_clear:'Remover referência', f_chosen:'Referência escolhida', collapse:'Recolher o texto',collapse_r:'Recolher as referências', expand:'Mostrar o texto',expand_r:'Mostrar as referências', exp_list:'Copiar lista autor-ano', exp_refs:'Copiar referências completas', kb_hint:'↑↓ percorrer · ←→ ocorrências · 1 manter · 2 remover · 3 editar', sug_h:'Citação duvidosa', sug_p:'Veja no manuscrito, à esquerda, se isto é mesmo uma citação.', norm_edit:'Referência desta norma', tab_detail:'Referência',
  m_open:'Inserir manualmente', m_ident:'Inserir DOI ou ISBN', m_fetch:'Buscar dados', m_ref:'Referência completa', m_fetching:'Recuperando…', m_notfound:'Não foi possível recuperar nada com isso. Escreva a referência à mão.', m_filled:'Referência recuperada', m_linkonly:'Guardei o link, mas a referência precisa ser escrita.',
  occ_one:'1 ocorrência', occ_n:'{0} de {1} ocorrências', occ_next:'Ver a próxima ocorrência', occ_prev:'Ver a anterior', e_link:'Abrir a publicação', a_edit:'Editar', a_remove:'Remover', a_keep:'Manter citação', a_drop:'Remover citação',
  merged:'Unificada com a forma “et al.”.',
@@ -632,7 +648,7 @@ const S = {
   doiCand:new Map(), nameStats:new Map(), vocab:new Map(), refineOpen:null, refineKw:new Map(), bibVenues:new Set(), bibSurnames:new Set(),
   cycle:new Map(), occ:new Map(), lastJumped:null,
   sel:null,              // {kind:'work'|'sug'|'norm', key}
-  filter:'all', sortMode:'appear', changing:new Set(), manualOpen:false,
+  filter:'all', sortMode:'appear', secCollapsed:new Set(), changing:new Set(), manualOpen:false,
   foldText:false, foldDetail:false, narrowTab:'list', hidePanel:false,
   seq:0, busyKey:null, lookupToken:0, selTimer:null,
   w2:320, w3:400
@@ -686,7 +702,7 @@ let saveTimer = null;
 const saveSoon = () => { clearTimeout(saveTimer); saveTimer = setTimeout(saveNow, 700); };
 const snapshot = () => ({ v:4, cfg:CFG, paras:S.paras, hits:S.hits, seq:S.seq, bib:S.bib,
   refOverride:[...S.refOverride], normOverride:[...S.normOverride], origin:[...S.origin],
-  cands:[...S.cands], link:[...S.link], sel:S.sel, filter:S.filter, sortMode:S.sortMode,
+  cands:[...S.cands], link:[...S.link], sel:S.sel, filter:S.filter, sortMode:S.sortMode, secCollapsed:[...S.secCollapsed],
   foldText:S.foldText, foldDetail:S.foldDetail, w2:S.w2, w3:S.w3 });
 function saveNow(){
   const full = snapshot();
@@ -713,6 +729,7 @@ function restore(){
     S.refOverride = new Map(d.refOverride||[]); S.normOverride = new Map(d.normOverride||[]);
     S.origin = new Map(d.origin||[]); S.cands = new Map(d.cands||[]); S.link = new Map(d.link||[]);
     S.sel = d.sel || null; S.filter = d.filter || 'all'; S.sortMode = d.sortMode || 'appear';
+    S.secCollapsed = new Set(d.secCollapsed || []);
     S.foldText = !!d.foldText; S.foldDetail = !!d.foldDetail; S.w2 = d.w2 || 320; S.w3 = d.w3 || 400;
     if (S.paras.length) buildVocab();
     return S.paras.length > 0;
@@ -1589,19 +1606,21 @@ function selItem(){
   if (S.sel.kind === 'norm') return S.norms.find(n => n.key === S.sel.key) || null;
   return S.hits.find(h => h.id === S.sel.key && h.status === 'sug') || null;
 }
-/* lista visible según filtro y búsqueda; también gobierna el teclado y las flechas */
+/* lista visible según búsqueda, en el mismo orden que las secciones de la
+   columna: dudosas, incompletas, completas, normativa. Gobierna el teclado
+   y el indicador "X de Y" de la columna de detalle */
 function visibleItems(){
   const q = slug($('qList').value || '');
   const hit = s => !q || slug(s).includes(q);
   const out = [];
-  const wantSug = S.filter === 'all' || S.filter === 'sug';
-  const wantWork = S.filter === 'all' || S.filter === 'pend';
-  const wantNorm = S.filter === 'all' || S.filter === 'norm';
-  if (wantSug) S.hits.filter(h => h.status === 'sug' && hit(h.authors+h.year+fragOf(h)))
+  S.hits.filter(h => h.status === 'sug' && hit(h.authors+h.year+fragOf(h)))
     .forEach(h => out.push({kind:'sug', key:h.id, hits:[h], label:`${h.authors}, ${h.year}`, ref:h}));
-  if (wantWork) S.works.filter(w => hit(w.authors+w.year) && (S.filter !== 'pend' || !refOf(w)))
+  const worksF = S.works.filter(w => hit(w.authors+w.year));
+  worksF.filter(w => !refOf(w))
     .forEach(w => out.push({kind:'work', key:w.key, hits:w.hits, label:`${w.authors}, ${w.year}`, ref:w}));
-  if (wantNorm) S.norms.filter(n => hit(n.label))
+  worksF.filter(w => refOf(w))
+    .forEach(w => out.push({kind:'work', key:w.key, hits:w.hits, label:`${w.authors}, ${w.year}`, ref:w}));
+  S.norms.filter(n => hit(n.label))
     .forEach(n => out.push({kind:'norm', key:n.key, hits:n.hits, label:n.label, ref:n}));
   return out;
 }
@@ -1636,62 +1655,88 @@ function moveSel(d){
   const card = document.querySelector(`[data-card="${items[i].kind}:${items[i].key}"]`);
   card?.scrollIntoView?.({block:'nearest'});
 }
+/* el ítem al que saltar después de conservar/quitar por teclado, para poder
+   triar una racha de dudosas sin soltar el teclado */
+function triageNext(){
+  const items = visibleItems();
+  const i = items.findIndex(x => S.sel && x.kind === S.sel.kind && x.key === S.sel.key);
+  if (i < 0) return null;
+  return items[i+1] || items[i-1] || null;
+}
 
 /* =========================================================================
    COLUMNA 2 — LISTA
    ========================================================================= */
+function rowSug(h){
+  const isSel = S.sel && S.sel.kind === 'sug' && S.sel.key === h.id;
+  return `<div class="ficha is-sug ${isSel?'is-sel':''}" data-card="sug:${h.id}" data-sel="sug:${h.id}"><div class="fr">
+    <span class="fk">${esc(h.authors)}, ${esc(h.year)}</span>
+    <span class="fa">${iconBtn('data-jump', h.id, {i:'eye', k:'a_view'})}
+      ${iconBtn('data-editfrag', h.id, {i:'pencil', k:'a_edit'})}
+      ${iconBtn('data-dropsug', h.id, {i:'trash', k:'a_remove'}, 'i-drop')}</span></div>
+    <div class="ffrag">“${esc(fragOf(h))}”</div></div>`;
+}
+function rowWork(w){
+  const isSel = S.sel && S.sel.kind === 'work' && S.sel.key === w.key;
+  const h0 = w.hits[0], frag = fragOf(h0);
+  const shows = slug(frag) !== slug(w.authors + w.year);
+  return `<div class="ficha ${refOf(w)?'is-done':(S.bib.length?'is-open':'')} ${isSel?'is-sel':''}"
+      data-card="work:${w.key}" data-sel="work:${w.key}"><div class="fr">
+    <span class="fk">${esc(w.authors)}, ${esc(w.year)}</span>
+    <span class="fn">${w.hits.length}×</span>
+    <span class="fa">${iconBtn('data-cycle', w.key, {i:'eye', k:'a_view'})}
+      ${iconBtn('data-editfrag', h0.id, {i:'pencil', k:'a_edit'})}
+      ${iconBtn('data-killwork', w.key, {i:'trash', k:'a_remove'}, 'i-drop')}</span></div>
+    ${shows ? `<div class="ffrag">“${esc(frag)}”</div>` : ''}
+    ${w.merged ? `<div class="fnote">${esc(t('merged'))}</div>` : ''}
+    ${w.dup ? `<div class="fwarn">${esc(t('dup'))}</div>` : ''}</div>`;
+}
+function rowNorm(n){
+  const isSel = S.sel && S.sel.kind === 'norm' && S.sel.key === n.key;
+  return `<div class="ficha is-ley ${isSel?'is-sel':''}" data-card="norm:${n.key}" data-sel="norm:${n.key}"><div class="fr">
+    <span class="fk">${esc(n.label)}</span><span class="fn">${n.hits.length}×</span>
+    <span class="fa">${iconBtn('data-cyclenorm', n.key, {i:'eye', k:'a_view'})}
+      ${iconBtn('data-killnorm', n.key, {i:'trash', k:'a_remove'}, 'i-drop')}</span></div></div>`;
+}
 function renderList(){
   const body = $('listBody');
-  const sugN = S.hits.filter(h => h.status === 'sug').length;
-  const pendN = pendingWorks().length;
-  const CH = [['all','fl_all',S.works.length],['pend','fl_pend',pendN],['sug','fl_sug',sugN],['norm','fl_norm',S.norms.length]];
-  $('chips').innerHTML = CH.filter(([k,,n]) => k === 'all' || n)
-    .map(([k,l,n]) => `<button class="chip ${k==='pend'?'c-gap':''}" data-chip="${k}" aria-pressed="${S.filter===k}">${esc(t(l))}<b>${n}</b></button>`).join('');
-  $('chips').querySelectorAll('[data-chip]').forEach(c => c.onclick = () => { S.filter = c.dataset.chip; render(); });
+  $('colTitle').innerHTML = `<span>${esc(t('sec_works'))}</span><b>${S.works.length}</b>`;
 
   if (!S.hits.length){ body.innerHTML = `<p class="blank">${esc(t('f_none_p'))}</p>`; return; }
-  const items = visibleItems();
-  if (!items.length){ body.innerHTML = `<p class="blank">—</p>`; return; }
+  const q = slug($('qList').value || '');
+  const hit = s => !q || slug(s).includes(q);
 
-  let html = '', lastKind = null;
-  items.forEach(it => {
-    if (it.kind !== lastKind && S.filter === 'all'){
-      const head = it.kind === 'sug' ? 'sec_doubtful' : it.kind === 'work' ? 'sec_works' : 'sec_norms';
-      const n = items.filter(x => x.kind === it.kind).length;
-      html += `<div class="section-head${lastKind?' gap':''}"><span>${esc(t(head))}</span><span>${n}</span></div>`;
-      lastKind = it.kind;
-    }
-    const isSel = S.sel && S.sel.kind === it.kind && S.sel.key === it.key;
-    if (it.kind === 'sug'){
-      const h = it.ref;
-      html += `<div class="ficha is-sug ${isSel?'is-sel':''}" data-card="sug:${h.id}" data-sel="sug:${h.id}"><div class="fr">
-        <span class="fk">${esc(h.authors)}, ${esc(h.year)}</span>
-        <span class="fa">${iconBtn('data-jump', h.id, {i:'eye', k:'a_view'})}
-          ${iconBtn('data-editfrag', h.id, {i:'pencil', k:'a_edit'})}</span></div>
-        <div class="ffrag">“${esc(fragOf(h))}”</div></div>`;
-    } else if (it.kind === 'work'){
-      const w = it.ref, h0 = w.hits[0], frag = fragOf(h0);
-      const shows = slug(frag) !== slug(w.authors + w.year);
-      html += `<div class="ficha ${refOf(w)?'is-done':(S.bib.length?'is-open':'')} ${isSel?'is-sel':''}"
-          data-card="work:${w.key}" data-sel="work:${w.key}"><div class="fr">
-        <span class="fk">${esc(w.authors)}, ${esc(w.year)}</span>
-        <span class="fn">${w.hits.length}×</span>
-        <span class="fa">${iconBtn('data-cycle', w.key, {i:'eye', k:'a_view'})}
-          ${iconBtn('data-editfrag', h0.id, {i:'pencil', k:'a_edit'})}
-          ${iconBtn('data-killwork', w.key, {i:'trash', k:'a_remove'}, 'i-drop')}</span></div>
-        ${shows ? `<div class="ffrag">“${esc(frag)}”</div>` : ''}
-        ${w.merged ? `<div class="fnote">${esc(t('merged'))}</div>` : ''}
-        ${w.dup ? `<div class="fwarn">${esc(t('dup'))}</div>` : ''}</div>`;
-    } else {
-      const n = it.ref;
-      html += `<div class="ficha is-ley ${isSel?'is-sel':''}" data-card="norm:${n.key}" data-sel="norm:${n.key}"><div class="fr">
-        <span class="fk">${esc(n.label)}</span><span class="fn">${n.hits.length}×</span>
-        <span class="fa">${iconBtn('data-cyclenorm', n.key, {i:'eye', k:'a_view'})}
-          ${iconBtn('data-killnorm', n.key, {i:'trash', k:'a_remove'}, 'i-drop')}</span></div></div>`;
-    }
-  });
-  body.innerHTML = html;
+  const sugs = S.hits.filter(h => h.status === 'sug' && hit(h.authors+h.year+fragOf(h)));
+  const worksF = S.works.filter(w => hit(w.authors+w.year));
+  const pend = worksF.filter(w => !refOf(w));
+  const done = worksF.filter(w => refOf(w));
+  const norms = S.norms.filter(n => hit(n.label));
+
+  /* cuatro secciones fijas, plegables por separado; se ocultan si no tienen items */
+  const SECTIONS = [
+    {key:'sug',  head:'sec_doubtful', items:sugs,  row:rowSug},
+    {key:'pend', head:'sec_pending',  items:pend,  row:rowWork},
+    {key:'done', head:'sec_done',     items:done,  row:rowWork},
+    {key:'norm', head:'sec_norms',    items:norms, row:rowNorm},
+  ].filter(s => s.items.length);
+
+  if (!SECTIONS.length){ body.innerHTML = `<p class="blank">—</p>`; return; }
+
+  body.innerHTML = SECTIONS.map(sec => {
+    const collapsed = S.secCollapsed.has(sec.key);
+    return `<button class="sec-head" data-sectoggle="${sec.key}" aria-expanded="${!collapsed}">
+        <span class="sec-chev ${collapsed?'is-collapsed':''}">${ICON.chev}</span>
+        <span class="sec-label">${esc(t(sec.head))}</span>
+        <span class="sec-count">${sec.items.length}</span>
+      </button>` + (collapsed ? '' : sec.items.map(sec.row).join(''));
+  }).join('');
+
   bindCommon(body);
+  body.querySelectorAll('[data-sectoggle]').forEach(btn => btn.onclick = () => {
+    const k = btn.dataset.sectoggle;
+    if (S.secCollapsed.has(k)) S.secCollapsed.delete(k); else S.secCollapsed.add(k);
+    render();
+  });
   body.querySelectorAll('[data-sel]').forEach(c => c.addEventListener('click', e => {
     if (e.target.closest('.ico')) return;
     const [kind, ...rest] = c.dataset.sel.split(':');
@@ -2048,6 +2093,12 @@ function keepSug(h){
   askBulk(t('bulk_kh'), t(others.length===1?'bulk_kp1':'bulk_kp', h.authors, others.length), t('bulk_one'), t('bulk_all'),
     () => keep([h]), () => keep([h, ...others]));
 }
+function dropNorm(n){
+  const ids = new Set(n.hits.map(h => h.id));
+  S.hits = S.hits.filter(h => !ids.has(h.id));
+  if (S.sel && S.sel.key === n.key) S.sel = null;
+  render();
+}
 
 function bindCommon(b){
   b.querySelectorAll('[data-jump]').forEach(x => x.onclick = e => { e.stopPropagation(); jumpTo(x.dataset.jump); });
@@ -2057,27 +2108,20 @@ function bindCommon(b){
     const n = S.norms.find(y => y.key===x.dataset.cyclenorm); if (n) cycleTo(n.key, n.hits); });
   b.querySelectorAll('[data-killwork]').forEach(x => x.onclick = e => { e.stopPropagation();
     const w = S.works.find(y => y.key===x.dataset.killwork); if (w) dropWork(w); });
+  b.querySelectorAll('[data-dropsug]').forEach(x => x.onclick = e => { e.stopPropagation();
+    const h = S.hits.find(y => y.id===x.dataset.dropsug); if (h) dropSug(h); });
   b.querySelectorAll('[data-killnorm]').forEach(x => x.onclick = e => { e.stopPropagation();
-    const n = S.norms.find(y => y.key===x.dataset.killnorm); if (!n) return;
-    const ids = new Set(n.hits.map(h=>h.id));
-    S.hits = S.hits.filter(h => !ids.has(h.id));
-    if (S.sel && S.sel.key === n.key) S.sel = null;
-    render(); });
+    const n = S.norms.find(y => y.key===x.dataset.killnorm); if (n) dropNorm(n); });
   b.querySelectorAll('[data-editfrag]').forEach(x => x.onclick = e => { e.stopPropagation(); openFragEditor(x.dataset.editfrag); });
 }
 
-/* el orden de la lista: aparición (natural, ya viene así de groupWorks),
-   alfabético, o por estado (pendientes primero) */
+/* el orden dentro de cada sección: aparición (natural) o alfabético.
+   "Por estado" ya no hace falta como modo de orden: incompletas y completas
+   son ahora secciones fijas separadas, no un criterio de ordenamiento */
 function sortWorks(list){
   const arr = list.slice();
   if (S.sortMode === 'alpha'){
     arr.sort((a,b) => slug(a.surname).localeCompare(slug(b.surname)) || String(a.year).localeCompare(String(b.year)));
-  } else if (S.sortMode === 'status'){
-    arr.sort((a,b) => {
-      const pa = refOf(a) ? 1 : 0, pb = refOf(b) ? 1 : 0;
-      if (pa !== pb) return pa - pb;
-      return slug(a.surname).localeCompare(slug(b.surname)) || String(a.year).localeCompare(String(b.year));
-    });
   }
   return arr;
 }
@@ -2389,9 +2433,31 @@ function applyI18n(){
   $('btnCfg').innerHTML = ICON.gear + esc(t('cfg'));
   $('btnExport').innerHTML = ICON.down + esc(t('e_export'));
   $('rz1').title = t('resize'); $('rz2').title = t('resize');
-  $('sortSel').value = S.sortMode;
+  $('sortBtn').innerHTML = ICON.sort;
+  $('sortBtn').title = t('sort_label');
+  $('sortBtn').setAttribute('aria-label', t('sort_label'));
   layout();
 }
+
+/* menú compacto de orden, anclado al ícono de la barra de búsqueda */
+const SORT_MODES = [['appear','sort_appear'],['alpha','sort_alpha']];
+function toggleSortMenu(){
+  const menu = $('sortMenu');
+  if (!menu.classList.contains('hidden')){ closeSortMenu(); return; }
+  menu.innerHTML = SORT_MODES.map(([v,l]) => {
+    const active = S.sortMode === v;
+    return `<button class="sort-opt ${active?'is-active':''}" data-sortmode="${v}">${ICON.check}${esc(t(l))}</button>`;
+  }).join('');
+  const r = $('sortBtn').getBoundingClientRect();
+  menu.style.top = (window.scrollY + r.bottom + 4) + 'px';
+  menu.style.left = Math.max(8, window.scrollX + r.right - 172) + 'px';
+  menu.classList.remove('hidden');
+  $('sortBtn').classList.add('is-open');
+  menu.querySelectorAll('[data-sortmode]').forEach(b => b.onclick = () => {
+    S.sortMode = b.dataset.sortmode; closeSortMenu(); render();
+  });
+}
+function closeSortMenu(){ $('sortMenu').classList.add('hidden'); $('sortBtn').classList.remove('is-open'); }
 
 /* ---------------------------------------------------------------- eventos */
 $('btnPick').onclick = () => $('fileDoc').click();
@@ -2409,7 +2475,10 @@ $('btnExport').onclick = openExport;
 $('btnFold').onclick = () => setFold(!S.foldText);
 $('btnFoldR').onclick = () => setFoldR(!S.foldDetail);
 $('qList').addEventListener('input', () => { renderList(); renderDetail(); });
-$('sortSel').addEventListener('change', () => { S.sortMode = $('sortSel').value; render(); });
+$('sortBtn').onclick = e => { e.stopPropagation(); toggleSortMenu(); };
+document.addEventListener('click', e => {
+  if (!e.target.closest('#sortMenu') && !e.target.closest('#sortBtn')) closeSortMenu();
+});
 ['ptabList','ptabList2'].forEach(id => $(id).onclick = () => { S.narrowTab='list'; layout(); });
 ['ptabDetail','ptabDetail2'].forEach(id => $(id).onclick = () => { S.narrowTab='detail'; layout(); });
 $('btnPanel').onclick = () => { S.hidePanel = !S.hidePanel; layout(); };
@@ -2432,6 +2501,27 @@ document.addEventListener('keydown', e => {
   else if (e.key === 'ArrowUp'){ e.preventDefault(); moveSel(-1); }
   else if (e.key === 'ArrowRight' && window._occGo){ e.preventDefault(); window._occGo(1); }
   else if (e.key === 'ArrowLeft' && window._occGo){ e.preventDefault(); window._occGo(-1); }
+  else if (e.key === '1' && S.sel && S.sel.kind === 'sug'){
+    e.preventDefault();
+    const h = S.hits.find(x => x.id === S.sel.key); if (!h) return;
+    const next = triageNext();
+    keepSug(h);
+    if (next && !document.querySelector('.veil')) select(next.kind, next.key);
+  }
+  else if (e.key === '2' && S.sel){
+    e.preventDefault();
+    const next = triageNext();
+    if (S.sel.kind === 'sug'){ const h = S.hits.find(x => x.id === S.sel.key); if (h) dropSug(h); }
+    else if (S.sel.kind === 'work'){ const w = S.works.find(x => x.key === S.sel.key); if (w) dropWork(w); }
+    else if (S.sel.kind === 'norm'){ const n = S.norms.find(x => x.key === S.sel.key); if (n) dropNorm(n); }
+    if (next && !document.querySelector('.veil')) select(next.kind, next.key);
+  }
+  else if (e.key === '3' && S.sel && (S.sel.kind === 'sug' || S.sel.kind === 'work')){
+    e.preventDefault();
+    const it = selItem();
+    const hid = it && it.hits && it.hits[0] && it.hits[0].id;
+    if (hid) openFragEditor(hid);
+  }
 });
 
 /* divisores arrastrables */
